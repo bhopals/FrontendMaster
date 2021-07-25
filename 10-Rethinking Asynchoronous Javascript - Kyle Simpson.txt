@@ -1,0 +1,367 @@
+
+
+***********************************************************************************
+ Rethinking Asynchoronous Javascript - Kyle Simpson - 6.30 HOURS (14-15/Jul/2021)
+***********************************************************************************
+
+*Semantics of Javascript
+*Particularly Libraries Perspective
+*Native Primitive Perspective
+
+Library v/s Framework
+- Framework ( Inversion of Control)
+
+
+Parallel v/s Async
+- Single Threaded Javascript
+- A Programming inside of our Javascript runs entirely on a Single Threaded even though browser may have access to Multiple Threads
+
+Concurrency
+- Rather than saying two Parallel things are happening at the exact same time
+- I would describe concurrency as two higher level tasks happening within the same time Frame
+- And Asynchronous Programming is all about managing our Concurrency
+
+Callback
+- Callback === Continuation (A continuation of CODE)
+- Callback Hell / Pyramid of DOMS / Nested Callbacks
+- People usually describe CALLBACK HELL as having to do with the INDENDATION and the NESTING 
+- We can refactor code to resolve NESTING and Indendation of the CODE, but unfortunately the PROBLEM still PERSISTS
+- So we can see here the Problem is not exactly the NESTING and INDENDATION
+
+Callback Problems (2 Problems)
+- Inversion of Control
+- Not Reasonable
+
+Inversion of Control
+- Control of Execution
+- We do not really have any control of the Callbacks when we pass it to any function
+- Control in the sense of WHERE, WHEN and in WHAT manner it is going to be executed
+- This is one of the TWO Evils of the CALLBACK Hell
+- What if My callback will be executed multiple times (Payment Module) or what if it is not at all executed
+- It is a Rabbit HOLE
+- The Trust issues that we are involved in Passing callbacks the INVERSION OF CONTROLS
+- We are Trusting that WHENEVER we pass a callback to Some Utility, and we trust that it will
+  - not call too EARLY
+  - not too LATE
+  - just CALLED ONCE
+  - no LOST CONTEXT
+  - no Swalloned ERRORS
+  - not called MANY TIMES
+  - not called FEW TIMES
+- A very SCARY TRUST LIST
+- WHAT HAPPENS If this TRUST Falls Apart?
+- This BLIND TRUST
+- This is the FUNDAMENTAL DEFICIENCY in Callback Design
+- Callback itself does not have a solution for this part of callback hell, THE INVERSION OF CONTROL - The TRUST ISSUE
+
+
+Not Reasonable 
+- Human Brain is Fundamentally Single THREADED (Cannot Multitask)
+- I am going to Fundamentally ASSERT that Callbacks are not Reasonable
+- Reasonable - They are not able to be REASONED ABOUT
+- Code Run in SYNC/ASYNC Fashion, And we cannot Reason OUT or STATE what Execution PATH or FLOW the code is going to take
+- Solution to this - SHOULD be something SYNC-LOOKING Async (Async-Await)
+- Means some pattern which even Run the Async Code in Sync Fashion
+- And by looking at the code we should easily be able to REASON OUT what path code is going to take
+- non-local, non-sequential Reasoning
+
+In Order to Resolve both of the issues - Inversion of Control and Not Reasonable, there are some NON-FIXES been made
+1. Split Callbacks
+- The Fix we introduce to resolve both callback issues
+- A node-style callback function(err, success)
+- So this should fix ERROR Swalloned problem - Atleast we can tell the callback returned some error (with Message)
+- HOWEVER, NOW WE HAVE MORE TRUST ISSUES - 2 METHODS - (error, success) - what if Neither Called or anything else happens
+- This solution have introduces more problems to what we already have instead of Helping us Significantly
+
+2. Nested Callbacks 
+- Did not work as well 
+- Still Dealing with TRUST issue  of Inversion of Control as well as non-local, non-sequential Reasoning
+
+CSP Function
+- Continuation Passing Style
+- In Functional Programming, CSP is a Style of programming in which Control is passed explicitly in the form of Continuation
+- A Function Written in CSP style takes an Extra Argument; an explicit "continuation" i.e. a Function of One Arguement
+- When the CSP Function has computed it's result value it "returns" by Calling the Continuation Function with this value as arg.
+
+
+Thunks
+- A Thunk is a Function that ENCAPSULATES SYN and ASYNC Code inside
+- THUNK Accepts only one callback function as an arguments, which is a CSP(Continuation-Passing Style) Function
+- THUNK passes the result back to CAllback after being executed
+- A pattern on top of Callback
+- SYNCHRONOUS THUNK - A THUNK is a function that has everything already that it needs to do to give you some value back
+- They ALREADY have everything they need to return a value. You do not need to pass any argument
+- So a THUNK is just some function with some closure state keeping track of some value or values,
+- and it gives you those things back whenever you call the function
+- function add(x,y){return x+y}; var thunk = function(){ return add(10,15) }
+- Thunk become CONTAINER Wrapped AROUND 'add' Function
+- YOU MAY NOT REALIZE IT BUT THIS IS THE FUNDAMENTAL CONCEPTUAL UNDERPINNING FOR WHAT A PROMISE - A WRAPPER AROUND A VALUE
+- ASYNCHRONOUS THUNK - A Function that does not need argument to pass do it's job, 
+- except you need to pass a callback so that you can get the value out
+- function addAsync(x,y,cb){setTimeout(() => cb(x+y))}; 
+	- var thunk = function(cb){addAsync(10,15,cb)}; thunk((sum) => console.log(sum))
+- By Wrapping a Function we factored time out of the Equation - TIME INDEPENDENT
+- Managing Time is the most Complex state in your Program
+- On this Async Thunk Notion, the PROMISES works the same way
+- Promise is a time independent wrapper around a VALUE and Just with a FANCY API
+- So Async Thunks are PROMISES without the FANCY API
+
+
+Thunks and Closures
+- Thunk is all about using Closure to maintain STATE
+- Thunk are not SOLVING the TRUST issue of callbacks
+- BUT it provides BETTER REASONABILITY
+- So WHY THE THUNKS ARE IMPORTANT IN PROGRAMMING LANGUAGE?
+- Well the REASON for that is, By using THE CLOSURE in the THUNK PATTERN to maintain the state of something,
+- We ELIMINATE time as a complexting FACTOR OF THE STATE
+- The TIME is the MOST COMPLEX FACTOR of state in your PROGRAM
+- UNDERSTANDING THE ORDER IN WHICH THINGS Happen and the Way Things Change over time is the most Complex part of your Application
+- So with Thunk TIME and ORDERING OF THINGS, becomes a non-issue
+- *Promises do use this(Thunk) Pattern Internally
+
+
+Promises
+- Promises Represent a Placehold for a Future VALUE
+- They Solve the INVERSION OF CONTROL issue that Exists with Callbacks by Providing Completion Events for Asynchronous Tasks
+- This Puts the Control back inside the APPLICATION
+- Promises Helps in Codifying Reasonable ASYNCHRONOUS Coding Pattern
+- Promises are Quantification of the IDEA that WE NEED A PLACEHOLDER TO ELIMINATE TIME is the Concerned Wrapped around a Value
+- Like a Container around that Value. So Promises Becomes Container Wrapped Around a VALUE
+- Promises Comes from a Programming Language called E
+- Mark Miller, creator of E Programming Language and Committe Member of TC39
+- In E, they have things called FUTURE, so they brought the same IDEA to JS and Called Promies
+- Promises Allow People to reason about Value it ignorance of the timing
+
+
+
+Promise API
+- In Promises, rather than passing a callback and handing over to the 3rd Party For Execution
+- What If we modify the API to return back an EVEN LISTENER to us
+- CAN YOU SPOT HOW THIS HAS UNINVERTED the INVERSION OF CONTROL rather than simply retain control
+- Because NOW rather than Passing my Callback into that utility, giving them the keys to the Kingdom by which they can do 
+- whatever they want and I CANNOT Trust them as they may not do what I do not expect INSTEAD
+- With Promises, I have retained control. I Simply said, you just give me an EVENT LISTENER, I will FIGURE out what to DO
+- Also, we can LISTEN to the EVENT and Unsubscribe to the event the First time it Happen for
+- Which SHOWS we are in Complete Control of the Paradigm
+- PROMISE HAS UNINVERTE the "INVERSION OF CONTROL" PROBLEM
+- A PROMISE is like an Event Listener, But rather thanbeing a COMPLETION event, We CALL the event "then()" EVENT
+
+
+
+For Asynchronous Programming, Inversion of Control IS A TERRIBLE Idea
+- Inversion Control is the Path to the DARK SIDE
+- A Path from which we completely lose all reasonability in our progrm
+
+But Wait, Someone might ask that I have been running away from the callbacks to PROMISES because I cannot 
+Trust Callbacks because of 2 Problems (Inversion Of Control, Not Reasonable); However, in PROMISES we still
+use Callbacks then(successCallBack, ErrorCallback) callback, and in that case whats with the TRUST?
+- PROMISES TRUST
+ - Only Resolved ONCE
+ - Either SUCCESS or ERROR
+ - Message KEPT / PASSED
+ - Exception Becomes ERROR
+ - Immutable once RESOLVED
+
+
+PROMISE
+- Acting Sort of a Callback Manager whom you can trust with your callbacks
+- It is a PATTERN to manage our callbacks in a TRUSTABLE FASHION
+- But still there is a Existence of PROMISE HELL (Multiple Nested Promies)
+- So for the one WHO Claims that PROMISES are built to RESOLVE CALLBACK HELL, THEY ARE COMPLETELY WRONG
+- Promises are BUILT to INSTILL the Trust back into our SYSTEM (By REVERTING "Inversion of Control")
+
+
+Promise Flow Control
+- Chaining Promises to Control the Flow
+- Example: doThis().thenDothis().andThenDoThis().atTheEndDothis().IfAnyErrorDothis()
+- With Promises, We BUILT A Trust System, and Controlled the FLOW/Chaining of the RESULTS
+
+
+Abstractions in PROMISE
+- A Few Abstractions in the Promise API
+- Promise.all([p1, p2]) - takes an ARRAY of Promises and Will wait for all Promises in the Array to Resolve
+- Promise.race([p1, p2]) - also takes an ARRAY of Promises, However, it only waits for whichever Promise in the ARRAY resolves or rejects FIRST
+
+
+
+Sequences & Gates
+- Automatically Chained Promises
+- Native Promise Provides some API's for Chaining and Sequencing
+- Kyle Simpson has created the open Source Library Asynquence(Asyn + Sequence) 
+- becuase Current Promise API does not provide so much ABSTRACTION and Sequence control with Mutliple Promises
+- It has some methods like .waterfall(p1, p2, p3), .seq(p1, p2, p3)
+
+
+GENERATORS
+- Generators(Yield)
+- If PROMISES were about Solving the INVERSION OF CONTROL PROBLEM
+- GENERATORS are about Solving the non-local, non-sequential, non-reasonable problems(Non-sequential reasonability problem)
+- All NORMAL Functions in Javascript have a Characteristic of RUN-TO-COMPLETION Semantic
+- HOWEVER, GENERATORS DO NOT HAVE RUN-TO-COMPLETION Semantic
+- Javascript Generator is a Syntactic Form of Declaring a State Machine
+- A STATE MACHINE is having a Patterned Series of FLOW from one STATE to ANOTHER STATE to ANOTHER STATE
+- "YIELD" - Keyword in Generator is kind of Like PAUSE BUTTON, which makes Generator a PAUSABLE FUNCTION
+- So Generator is a kind of a Function that can PAUSE and RESUME and PAUSE and RESUME...
+- Generators are like BLOCING Localized Functions
+- function *gen(){ console.log('init'); yield; console.log('first'); yield; console.log('last')}
+- var it = gen()//Returns an ITERATOR Function; it.next()//init; it.next()//first; it.next()//last;
+- Generator Returns an Iterator Function, which has .next() method, which returns { value: <value>, done: true/false }
+- Generators Follow COOPERATIVE CONCURRENT/CONCURRENCY(Can be paused from Inside only), unlike PREEMPTIVE CONCURRENCY
+- PREEMPTIVE Concurrecy
+  - Some one else from OUTSIDE force can come in and Intervene
+  - Schedular/Callee has more control over tasks
+- COOPERATIVE Concurrency 
+  - FUNCTION's Internal Code decides the Intervention
+  - Task itself has more control and it manages it's own Lifecycle, instead of Schedular/Callee
+- When a Generator is called, it Returns an Iterator which will step through the Generator,
+- Pausing ANYTIME the yield keyword is encountered
+- MUST SAY, GENERATORS ARE ONE OF THE EVOLUTION CHANGES BROUGHT TO Javascript
+- function *main(){yield 1; yield 2; yeild 3;}; var it = main();
+- it.next()//{value:1, done: false};it.next()//{value:2, done: false};it.next()//{value:3, done: true};
+- If the YIELD Keyword in GENERATOR is called with a Value, That value will be returned to the Iterator along with "done" boolean value
+- This Allows Messages to be SENT outside of the Generator.
+- The Subsequent Calls to the next() method can be used to pass the Message back into the Generator 
+- ES6: for-of Loop - Specifically For Comsuming Iterators
+
+
+Async Generator
+- Generators can be used in Asynchronous Application
+- The YIELD keyword will block a Generator while a Async Call is being Executed - yield fetch('http://<api-call>')
+- Value Returned from an Asyc call can be passed back to Generator
+- Allowing it to RESUME and Sequentially Trigger other SYNC Operations
+
+
+PROMISES + GENERATORS
+- While GENERATORS Completely solve the ISSUE of SEQUENCING ASYNCHRONOUS OPERATIONS
+- They are still susceptible to Inversion of Control
+- Since Promises Solves the Inversion of Control, we can combine PROMISES + GENERATORS to write Better Asynchronous Code - yield <PROMISE>
+- About Generators, we are not talking about Introducing new FUNCTIONALITY,
+- we are talking about Introducing new EXPRESSIVITY (The way our BRAIN works and READ the CODE)
+- ES6, has Introduced ASYNC-AWAIT which Behaves this way
+
+
+QUIZ TIME
+
+#1 What is "CALLBACK HELL"? Why do Callback Suffer from "Inversion of Control" and "Reasonability"
+- A CALLBACK HELL is not a deficiency of Callback pattern alone
+- It is just not capable of addressing there MAJOR Deficiencies
+  - One of them is being "Inversion of Control"
+  - One of them is being "non-local, non-sequencing reasoning"
+- So callbacks while they are the ATOMIC Fundamental Building Block upon which Everything we have been doing,
+- even that FANCY Generator stuff still got Callbacks happening
+- But without those additional Patterns on TOP, the callbacks are not capable of ADDRESSING these ISSUES
+- So WE NEED TO PUT HIGH ORDER PATTERN ON TOP OF CALLBACK to ADDRESS those Problems
+- That is what Callback Hell Really is
+- Infact, what many believe to be true, It really has very little to do with NESTING, an INDENDATION
+- That is just a SIDE Symptoms of vast
+
+
+#2 What is Promise? How does it solve INVERSION OF CONTROL issue?
+- Metaphorically 
+ - TRUST Future Value
+- Conceptually 
+ - Placeholder for a Value / Future Value
+ - Completion Event - It is like an event listener that we get back and we can register for a completion event,
+   in this case is called the "then" event
+ - It is a callback Manager - We pass our callbacks to the PROMISE System and it manages them in a WAY that gives us that Trust
+   we have that Trust back and By passing them into Promise System, as we know Promises are designed with that TRUST, so it solves
+   INVERSION OF CONTROL, because instead of Passing our callback into a Third Party that we do not TRUST, Instead they give us a PROMISE
+   Back - A Trustable system. In this way, we have INVERTED the INVERSION OF CONTROL or rather just simply RESTRAINS the Control that 
+   we always have
+
+
+#3 How do you pause a Generator? How do you Resume it?
+- Pause - Yield 
+- Resume - it.next()
+
+#4 How do we Combine generators and Promises for Flow Control
+- Yield a PROMISE and then
+- THE Promise Return RESUME the Generators
+
+Observables ( Event Oriented World)
+- Promises Work well wtih Asynchronous Events that OCCUR ONCE
+- A Stream of EVENTS, however make promises more difficult to use because a Promise can only be resolved once
+- CONCURRENCY === Events + PROMISES??
+- With the Use of PROMISES and GENERATORS, we have give ourselves Several Layers of HIGH ORDER ABSTRACTION
+- BUT How to respond to events that Repeatedly happening and all of SUDDEN PROMISES SEEMS TO FALL APARY :(
+- As they can only be RESOLVED and REJECTED Once
+- So Promises, at least by themselves are not going to model well in a EVENT ORIENTED WORLD, we are going to need something BETTER
+- WE NEED Something to Separate the Concern of Having a Producer and Consumer at the Different Spot
+- Which DO NOT have to be Tightly Coupled
+- Which INTODUCES "OBSERVABLES"
+- While Observable Do not Currently Exist in the Javascript Specification, Third Party libraries have began IMPLEMENTING OBSERVABLES
+- Example - RxJS - Reactive Extension Javascript
+- An OBSERVABLE is an Adapter Hooked onto an EVENT SOURCE and that Produces a PROMISE EVERYTIME a NEW eVENT COMES THROUGH
+- But it does in a Separate Way, Where I can SETUP my EVENT SOURCE, and In an Entirely Different Part of My Application,
+- I can Declaratively say whats my DATA FLOW
+- Means I have an OBSERVABLE which Represent My DATA SOURCE, and I can SUBSCRIBE to that Observable in one or more
+- other locations in my System, in an Entirely Separate Way
+- We can think of OBSERVABLES - STREAM - STREAM of DATA that is going to Come through
+
+
+
+Reactive Sequences
+- An Implementation of Observable added by Kyle in his library called "Aynquence"
+
+
+Synthetic Events
+- A Synthetic Event is a Cross Browser Wrapper around the Different Browsers and Platforms
+- A Syntthetic Event is a Cross Browser Wrapper around the Browser's NATIVE Events (React Onclick() ===> Browser onClick() )
+- Synthetic Event Stream based on the Composition of Multiple events
+- var rsq = ASQ.react.all(click, mouseMove){...} //Function/Event will be called once BOTH Events are called or fired
+
+Cold Observables
+- Create a Data Producer for Each Subscriber ( One Producer - One Subscriber)
+- Data Produced by Observable Itself
+- Watch Movie on NETFLIX on Demand (one - to - one)
+- A Cold Observable start Producing data when some code invokes a Subscriber Function on it
+
+Hot Observables
+- Create a Data Producer First ( One Producer - Many Subscribers)
+- And each Subscriber gets the data from one Producer
+- One Stream for all Subscribers/Viewers
+- Watch Movie in a Theatre - 04:00 O'clock show - Starts at Sharp 04:00 - (one - to - many)
+- A Hot Observable produces data even no Subscribers are Interested (The Producer is just a RUNNING Instance)
+
+
+Observables
+- Adapting your events/streams and Modelling your data in a DECLARATIVE FASHION
+
+
+
+CSP 
+- Go Language Routines
+- Communicating Sequential Processes
+- CSP Involves Modeling Concurrency through Channels
+- These Channels use Blocking Techniqies to Send and Receive Messages
+- Modeling Concurrency = Concurrency + Channels(Stream)
+- A Very useful when we do not have a direct connection between Producer and Consumer But we do want to have some
+  way of Signaling to the Producer when they do not want to take data anymore
+- Coordinates Communication between System and Components OR Between Two Separate Systems (Can be achieved using TWO Generators)
+- Blocking Channel - block an infinite loop using Yield and pass message one by one
+- Event Channel -  Async Code to handle events
+
+
+RECAP
+- Callback
+  - Shortcoming of Callbacks, callback hell - the notion of inversion of Control and non-local and non-sequential reasoning
+- Thunks
+  - Thunks atleast gave us a Conceptually Underpinning for Values that are TIME INDEPENDENT
+  - Removing Time as a STATE COMPLEXITY
+- Promises
+  - Promies are THUNK + A Solution to Inversion of Control because the way they are built is designed to create a Trustable
+  - and Predictable System around the Callbacks are behaving
+- Generators
+  - These are the Part of Callback Hell being Solved, giving us a Localized pausable stack, with local stact execution
+  and local error handling so now we have BLOCKING SEQUENTIAL ASYNCHRONOUS Looking CODE
+- Observables
+  - Event Based Programming
+- CSP(Communicating Sequential Processes) 
+  - Go Routine
+  - Coordinated Communication between System and Components
+
+
+
+
+
+THE END

@@ -1,0 +1,297 @@
+  
+
+
+*****************************************************************
+  Functional Light JS - Kyle Simpson - 10 HOURS (08/Jul/2021)
+*****************************************************************
+
+
+Why Functional Programming (FP)
+- Imperative v/s Declarative 
+- Functional Programming by it's nature more DECLARATIVE
+- Functiona Programming Shift the Focus of our code towards the declarative way from the Imperative
+- Functional Programming is Compelling (Powerful)
+- A more Pragmatic way of Coding
+
+
+Procedure
+- A Procedure is a collection of Operations, Collection of Things that you need to do in a Program
+- A Procedure is a SEQUENCE of Instructions 
+- Any Function that does not have a "return" statement (returning Undefined is okay), these are not function, they are procedures
+
+
+Function
+- A Function is a relationship between the input and the output. 
+  There is a SEMANTIC RELATIONSHIP Between what I Put In and What I Get Out
+- There should be an Obvious Relationship between the INPUT and OUTPUT. 
+- And If that is not happening then you are not really accomplishing the spirit of FUNCTIONAL PROGRAMMING
+- A Function is a SEMANTIC Relationship between Input and Computed Output, and so DOES The NAMING CONVENTION USED
+- Such as Name of the Function, Params naming, Input, Output of the Function, Local Varible Naming - All Matters
+
+
+Side Effects
+- If Function has Side Effects, it is not a TRUE Function.
+- The INPUT should be direct (via Param) not External Variable else it is not Function
+- Function should have Direct INPUTS and Direct OUTPUTS
+- A Function Call within Function creates Side Effect (console.log, print, N/W call, DOM, DataBase Operations)
+- A Function Should have a Single Responsibility
+- Acceptable Side Effects (Avoid if you can)
+  - I/O
+  - Database Storage
+  - DOM
+  - N/W Calls
+  - Timestamps
+- So MINIMIZE Side Effects
+- Avoid Them whenever Possible, otherwise MAKE them Obvious
+
+
+Pure Function
+- A Function that takes all of its INPUT as DIRECT, all of its OUTPUT as Direct, and Its has NO SIDE-EFFECT / POLLUTION.
+  SAME INPUT - SAME OUTPUT - Is a Pure Function
+- In terms of EXTERNAL Var. Usage, CONSTANTS are allowed. 
+  Still a Function would be PURE if it uses that along with DIRECT INPUTS.
+- To Achieve Strong Immutability and Function Purity - 
+  DON'T Ever Mutate any Object in the Function, Always use a copy of that object
+
+Reducing Surface Area
+- Increasing the Readibility, Increasing the Confidence
+- Extract the IMPURITY of a Function to make it Pure Function and to avoid any Side Effect / Pollution
+- Reduce the Surface Area of the IMPURITY, if its unavoidable - Minimize the Side Effect / Pollution
+- That way we are Reducing the Surface Area, and Increading the Readability and Confidence
+
+
+Function Arguements
+- Arguments are the Parameters that Function Receives
+- UNARY  - Single Input Param - Single Return
+- BINARY - Two Input Params - Single Return
+- ENARY  - More than Two Input Params - Single Return
+
+
+Function Arguments Shape Adapter
+- HOF - High Order Function
+- A Function Which EITHER Receive One or more Functions, AND/OR return one or more Function 
+- Means the Values Going in OR Coming OUT ANY/BOTH are Function called HIGHER ORDER FUNCTION
+- Example: Lodash has many High Order Functions
+- A Function that Does not Receive Functions or Returns a Function called SINGLE ORDER FUNCTION
+
+
+Point Free
+- Point-free Style is a way of Defining functions with a very Simple Constrainst: 
+  Funciton Defination does not incluse arguments 
+  Tacit programming (point-free programming) is a programming paradigm in which a function definition does not include information regarding its arguments, using combinators and function composition [...] instead of variables.
+- Point free style means that the code doesn't explicitly mention it's arguments, even though they exist and are being used.
+- Example  const upper = (string) => string.toUpperCase(); ['Apple', 'Banana'].map(upper);
+- This is a Concept from Haskell Language - Internally it uses Function Composition
+- It Helps to Achieve Right Level Of Abstraction
+- Equational Reasoning - It means Reason about one Thing and say it is Equational - In sense of Shape of the Input and Functionality
+- isEven == not(isOdd); function not(fn) { return function negated(...args) { return !fn(...args)}}
+- Use of Equation Reasoning and Composition to achieve Point Free Approach
+- Point Free Style - More Declarative - Be achieved using Equational Reasoing 
+
+Composition
+- Output of Fn1 is passed directly to Fn2. The concept of having one Function call Output Immediately becomes the Input of another function is called Composition
+- var isOdd = compose(eq(1), mod(2))
+
+
+Closure 
+- Closure is when a Function Remember the Variables around it even when that Function is Executed Else Where
+- When you are using Closure in Functional Programming you have to make sure you are closing over non-changing, non-mutating values
+- As soon as you start mutating values that you closed over, you lose your function purity
+
+Lazy v/s Eager Execution(In Closure)
+- Lazy  - Deffering the actual work at the actual call, so if the function executed 5 times, the execution will be called 5 times
+- Eager - Execution the function work at the time of defining, returning the result everytime function is called (Expesive computation work will be executed only once) 
+
+
+Memoization
+- In both of the above scenarios (Lazy and Eager), Closure enable us a choice of where we put the code to decide whether we want it to happen Eagerly now OR Lazily later
+- The Problem is that it is a trade off.
+- However, Is the code written using Eager/Lazy style Closure Functionally PURE? It's NOT
+- Functional Programming Says, Don't Close over Something which Changes or Reassigned
+- Also, We are breaking the RULE, there is no DECLARATIVE Style
+- So If we want a Pure Function, give the Same Input produces the same Output, and You want to CACHE the Result, 
+  use MEMOIZATION
+- Only use Memoization, if You expect the Function to be called Multiple Times with the Same Input
+- However, it is not recommended if it is Other way around, distinct Inputs, becuase It takes Memory
+
+
+Referential Transparency
+- A Function call is Pure if it has Referential Transparency
+- It means, A Funtional Call can be replaced with it's return value and not effect any of the rest of the Program
+- Referential Transparency is a key Characteristic of the language and the compiler
+- And Because of the Guarantee of the Language/Pure Function, the Compiler can take advantage of that
+- It Literally normalize everything
+- Replacing Function call/Expression with one OUTPUT/RETURNED value as it is Surly going to be the same
+- In a same way it does Provide a Readibility to the USERS
+
+
+Example:
+function renderCustomers(customers){...}
+function ajax(url, data, cb){ ajax(CUSOMER_API, {id:42}, renderCustomers }
+
+
+Generalized to Specialized
+- A Cleaner and Readable Approach
+- function ajax(url, data, cb){...}; INSTEAD, function getCustomer(data, cb){...ajax(customer, .., ..)}
+- Function Params Oder = Generalized ===> Specialized
+- BENEFITS
+  - Semantics Function Names
+  - Better Readibility
+  - Make Code More Semantic
+  - Self Descriptive Functions
+  - Clear Naming Convention / Better Readibility
+- To Achieve that we have TWO Technics - PARTIAL APPLICATION and CURRYING
+
+
+Partial Application (partial)
+- It is one Way/Technic of Achieving SPECIALIZATION
+- It Takes a FUNCTION as it's FIRST ARGUMENT/INPUT, and then it takes it's next Inputs as a Set of Arguments to pass along to that Function at some Point
+- The FIRST ARG will always be A FUNCTION
+- A style like Preseting those arguments
+- Exampe Code Snippet:  const getCustomer = partial(ajax, CUSTOMER_API); const getCurrUser = partial(getCustomer, {id: 42}); getCurrUser(renderCustomers)
+- Partial Application is a Process of Applying a Function to some of Its Arguments. The Partial Applied function returned for Later Use
+- In other Words, it is a Function that takes Multiple Parameters and returns a Function with Fewer parameters
+- An Utility to PRESET one or more inputs and produce a Function which is expection all rest of the INPUTS
+- Partially applying some of the Inputs now, and receiving all the remaining Inputs Later(DRY - Don't Repeat Yourself)
+
+
+Currying
+- Curry does not call a Function, it just Transform it
+- More Popular and widely used than Partial APP
+- A More Common Form of SPECIALIZATION
+- Pass an INPUT and get SPECIALIZED function, pass another INPUT and get more SPECIALIZED function, and so on...
+- The Curry Name comes from Haskell, a functional programming language, Co-Inventor - Haskell Curry
+- All Functions are UNARY in HASKELL
+- Currying Always Return another Function with ONLY one Arguement until all of the arguments have been applied
+- So we JUST keep calling the returned Function until we have exhausted all the arguments and the final value gets RETURNED
+- Currying is a Transform that makes f(a, b, c) callable as f(a)(b)(c)
+- Curry takes a Binary/Enary function and returns a Unary function that returns a Unary function
+- Currying is a technic of Converting Function Call with N Arguements into chains of N function calls with a Single Arg. for Each Function Call
+- A Curried Function have a Built-in Iterator Behaviour. One Arg. is applied at once which is then returned to the calling function to be used for Next Step
+- Curry is a Function that takes a Function with Multiple params as Inputs and Returns a Function with Exactly one Param
+- By Default, all the methods in Functional Programming are CURRIED. Because it turns out, functional programmers want everything to be Curried
+- Curried Function is a chain series of UNITARY FUNCTIONS
+
+
+Curry Example: 
+function log(data, importance, message) { console.log(...)}
+const log = _.curry(log)
+//ALL SAME
+log(new Date(), 'DEBUG', 'Hi There')
+log(new Date(), 'DEBUG')('Hi There')
+log(new Date())('DEBUG')('Hi There')
+var ajax = url => data => callback = {}
+
+
+Partial APP v/s Currying
+- BOTH are Specialization Technic
+- Partial App PRESETS some arg. now and receive the rest on the next call
+- Currying Does not preset any argument, it receive each argument one at a time
+- Both of them are specialization technic, but they specialze in a different way
+
+
+Composition
+- When one Function call is Producing an Output that is then later routed to Another function call
+- Taking the OUTPUT of one function, making it the input of another
+- It is often the case that it will end up in some kind of Variable passed to another function, Thats Composition
+- Composition GOES from RIGHT TO LEFT (LEFT <==== RIGHT)
+- Composition is a Declarative Flow
+- A Series of State Transition Managed Data Flow
+
+
+Piping (Pipe)
+- Piping GOES from LEFT TO RIGHT (LEFT ===+> RIGHT)
+
+
+Immutability
+- Immutability Means that the change that needs to Occur, should ne Intentional. It should not be ACCIDENTAL.
+- Change Should not be happening without us being unware
+- Immutability is the concept of how we control MUTATION
+- CONST is a semantic Placeholder for a Literal Value and denotes the should be IMMUTABLE
+
+
+Assignment Immutability (By Value - PRIMITIVES)
+- Use CONST to stop value being mutated
+- CONST cannot be Re-assigned or MUTATED
+- CONST word seems to be confusing hence it is Depricated in JAVA, and they created a FINAL to avoid confusion
+- When People see CONST the first thought comes is the value does not change, which is NOT TRUE
+- CONST just cannot be RE-ASSIGNED OR MUTATED (Only if Primitive)
+- CONST/LET are usually BLOCK SCOPED (10-15 lines of block code), hence people should not be worried about the Reassingment of CONST type
+
+Value Immutability (By Reference - Objects)
+- As stated earlier, CONST only disallows the Assignments/Mutation of PRIMITIVE TYPES
+- But for OBJECTS, if you want to make Object Read Only and disallow any modification, use OBJECT.FREEZE on the OBJECT
+- A Note- Even with Object.Freeze - Nested Object properties still can be modified 
+- Always Assume the object you receive in a Function is Read ONLY Data Structure(Don't Modify the original Object)
+- Don't Mutate, just Copy
+
+Immutable DataStructure (By Reference - Deep/Nested Objects)
+- Treat All Data Structure as Read-Only whether they are or not
+- You could use "immutable.js" to achieve Immutability of PRIMITIVES/OBJECTS/DATA STRUCTURE Types
+
+3 Ways to Resolve Immutability PROBLEM
+- At the callsite, when you pass any Object, you should annotate that with "Object.Freeze"
+- Always Treat received Data Structure (DS) in Function READ-ONLY
+- Use Third Party Library such as "Immutable.js" to Track "Assignment Mutability (By Value)", "Value Mutability (By Reference)", and "Immutable Datastructure (DS)"
+
+
+
+Recursion
+- Significant and Important Solution to the Multiple Problems - WHERE TO STOP
+- Every Recursion should have A BASE CONDITION (WHERE TO STOP)
+- Recursion Makes your Code More Declarative
+- Divide and Conquer Types of Problems are a Perfect fit for Recursion
+- Use of PROPER TAIL CALLS can resolve Massive Memory Usage and Running out of STACK FRAMES Error
+- Tail Calls - Passing Results to Recursive Function Everytime it is called
+- Also Termed as CONTINUATION PASSING STYLE 
+
+
+Functor
+- A function Programming TERM
+- Operation on a Collection of VALUES
+- A Functor is a value (a Collection of Values) over which these values in it can be mapped
+- It is Essentially a VALUE that you can map an Operation 
+- Functors are Containers that can be used with a 'map' Function
+- A Functor is simply something that can be MAPPED OVER (Mappable)
+- A Functor is something that is MAPPABLE or Something that can be MAPPED between Objects in a Category
+- Example: MAP, REDUCE, FILTER - [1,2,3].map(x=>x*2)
+- An Array is MAPPABLE, so it is Functor
+- To Create any Object a Functor, you need to provide a map() function to that
+
+Transduction 
+- A Advance Technic to do Compisition of Reducers
+
+Monad
+- A Monad is BOTH Mappable and Flat-mappable
+- Monad is a combination of Functor + Function Composition
+- Monad is Anything which is Mapped and FlatMapped
+- Monad is a way of creating a Functional Programming friendly Data Structure
+- Monad is a design pattern used to describe computations as a series of steps. 
+- They are extensively used in pure functional programming languages to manage side effects 
+- But can also be used in multiparadigm languages to control complexity.
+- Monads wrap types giving them additional behavior like the automatic propagation of empty value (Maybe monad) 
+- OR simplifying asynchronous code (Continuation monad).
+- A way of Pairing Data with a Set of Predictable Behaviour that let it interact with other data + behaviour pairing
+- Identity Monad - const Identity = (x) => ({chain: f => f(x), emit: () => x, map: f => Identity(f(x)), inspect: () => `Identity(${x})`});
+- The identity monad is the simplest monad. It just wraps a value. The Identity constructor will serve as the unit function.
+- Maybe Monad - May be there is a value OR May be there is not - To Handle UNDEFINED and NULL values 
+- The maybe monad is similar to the identity monad but besides storing a value it can also represent the absence of any value.
+- The list monad represents a lazily computed list of values.
+- The continuation monad is used for asynchronous tasks. Fortunately with ES6 there is no need to implement it 
+— The Promise object is an implementation of a monad.
+// Promise.resolve(value) will serve as the Unit function
+// Promise.prototype.then will serve as the Bind function
+
+In functional programming, a monad is a kind of abstract data type used to represent computations (instead of data in the domain model). Monads allow the programmer to chain actions together to build a pipeline, in which each action is decorated with additional processing rules provided by the monad.
+
+
+
+To be considered a monad the structure has to provide three components:
+
+Type constructor:
+ — a feature that creates a monadic type for the underlying type. For example it defines the type Maybe<number> for the underlying type number.
+The UNIT function:
+ - that wraps a value of underlying type into a monad. For the Maybe monad it wraps value 2 of the type number into the value Maybe(2) of the type Maybe<number>.
+The BIND function: 
+ - that chains the operations on a monadic values. More - https://curiosity-driven.org/monads-in-javascript
+

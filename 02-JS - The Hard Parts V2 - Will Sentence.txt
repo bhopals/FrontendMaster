@@ -1,0 +1,110 @@
+
+
+*********************************************************************
+  Javascript Hard Parts V2 - Will Sentence - 4 HOURS  (07/Jul/2021) 
+*********************************************************************
+
+Thread of Execution
+- Javascript has Single Thread of Execution
+- Global Exection Context is the Main Context (Parent Context)
+- Function Execution Context is created to RUN the Code of a Function
+- Function Exection Context has 2 Parts - 1. Thread of Execution 2. Memory
+- Call Stack - Javascript Keeps track of what Function is Currently Running (Where is the Thread of Execution is)
+- Every Function Context has a Local Memory to Store Function Variable
+- DRY - Don't Repeat Yourself
+
+High Order Function (HOC)
+- High Order Functions are functions that accept Functions as a Parameters and/or return a Function
+- Function in Javascript === First Class Object 
+- Callbacks are a core aspect of Async Javascript (Promises and Async/Await)
+
+Closures
+- Functions with Memories
+- Starts with Returning a Function from Another Function
+- The scope is BAG PACKED with the Function attached Closure with hidden "[[scope]]" variable
+- Bag Packed are also called "Closed Over Environment Variaiable" - COVE
+- It is also called "Persistent Lexical Scope Reference Data" - PLSRD
+- But the well known and widespread name is "Closure"
+
+Closure Practical Usage
+- Helper Functions
+- Iteration and Generators
+- Module Pattern
+- Asynchronous Javascript (Callbacks and Promises)
+
+Asynchronous Javascript
+- Javascript is a Single Threaded Execution and Code gets Synchronously Executed
+- Javascript Engine has 3 Main Parts:
+  - 1. Thread of Execution 
+  - 2. Memory/Variable Environment  
+  - 3. Call Stack
+- To Add AN Asynchronous Behaviour, we need to add some additional Components:
+  - 1. Web Browser API (Javascript, Dev Tools, Console, WebScoket, Fetch/XHR, DOM, Timer, Network Request, SetTimeout, document, Workers)
+  - 2. Promises
+  - 3. Event Loop
+  - 4. Callback Queue
+  - 5. Task Queue
+  - 6. Micro Queue
+- Javascript has a label for each Browser Feature and Javascript uses that label to call Browsers Respective Functions (setTimeout --> Timer, fetch --> XHR)
+- There is a FACADE Latyer between JS and Browser API (setTimeout --> Timer, fetch --> XHR)
+
+
+Callback Queue and Event Loop
+- In Javascript almost all I/O are non-blocking. (using Callbacks)
+  Refer - https://blog.cloudboost.io/why-is-node-called-a-non-blocking-i-o-model-eb639063bc14
+- JS Engine is just an On-Demand execution Environment
+- Blocking Methods Executes Synchronously
+- Non-Blocking Methods Executes Asynchronously
+- The Call Stack is LIFO (Last In - First Out)
+- Event Loop - Built-in Mechanism that handles the execution of Multiple chunks of Program
+- Event Loop is what allow Javascript to perform non-blocking I/O Operations
+- Event Loop Keeps checking the call stack on a Regular Interval (using libuv), and if the call stack if EMPTY, it would PUSH items from CALLBACK Queue to Call Stack
+- Each Entry into the stack is called STACK FRAME
+- Call Stack Size is limited to 1MB (Could vary) - So around 14k-15k Stack Frames limit (Varies on Browser to Browser)
+- Only Primitive Types are Stored on the STACK
+- Other Types (Objects and Arrays) are allocated Dynamically from the shared pool of Memory called HEAP
+
+
+Es6 Job Queue/Task Queue/Micro Task Queue
+- This Queue is used by Promise
+- Job Queue Reserved for Promises only. All thenable and callbacks methods of Promises get added here
+- Job Queue is a way of executing the result of an Async Function
+- Once your Call Stack is Empty, all the Tasks/Frames from Job Queue are moved to Call Stack and then Callback Queues Tasks are executed
+- Priority Order: Main Queue --> Job Queue --> Callback Queue
+
+
+Async/Await
+- Makes it possible to handle all both Async/Awaits error with the same code construct using TRY/CATCH
+
+
+V8 Engine
+- Open Source Developed by Google, written in C++
+- Initially built to Improve Performance
+- V8 Translates Javascript Code into more efficient machine code
+- To do that, instead of using an Interpreter, it COMPILES Javascript code into machine code at execution 
+  time by using JIT (Just in Time Compiler)
+- Two Compilers 
+  - Full-Code Generator (IGNITION) - A Fast Compiler that generates unoptimized code as quickly as Possible 
+  - CrankShaft - A slow Compiler (JIT-Just in Time) that generatees optimized code for the hot areas 
+    with the help of Profiles () (Crankshaft later replaced by TURBOFAN)
+  - Crankshaft invloves - Inlinings, Hidden Class, Inline Caching
+- To write optimize code, few Tips:
+  - Initialize Object at the start
+  - Avoid adding Dynamic Properties - Adding Dynamic Properties trigger HIDDEN CLASS CHANGE
+  - Avoid Pre-Allocating Large Arrays
+
+
+Promises
+- Uses `two-fronged` facade function
+  - Initiate background web browser work
+  - Return a place holder Object(Promise) immidiately in JS
+- The callback function passed to it will be called on `onFullfilledPromise()`
+- Promises are Special Objects build into Javascript that get returned immediately 
+  when we make a call to a web browser
+- Promises are a placeholder for a data we expect to get back
+- Asynchronous Javascript is the backbone of the modern web, letting us build fast `non-blocking` Applications
+
+
+Classes = Function + Object.create Combo
+
+

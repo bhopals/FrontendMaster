@@ -1,0 +1,222 @@
+
+
+
+*******************************************************************
+  Deep Dive JS Foundation - Kyle Sampson - 11 HOURS  (06/Jul/2021)
+*******************************************************************
+
+Javascript
+- Javascript is Compiled Language
+- typeof null // "object"
+- Javascript is 100% Lexically scoped
+- In Javascript, VARIABLES do not have type, VALUES do
+- Javascript Specs - Single source of truth
+
+There are only two hard problems in Computer Science
+- Cache Invalidation
+- Naming Things 
+
+Coercion
+- Javascript Dynamic Typing is not a weakness, it is one of the strong qualities which make JS a multiparadigm language
+- Implicit Coersion === Abstraction (Same as Operator Overloading)
+- Coercion - Type Conversion
+- Boxing is a form of Impilicit Coercion
+- It is Terrible Idea for Boolean to implicit Coerce them to Number ( 3>2>1 // FALSE ==> (3>2)>1 ==> true > 1 ==> 1 > 1 //FALSE )
+- If I we were to time travel back and tell Brendon one thing, that would be not to make "Empty String ZERO"
+
+
+Equality
+- Prefer == in all the cases ( if you are type aware)
+- Problem Only happens when you try to Coerce non-primitive (Objects and Array)
+- == v/s === is not loose type check and strict type checking (That is what most People think it is)
+- The only difference between == and === is that we are going to allow any coercion to occur or not
+- If the Types are SAME, internally == do call === ( Javascript Specs )
+
+Compilation & Scope
+- Formal Declaration Lookup
+- Identifiers are determined at Compile Time
+- Lexing, Tokenization, AST(Abstract Syntax Tree), And Code Generation
+- Parser Parse the Code ( Lexing, Tokenization, AST and Code Generation)
+- And it Hand-over that code to Javascript Engine for interpreting the code or (JIT Compilation)
+
+Execution Code
+- Identifiers are Used at Runtime
+- JS Virtual Machine: For Code Execution
+- Scope Manager: Keep Track of all the identifiers and scopes
+
+Two-Phase Execution Process
+- Compilation - Compiler and Scope Manager
+- Execution - Java Script Virtual Machine and Scope Manager
+
+Compilation
+- Discover Source/Target Position at Compile Time
+- Use at Runtime
+- Target Reference (LHS) - Create the VAR if does not exist
+- Source Reference (RHS) - Reading the Value
+
+Static Scope 
+- Scopes Figure out Ahead of Time
+- A VAR defined outside a function (Parent), is accessible inside other function (Child)
+- Lexical Scope. At Compile OR Author time
+- Javascript is 100% Lexically scoped
+
+Dynamic Scope
+- Dynamic Scope. At Run time. For Example: Eval
+
+Function
+- Function Declaration Pollute the enclosing scope, however, Function Expression create a child scope
+- Fuctional Scoping is a Principal of Least Exposure/Privilige
+
+LET and CONST 
+- More or less a Semantic Signal / Information about the expected usage (Block Scope)
+
+Hoisting
+- JS only Hoist Declarative Code, not the Executable Code 
+- VAR hoist to the Function, however LET and CONST hoist to BLOCK
+
+Block Scoping
+- TDZ - Temporal Dead Zone ( Meant for CONST but later on added for LET as well)
+- TDZ - For Uninitialized State ( not Undefined - thats Reference ERROR)
+- Let and Const Absolutely gets Hoisted But Uninitilized state, hence get TDZ error when being accessed before initilized
+
+Closure 
+- Inspired from "Scheme" and "Lambda Calculus" - Functional Programming 
+- Preserving Access to Variables
+- Most Prevalent and Revolutionary concept
+- The Preservation and Linkage Back to Original Scope
+
+
+Module Pattern 
+- Encapsulation of Data and Behaviour 
+- Principal of Least Exposure (Public and Private visibility)
+
+
+ES6 Module 
+- Organize a set of behaviour into a Cohesive UNIT.
+- ".mjs" extension
+
+
+Objects
+- JS is not truly Object Oriented, its OLOO (Object Linked to Other Objects)
+- Inheritance v/s Behavioural Delegation
+- A Function "this" reference the execution Context for that call
+- A "this" aware function
+- In Javascript "this" - Dynamic Context with - Reusability and Flexibility
+
+
+THIS Binding (4 Types)
+- (1)Implicit Binding
+    - Object "."(DOT) method 
+	- Namespace pattern - Call Site determine the Context.
+    - Share Behaviour among different Context - Dynamic Binding - Runtime Binding
+- (2) Explicit Binding 
+    - use ".call" or ".apply" - Hard Binding
+    - .bind returns a function with a hard binding context - .bind effectively uses .apply under the hood
+- (3) The NEW Keyword
+    - "new" Keyword has nothing to do with a Class Constructor
+    - Just an Unfortunate Syntactic Trick
+    - The Purpose of the NEW Keyword is actually to invoke a function with "this" keyword pointing at a whole new EMPTY object ({})
+    - When You use "new" Keyword to call a function, it does 4 Things for you
+      - Create a Brand new EMPTY Object
+      - Link that Objects to another Object (Object.Prototype)
+      - Call Function with "this" set to the new object (Created in STEP 1) ( Also, initialize properties)
+      - If Funnction does not return an Object, it will return "this" reference
+- (4) Default Binding
+    - "non-strict mode" - Global Context
+    - "strict mode" - Reference Error
+- The Function CALL SITE determines what "this" points to
+- Binding RULE Precedence - NEW > EXPLICIT/HARD BINDING > IMPLICIT BINDING > DEFAULT BINDING
+- Promote "this" Aware Coding Practice
+
+Arrow Function and Lexical "this"
+- A myth: Arrow Function is essentially a Hardbounded Function to the Parent "this" - INCORRECT
+- An Arrow function does not define a "this" Keyword at all
+- There is no such thing as a this keyword in an Arrow Function
+- Which Means if you PUT "this" inside an arrow function, it is going to behave exactly like any variable
+- It is going to LEXICALLY RESOLVE "this" to some enclosing scope
+- Means it RESOLVES LEXICALLY
+- An Arrow function is "this" bound to its parent function - INCORRECT
+- The Actual Def. is - An Arrow Function does not define local bindings for arguements, super, this, or any reference.
+- Also, if that is the case then you SHOULD be able to call arrow function using "NEW" keyword 
+- If you call, It will give an exception - "You are not allowed to call arrow function", because ARROW function does not have Prototype/Constructor
+- A MYTH (Arrow function have lexical scope) Busted
+- Instead, It will always resolve to a BINDING in LEXICALLY ENCLOSED ENVIRONMENT
+- Objects are not scoped, Functions are only
+- DISADVANTAGE 
+   - Arrow functions are annonymous - Hard to debug/trace
+   - No self reference - so cannot be used in RECURSION
+   - Invoking Constructors or Object Methods, so cannot be used
+- ADVANTAGE 
+   - When you want "Lexical This" behaviour
+- TAKEAWAY
+   - Use Function Expression for Object Methods
+   - Use Arrow Functions for Callback methods OR when you want "this" to be lexically resolve OR when you want To avoid "self = this" scenario
+
+
+ES6 Class
+- Class A extends B - Compose Through Inheritance
+- The CLASS Keyword is a syntatical sugar layered on top of the Prototype System
+- Use Arrow functions for class methods to automatically resolve "this" lexically
+
+
+Prototypes
+- Objects are build by "CONSTRUCTOR Call" (via NEW)
+- A Constructor Call makes an Object LINKED TO its own prototypes
+- Class is an abstract pattern of a thing (Like a BluePrint)
+- Instances are physical concrete objects
+- JAVA (Based on Prototype) and JAVASCRIPT (Linked to Prototype)
+- A Constructor Call in JAVA making a copy of the Protoype, however, Javascript does not use this Copying at all
+- In Javascript, When a constructor call makes an object it does not make it BASED ON the constructor prototype instead it makes it LINKED to its own prototype
+
+
+Protoype Chain
+- Every Object Function in Javascript has a Prototype property and that Prototype has a linkage back to the Object(main) named constructor.
+- All the objects consctructed from a Object Function are able to share methods because of "this binding behaviour" and "the prototype linkage"
+
+
+Dunder Prototypes
+- Every object has a property called Dunder Proto (__proto__), which points to the things the Object Linked to (Constructor)
+- It is actually a GETTER Function not a property
+- The lookup of Linking object using __proto__ called Prototype Chain Traversing
+- It is sort of ANTI-PATTERN to Rewrite/Rewire __proto__
+- ES6 Utility Object.create whenever used does the first 2 things that NEW Keyword does - Create a Brand new Object and Link that to the Passed Object
+
+Classical Inheritance
+- When you make a class and instantiate it, 
+  conceptually it is kind of copying down your class behaviour into instances
+- The Arrow of relationships are going from LEFT -> RIGHT and TOP -> BOTTOM
+
+
+Prototypal Inheritance
+- However, in case of Protoypal Inheritance you are basically LINKING Prototypes of the Objects (4 STEP Process - new Function())
+- The Arrow of relationships are going from RIGHT -> LEFT and BOTTOM -> TOP
+- THIS IS A LINKAGE NOT A COPY
+- I have a deep troubling issue with the idea calling this "Prototype Inheritance", because Inheritance INFER copy relationship However it is not.
+- This Prototype System is Incredibly Amazingly Unicorn Design
+- This is popularly called "Behaviour Delegation"
+- Javascript Prototype System is a Delegation System not a Class System
+- Actually, Prototype System is a SUPERSET of Class System
+- You can Implement a Class System inside a Protoypal Language, not cannot the otherway around.
+- This Javascript System has so much untapped potential
+
+
+OLOO Pattern
+- OLOO (Object Linked to Other Object)
+- Object.create METHOD is so powerful as it can Make and Link our Objects
+- Internally it creates a Function(), Link it to the Object passed (F.prototype), and return new F())
+
+
+Composition Over Inheritance
+- When Inheritance CHAIN is 15 Level (GrandParent>Parent->Child->GrandChild->), 
+  using classing Inheritance Becomes ANTI-PATTERN
+- For that, we should use Compisition over Inheritance (Delegation Pattern)
+- This is linke Composing Two Objects during the Function call, and share "this" Context - More Testable Code
+
+
+Bonus Tip:
+- The Only way to have confidence over the Runtime Behaviour is to limit/eliminate Dynamic Typing.
+- Typescript Benefit you at Compile Time
+
+
+
+

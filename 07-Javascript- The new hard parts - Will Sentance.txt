@@ -1,0 +1,187 @@
+
+
+
+**************************************************************************
+  Javascript: The New Hard Part - Will Sentence - 5 HOURS (12/Jul/2021)
+**************************************************************************
+
+Javascript Code Execution
+- Execution Context
+  - Global Execution Context
+  - Local/Function Execution Context
+- Thread of Execution - Parsing and executing the code line after line
+- Local Memory of Variables with data (Global/Local Var. Environment)
+- Call Stack (Push and Pop Stack - LIFO) keep track of all the function call and their context
+- Call Stack tracks which Execution Context we are in.
+- There is only one Global Execution Conext
+- For every Function call, there will be one Function Execution Context created and pushed to the CallStack 
+
+Asynchronocity (Asynchronous Javascript)
+- Javascript is Single Threaded(One command execution at a time)
+- Javascript has a Synchronous Execution Model (Each line is executed in order the code appears)
+- Asynchronocity is the Backbone of the Modern Web Development in Javascript
+- Below are the SIX parts that are IMPORTANT for Asynchornous Model of Javascript
+ - Thread of Execution 
+ - Call Stack
+ - Browser Features
+ - Call Back Queue
+ - Even Loop 
+ - Memory
+ + 3 MORE (Will see in later Chapter) - Mircotask/Job Queue, Promises, WEB API
+- setTimeout is a facade for functionality happening outside of JavaScript
+
+
+Promises
+- Promises - Features of WEB API and JS Engine Interface with
+- Promises are special objects built into Javascript that get returned immediately 
+- When we make a call to the Browser API/Feature that setUp to Return Promises (Promises ==> Fetch ==> XHR)
+- Promises act as a PlaceHolder for the Data we hope to get back from the Browser Features Background work
+- We also attach the functionality we want to defer running until that background is done(using the built-in then() method)
+- Promise Objects will automatically trigger that functionality to run
+- Microtask Queue (or Job Queue) is where tasks initiated by Promise Objects get Processed befor Callback Queue 
+- Promises, WEB API, the Callback, Microtask Queue, and Event Loop allow us to defer our actions until the Work is completed
+
+
+Iterators
+- Iterators is a way to automate the Accessing each Element and be able to focus on what to do for each element
+- It is more of a Declarative Approach
+- It starts with Returning a function from another function
+- When a Inner function is returned, it does attache the outerscope variables along with it (Closure)
+- [[scope]] is the flag/lable which is linked to that INNER Scope (Closed Over Scope)
+- A backpack of Persistent Live Data
+- Also called C.O.V.E (Closed Over Environment Variable)
+- Also called P.L.S.R.D (Persistent Lexical Scope Reference Data)
+- Lexically Scoped Languages - Javascript
+- Dynamically Scoped Languages - Bash, Lisp
+
+Closure
+- A Function persisting it's lexical scope reference
+
+Iterator
+- Any Function when called give me out the collection of data, give me the NEXT element - called Iterator Function
+- So Iterators turn data into Streams of Actual Values we can Access after another. Example - for..of Function
+
+Generators
+- Javascript let you produce data as FLOWS (Streamed) using Generators
+- Javascript built-in Iterators are actually object with a NEXT Method that when called, 
+  returns next element from Stream/Flow
+- Built-in Iterator actually Produces the Next Element is the Format - { value: 'VALUE', done: true/false}
+- We can add lots of Dynamism in the returned response by adding the input to the next(<value>)
+
+Async/Await 
+- It simplifies all this and finally fixes the INVERSION of Control Problem + non-sequential Reasoning of callbacks
+- Async/Await is actually the Implementation of Generator Functions + Promises(example - yield fetch(<url>))
+
+
+
+
+*******************************************************************************************
+  Hard Core Functional Programming in Javascript - Brian Lonsdory - 4 HOURS (12/Jul/2021)
+*******************************************************************************************
+
+
+Intro
+- Point Free Programming with Currying and Composition
+
+Pure Function Checklist/Conditions
+- Total - For every input there is a corresponding Output
+- Deterministic - Always Receive the same output for a given input reliability
+- No Observable Side Effects - Should only compute a value and should not introduce any Observable side effects 
+
+
+Pure Function Advantages
+- Reliable, Portable, Reusable, Testable, Composable, Properties/Contract
+
+
+Currying
+- Associate 
+- Identity
+- Commutative
+- Distributative
+- const curry = f => x => y => f(x,y)
+- const curryFn = curry(fn, x, y) - Same as ABOVE
+
+Curry Rules
+- Order of arguments matters
+- Generally first ARGUMENT is the function, and later arguments (Generalized to Specific)
+
+Currying v/s Partial Application
+- Currying
+ - Transaforming a Function with many params to a Function with Single Param
+ - A function Returning from another function that might return another function,
+ - But every returned function must take only one parameter at a time
+- Partial App
+ - A function returning another function that might return another function,
+ - But every returned function can take several arguments
+- Currying takes only one parameter, unlike partial app which can take more than one params
+
+WHY do we need Currying and Partial Application?
+- Take Advantage of LAZY Evaluation(by use of Closure)
+- Reuse of more Abstract Function - Abstract Away the Implementation
+- Javascript .bind() is an implementation of Partial Application
+
+
+Composition
+- Compose takes n Functions f, g, and n and is defined of as f(g(...n(x)))
+- Function Evaluates from RIGHT to LEFT
+- Function Composition returns a new Functions
+- It is a process of Combining 2+ functions to Produce a new function
+- Composition behaves the same way as DOT Chaining does
+- Execute the INNER one and Pass the OUTPUT of ONE to another (LEFT<===RIGHT)
+
+
+Functors
+- Functors are the Containers that can be used with .map() functions / can be MAPPED OVER
+- Functors are the functions that are MAPPABLE
+- Demonstarte how DOT map function evaluates
+- Functors are being used to create a Linear Control Flow
+- Also, helps in Abstraction functional applications
+
+Either Monads
+- Either is a function and a MONAD.
+- It has both a MAP, a CHAIN, and a FOLD method
+- A functional approach to Error Handling in JavaScript
+- A Foldable functor Monad
+- Either Type Respects Functional Purity, and is effectively an IF ELSE Statement, but INVERTED
+- If something is UNDEFINED/NULL ==> use this else use this
+- example: fromNullable - A type of Either Monad
+
+Task Monad
+- Task Monad is the functional equivalent of promise.
+- Takes Resolve and Reject Function, but in Reversed Order
+- Task((rej, res) => res(2)).map(...).map(...)
+- Promises are INSPIRED by Functiona Programming's Task Monad
+
+
+
+**************************************************************************************
+  State Machines in Javascript with XState - David Khourshid - 4 HOURS (12/Jul/2021)
+**************************************************************************************
+
+Bottom-up Coding
+- A traditional way of coding back in the days
+- Hard to Test
+- Introduction of BUGS is more Common
+- DISADVANTAGES 
+  - Difficult to TEST
+  - Difficult to UNDERSTAND
+  - Difficult to ENHANCE
+  - Introduces more BUGS
+  - Difficult to add FEATURES
+
+
+Why Use State Machine
+- Visualization Modelling
+- Precise Diagram
+- Automatic Code Generation
+- Completion of Test-Coverage
+- More Modular and easy to Enhance and add Feature
+
+
+Finite State Machine
+- A Directed GRAPH
+- Every Single State Machine starts with a Default State
+- import { createMachine } from 'xstate'
+- Interpreting state Machine - Transition from One State to Another
+
+

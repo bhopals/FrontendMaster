@@ -1,0 +1,100 @@
+
+
+
+***********************************************************************
+  State Management in React - Steve Kinney - 4.5 HOURS (09/Jul/2021)
+**********************************************************************
+
+State
+- The MAIN JOB of React is to take your Application State and Turn it into DOM NODES
+
+Two Types of STATE
+- Model State: Data in your Application
+- Empheral State - Input Field value
+
+Class-BASED State
+- When we DON'T BIND the "this" to method in Class Constructor, we get an Error - "this" is UNDEFINED
+- WHY? 
+  - Because ALL these EVENTS are fired on a click event listeners, those go on to the EVENT LOOP or onto EVENT QUEUE
+  - Which the EVENT LOOP Checks and when "this.increment" gets Picked up from the event Loop for the EXECUTION
+  - By that time, it has already lost the track of what "this" is.
+- TO FIX 
+  - In the constructor() bind the method OR
+  - Use Arrow Function for all the mentods
+
+setState and Asynchronicity
+- this.setState is Asynchronous
+- this.setState(FUNCTION || OBJECT, CALLBACK)
+- OBJECT - this.setState({count: this.state.count+1}, callback)  / Only Latest wins in case of MULTIPLE setState
+- FUNCTION - this.setState((state, props) => { return {count: count+1}}, callback) - Recommended 
+  // All setState's are Evaluated in case of MULTIPLE
+
+setState - Patterns & Anti-patterns
+- When we are working with PROPS, we have PropTypes
+- That is not the case with STATE, so there is no Safe Guarding(Type Safety) on STATE (Unless you use Typescript)
+- Prop/State Change will Trigger RENDER Method
+- DO Use Sensible Default for State - Empty Array so array.map will not fail
+- DON'T Calculate data from PROPS in State. Calculate what you can in RENDER METHOD
+- DON'T Keep anything in the STATE if you don't use it for rendering ( API KEYS), instead use custom private fields
+- DON'T Use this.state for Derivation of Props, especially in Constructor, 
+  instead derive computed properties directly using PROPS
+- DON'T Use State for the things that you are not going to RENDER
+
+
+Hooks Based State
+- Hooks give us a way to Manipulate STATE in Functional Component
+- It give us Access to React Life Cycle Methods in Function Component
+
+
+Reducers
+- React State needs Immutable Objects every time
+- Reducers are just a Javascript Function
+- const [grudge, dispatch] = useReducer(reducer, initialValue)
+
+
+React.memo / useMemo
+- React.memo() takes some function component and returns you one that says, if it receives the same PROPS just don't render it.
+
+
+useMemo v/s useCallback
+- Both are same with a slight difference
+- useMemo will call the Function as dependencies have not changes - It will not call that again
+- useCallback will give you a new Function that you can call so it gives a Function rather than result
+- useMomo memorize the RESULT, however useCallback memorize the FUNCTION
+
+
+Context
+- Props Drilling occurs when you have deep component TREES
+- That somewhat becomes Problematic just for maintainibility
+- We could use Redux and Context API in the same Application
+- "For Empheral State", I need to share accross multiple components, we could use Context API
+- "For Persistent State", We could use Redux Store
+
+
+Context Provider
+- Context Provides a way to Pass data through the component tree without having to Pass PROPS down manually at every level
+- React.createContext() - Provider Component / Consumer Component
+- const { Consumer, Provider } = React.createContext()
+
+
+Data Fetching
+- useEffect
+- componentDidMount
+- With RXJS, you can cancel a request, and debounce request
+
+
+Thunks
+- Redux Middleware
+- In Normal reducers, we dispatch actions
+- A Function returned from another Function
+- From ACTION Creators instead of dispatching an ACTION, 
+  we returns a Function and it will dispatch an Action once ASYNC result received
+- The major idea behind a thunk is that it is a code to be executed later.
+- When a Function Hear back from API, it will dispatch an ACTION
+- There is a library called 'useMiddleware' which is an abstraction over 
+  'useReducer' that supports all existing Redux Middleware
+- We can implement UNDO and REDO Functionality
+
+
+The whole IDEA of HOOKS is to create an ABSTRACTION
+

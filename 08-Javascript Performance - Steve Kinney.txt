@@ -1,0 +1,394 @@
+
+
+****************************************************************
+  Javascript Performance - Steve Kinney - 5 HOURS (13/Jul/2021)
+****************************************************************
+
+If your UI(User Interface) takes 10 seconds or more to respond to any interaction, then we should TALK
+
+AGENDA
+#1. Javascript Performance (CODE)
+#2. Rendering Performance (RE-rendering of Object)
+#3. Load Performance (Page Load)
+
+
+##1 Javascript Performance (CODE)
+- Sometime parsing and compiling (scripting) is the real CULPRIT
+- Javascript is a COMPILED Language
+- HOWEVER, it is JIT(Just In Time) Compiled right before the execution on the Clients Browser
+- JS Code ==> Parsing ==> AST Generation ==> Code Generation
+
+Parsing
+- V8 parses Code in Two Steps
+ - 1. Eager (Full Parse) - Full parse the code
+ - 2. Lazy (Pre-parse) - Parse Part of the Code and Parse remaining at later Stage
+
+Basic Rule For Parsing
+- Scan through the top-level Scope. Parse all the code that doing something
+- Skip things like FUNCTION DECLARATION and CLASSES for Now. We will parse them when we need them
+- You can force compiler to Parse Something Eagerly by warpping your function around PARANTHESIS(())
+- Alternatively, you could use "optimize.js"
+- It will goes to your code, scan it and wrap the functions with Parantesis (if needs to) automatically
+- Try to AVOID NESTED Functions - These are REAL PAINS for PARSERS as they will repeated be parse so better AVOID it
+
+Compiler
+- Baseline Compiler
+- Optimizing Compiler
+
+AST(Abstract Syntax Tree) and Initial Execution
+- An AST is a Tree Representation of the Abstract Syntactic Structure of source code written in Programming Language
+- With AST, We have everything we need to make byte-code
+- The Baseline Compiler takes the AST and start to execute our code as we write it
+
+
+Interpreter
+- Interpreter operate using a read-eval-print loop (REPL)
+
+
+How to Optimize your Javascript - Tips:
+- Declare Object properties in constructor
+- Keep Object property ordering constant
+- Fix function argument types
+- Declare classes in script scode
+- use for...in(4-6X faster than functional iteration)
+- use Type Checking (Static type Checking - Type Script)
+
+
+V8
+- Ignition(Baseline Compiler)
+ - It translates the AST into bytecode. The bytecode sequences are the executed
+ - and feedback is collected using feedback is used by both (a) Ignition Itself for ensuing Interpreting and
+ - (b) by Turbofan for Speculative Optimization
+- Turbofan(JIT Compiler)
+ - Turbofan accepts Ignition's Intermediate Bytecode
+ - It Speculative Optimizes bytecode by translating it into architecture-specific machine code, based on feedback
+ - Perform Function Inlining
+ - Hidden Classe for Dynamic Lookup
+ - Turbofan is able to optimize your code in a Substantial Ways if you pass it CONSISTENT VALUES
+- V8 Does uses several Threads Internally
+ - The MAIN Thread does what you expect - Fetch your code, compile it and then execute it
+ - A PROFILER thread that will tell the Runtime on which methods we spend a lot of that co that Crankshaft / Turbofan can optimize that
+ - Crankshaft was JIT before Turbofan
+- V8 increases performance by compiling JavaScript to native machine code before executing it, 
+- versus executing bytecode or interpreting it
+
+
+Javascript Execution in V8 is divided into three stages:
+- Source to Syntax Tree - The Parse Generates an Abstract Syntax Tree(AST)
+- Syntax Tree to Bytecode - V8's Interpreter "Ignition" Generates Bytecode from the Syntax Tree
+- Bytecode to Machine code - V8's Compiler "TurboFan" Generates a Graph from bytecode, 
+- replacing sections of bytecode with highly optimized Machine Code
+
+
+JIT(Just In Time) Compiler
+- JIT Sends HOT Code segments to an Optimizing Compiler
+- JIT Sends Warm Code segments off to a Baseline Compiler
+
+The Optimizing Compiler - Turbofan
+- Speculative Optimization
+- Hidden Classes for Dynamic Lookup
+- Function Inlining
+
+
+Speculative Optimization
+- Whenever User calls a function, compiler has to check the params and has to go through all the RULE 
+- example -  "a + b" - compiler need to check the types before executing it as the result would differ (string - concat, number - add)
+- So if this add expression is called 100 times, compiler will try to optimize the code by identifying the type
+- based on Historic Evaluation and Code scan
+- Once the Type is identified, compiler can SKIP few TYPE checking rules that will make the code run faster
+- That's the place where Type script comes Handy
+- Type Script is BEST Friend of a Compiler, make them aware of possible Type of function params 
+- How Does this Works?
+ - We uses an Interpreter because the Optimizing Compiler is SLOW to get Started
+ - Also, it needs some more Information before it knows what work it can either Optimize or SKIP out on all together
+ - So, the Interpreter starts gathering feedback about what it sees as the Function is Used.
+
+ What if Optimizer optimize add() function for 2 NUMBERS and STRING PASSED IN?
+ - Then the Optimizing Compiler Sees it as a Problem and tell the Interpreter to user Their bytecode
+ - and Possibly de-optimize and Re-optimize back
+ - Using Static Type Checking using Typescript, Flow, you are certainly helping Turbo Fan
+ - And should be a potentail Performance Gain
+
+
+
+Type Systems in V8
+- 1. Monomorphism - (Higly Optimized) - All the PARAMS are of the same type all the time
+- 2. Polymorphism - (Mostly Optimized) - Have mix of PARAMS - Fewer are of same type, others different sometimes
+- 3. Megamorphism - (Certainly NOT Optimized) - All PARAMS are different all the times
+- Optimizing Compiler marks the fun to any of these types and then select the one for Optimizing Candidates
+- The more consistent Object/Params pattern is The more SPECULATIVE OPTIMIZATION can be done, Faster your code would be
+
+How Does the Browser Figure out what type something is?
+- In all browser you call this different the one that TRACK it
+- In CHROME, you call it HIDDEN Classes or MAPS internally
+- These keeps track of what TYPE it is
+
+
+
+Hidden Classes
+- Most Javascript Interpreter uses Dictionary Like Structures(Hash Function Based)
+- to store the location of Object property valyes in the Memory
+- Class Objects are treated same if they have the same HIDDEN Classes
+- Any change in the Property of the Object would change HIDDEN CLASSES Structure
+
+
+Scoping and Prototypes
+- How you scope your code does matter a lot to Compiler (Avoid Nesting or Constuctor Class inside a Function)
+
+
+Function Inlining / Inline Caching
+- V8 takes advantage of another technique for optimizing dynamically typed languages called inline caching
+- Inline caching relies on the observation that repeated calls to the same method tend to occur on the same type of object
+- The code we write is not always the code that executed
+- Hot Function can be re-written by the compiler to be more Performant and there is not anything we need to do
+- If the Function is getting called multiple times, Optimizer instead of calling the func again and again
+- It COPIED the function body and PUT IT INLINE at the CALLSITE
+
+
+KEY TAKEAWAY
+- Initiate your property at creation
+- Initialize them in the same ORDER
+- Try not to modify them after that
+- May be just use TYPE Script for TYPE CONSISTENCY
+- The Easiest way to reduce PARSE, COMPILE, and EXECUTION TIMES is to SHIP Less code
+- Use the USER TIMING API to find out which part of the code taking more time
+- Consider using a TYPE SAFETY so that you do not have to think Performance Gain
+- The Optimizer friendly code (with Type Safety) is certainly going to PERFORMANT
+
+
+
+##2 Rendering Performance (RE-rendering of the OBJECT)
+
+Browser Parsing HTML(HTML DOM) and CSS(CSSOM) and Generating RENDER TREE
+- HTML and CSS go through a similar process as JAVASCRIPT to be returned from a String of Text into a Real Web pages
+- Browser request the HTML Resources from the SERVER
+- Once Received, Browser parse the received HTML into DOM(Document Object Model)
+- DOM - A Big representation of Tree like STRUCTURE that is a Representation of the Web Pages that we have
+- Same with CSS, The Browser parse and convert that into CSSOM(CSS Object Model) - A SET of Rules for CSS
+- Browser takse the STATE OF THE WORLD (HTML DOM) and RULES OF THE WORLS (CSSOM) and put the together into Called RENDER TREE
+- Using "Style Element/Selector Matching", browsers apply the Styles on an ELEMENT
+- Once Browser done with sorting and selecting all the RULES(Styles), It's time to Render the Layout
+
+RENDER TREE
+- The Render Tree has one-to-one mapping with the VISIBLE Objects on the PAGE
+- There might be Multiple Rules that apply to SINGLE Element
+- And we need to figure out which RULE should get applied, this is called STYLE CALCULATION
+- In which BROWSER figures out all the STYLES apply to a Given ELEMENT
+ - Figuring out which RULE apply to which ELEMENT
+ - Figuring out how what the end result of an element with multiple RULE is
+
+
+Styling Element (Selector Matching)
+- The process of figuring out which styles apply to an element
+- The more complicated you make selector, the longest it takes ( use of "nth" of childs)
+- Always STICK to simple class names whenever possible
+- Consider using BEW (Block, Element, Modifier) - A methodology for Naming CSS Classes
+- Browsers read SELECTORS from LEFT <=== RIGHT (Right-to-Left)
+- Reduce the AMOUNT of CSS that you are shipping
+- Reduce the NUMBER of STYLE that effect a given ELEMENT
+
+
+Layout(aka REFLOW)
+- Look at the ELEMENT and Figure where they would go on a page
+- Figuring out the ELEMENTS Positions and locations
+
+
+Paint
+- We know what things should look like and where they should go then DRAW some Pixels on the SCREEN 
+
+   
+Javascript and the Render Pipeline
+- Javascript gives us the ability to do all the stuff that BROWSER DID (DOM+CSSOM => RENDER TREE => STYLING ELEMENT => LAYOUT ==> PAINT(RENDER))
+- Means we might have to do all the stuff using script
+  - Change the CLASS of an Object
+  - Change the INLINE Styling of an Object
+  - Add/Remove elements from the DOM
+- In Mostly around the DOM and CSSOM, the changed style going to be RECALCULATED
+- Means Render TREE needs to be Remade, Relayout of the page, and Repainting of the page (Remade => Reflow/Relayout => Repaint)
+- The Render PIPELINE = Javascript => Style => Layout => Paint => Composite
+
+Layouts and Reflows
+- Layout - First time Render
+- Reflows - Changes Happen => Update the Layout
+
+Reflows 
+- Relows are very Expensive in terms of PERFORMANCE
+- Reflows are the main cause of SLOW DOM Scripts, especially on Devices with low processing Power, such as PHONES
+- In many cases Reflows are EQUIVALENT to Laying out the Entire Page Again
+- REFLOW is a BLOCKING Operation. Everything else STOPS
+- REFLOW Consumes a DECENT amount of CPU
+- REFLOW is definitely be noticable by the USER if it happens
+- A Reflow of an Element causes a Reflow of its Parents and Children
+
+What Causes a REFLOW
+- Resizing the WINDOW
+- Changing the FONT
+- Contet Changes
+- Adding/Removing Classes
+- Adding/Removing a Stylesheet/Elements
+- Changing the Orientation
+- Calculating SIZE or POSITION
+- Change Size or Position
+- Generally SPEAKING, A Reflow is FOLLOWED by a REPAINT, Which is also EXPENSIVE
+
+How can you AVOID REFLOWS
+- Change classes at lowest level of the Dom Tree is Advised
+- Avoid Repeatedly Modifying Inline Stylesheet
+- Batch Dom Manipulation (Also, Avoid doing that in a LOOP or at multiple places in a same function body)
+- Debounce Window Resize Event
+
+
+
+Layout Thrashing (Forced Synchronous Layout)
+- Layout Thrashing occurs when Javascript Violently writes, then reads from the DOM Multiple Times causing Document Reflow
+- Example - getting/calculating window height to update the window size
+- Solution:
+ - Separate Reading from Writing
+ - ALL READS and THEN ALL WRITES
+- We could use requestAnimationFrame(() => {...}) for Batch animating Writing
+- If you page is rendering less that 16ms Per Frames / 16 Frames per seconds, Means you are layout Thrashing
+- Ideally it should be 16ms Per Frames / 16 Frames per seconds at least, for Smooth User Experience
+
+
+
+FastDom
+- However, in the above approaches READALL, WRITE ALL or use `requestAnimationFrame` we are not using any Abstraction
+- There are libraries - FASTDOM that we could use
+- FastDom.measure(() => {...}), FastDom.mutate(() => {...})
+
+- Usually as a Traditional Way when we read from the DOM very Frequently, the DOM gets Busy checking the Details for us.
+- In that way framework such as React Comes to the Rescue as we do not have to READ from the DOM instead we use STATE
+- DO NOT keep your data in the DOM, preferbly keep that in STATE
+
+KEY TAKEAWAY
+- DO NOT MIX Reading Layout Properties and Writing them, Instead use READALL, WRITEALL or FastDom Library
+- If you can want to change the Visual Appearance of an Element, do it by adding an CSS Class
+- Storing DATA in the MEMORY- as OPPOSED to the DOM, Means we do not have to Query Dom for DATA in that case
+- Using Frameworks is a Trade-off as it comes with little OVERHEAD
+- You May not know that you are LAYOUT THRASHING(less than 16 Frames per seconds), so Always Measure (Browser => PROFILER) 
+
+
+
+Painting
+- Anytime you are changing something other that OPACITY or a CSS Transform, you are triggering a REPAINT
+- When we Do a PAINT, Browser Tells every element on the page to Draw a Picture of Itself
+- The Browser has all the information from when we constructed the RENDER TREE and did the Layout
+- Triggering the Layout will always Trigger a PAINT
+- But if you are chaging colors of something - then you DO NOT NEED a Relow - JUST A REPAINT
+- JS => Style => Layout => Paint/Repaint => Composite (Dom Element Manipulation)
+- JS => Style => Paint/Repaint => Composite (Color change)
+- To Check/Test Unnecessary Painting use Chrom DEV TOOL = ":" => More Tools => Rendering => Paint Flashing (enable)
+
+
+The Compositor Thread
+- The Composite Thread is a THREAD in the Browser That Leverages the GPU to create the final version of the PAGE seen on the SCREEN
+
+Browser Has 3 Threads
+- 1. The UI Thread 
+   - Chrome ITSELF - The location bar, tabs, top menu
+- 2. The Renderer Thread - We USUALLY call this the MAIN Thread. 
+   - This is where all Javascript/HTM/CSS parsing, Style Calculation, Render Tree generation, Layout and Paintings Happens
+   - These are one of these PER BROWSER TAB
+- 3. The Composite Thread - 
+   - Draws BITMAP of the Screen using GPU ( Bitmaps Created as a Part of PAINTING/REPAINTING Process)
+   - The Sole job of this Thread is to Draw a BITMAP, Take the BITMAP, Send them to GPU, Put them on the Screen
+   - Painting Process makes a BUNCH of Bitmaps
+   - The Job of Composition to take those and toss them on to the SCREEN (Using GPU)
+   - The Compositition Thread
+    - 1. When we PAINT, we create BITMAPS for the ELEMENTS, Put them onto Layers and prepare Shaders for Animation if necessary
+    - 2, After Painting the Bitmaps are SHARED with a Thread on the GPU to do the actual Composition
+    - 3. The GPU process works with OpenGL to make magic happens on the SCREEN
+- The Renderer Thread (Main Thread) is CPU Intensive
+- The Compositor Thread is GPU Intensive
+
+
+
+Managing Layers/Creating Layers
+- If you want to be Fast, then OFFLOAD whatever you can to the less busy Thread (Compositor Thread)
+- Layers are an Optimization that the Browser does for you under the hood
+- Browser Engine has a "Composite Reasons" list that helps them decide layering(Create own Layer)
+- Although Layering is on Totally Control of the Browser
+- However, you can give the brower HINTS using teh "will-change" Property
+- Hey Browser, WILL you consider making it's own layer as this piece "will-change" more OFTEN
+- "will-change" attributes/properties on HTML ELEMENT/CSS kind of a Recommendation to the BROWSER for making it's own layer
+- You can also SET/ACCESS "will-change" property using Javascript - element.style.willChange
+- Thumb Rule: If it is something that the USER is Interacting with Constantly Add "will-change" in CSS, other wise add that with JAVASCRIPT
+- To Check Layers = Chrome Dev Tool => ":" => More Tools => Layers
+- Reason of Dividing elements in different layers is because in that case the only specific Layer requires Repaint for any change
+- Specially if change happens more that OFTEN than we cut that part out and put that in Separate Layer
+- Repainting a small layer is always more performant then Repainting whole Big Layer
+
+
+What Kind of STUFF gets it own layer(As per Browser Rules)?
+- The Root Object of the PAGE
+- Objects that have specific CSS Positions
+- Objects with CSS transforms
+- Objects that have Overflow
+
+
+
+##3 Load Performance (Page Load)
+- Latency and Bandwidth (TWO Important Aspects of Page Load)
+- Latency - It is HOW long it takes to get to the Other end of the TUBE
+- Bandwidth - It is HOW much stuff you can put through the TUBE Per second
+- TCP - Reliable Connection, Package Ordering, Client ACKNOWLEDGE
+- FUN FACT about TCP
+  - Initial Window SIZE of TCP is 14KB, So if you can get a files under 14KB, that means you can get Everything through in the First Window
+
+
+Caching
+- The Browser DO Caches Resources, so It will not ASK for the ASSETS that it Believes it Already has RECENT VERSION OF
+- Caching Headers can be SET in HTTP Response that let Browser know what it should or should not CACHE
+- Caching is GREAT unless you mess it up
+- CDN is being used for Caching - The Best Approach
+- CDN Caching is Always PREFERRED over Browser Caching(Cache Invalidation, Max-age etc)
+
+
+Cache - There are THREE Possibilites
+- MISS - Cache Miss - Fetch Assets from Server
+- STALE - STALED - get a New Copy and Replace Existing
+- VALID - Cache HIT - Use the Sam Copy
+
+
+Service Worker
+- A new web Technology that allow us to PROGRAMMATICALLY Control Caches and Network Requests without Relying on HTTP HEADERS
+
+Lazy Loading
+- Lazy-Loading and Pre-Loading with React and Webpack
+- With Webpack - DO NOT LOAD A BUNDLE more that 300KB Size
+- Webpack comes with 'webpack-bundle-analyzer'
+
+
+
+HTTP2
+- An UPGRADE to HTTP Transport Layer
+- Fully Multiplexed - Send Multiple Request Response in Parallel
+- Allows Server to Proactively Push Response into Client Cache
+
+
+Other Tips for Performance GAIN
+- Server side rendering
+- Image Performance
+- Loading Web Fonts
+- Progressive Web Applications
+
+Tools - Build Tools
+- purifyCSS - Scan your CSS and cut down all the CSS that are actually not being used
+- Bable - Allow us to write Future JAvascript and Transpile it to the JS that Works in Older Browsers
+- Prepack - A tool for making JS code run Faster
+
+
+KEY TAKEAWAY
+- DO NOT LOAD A BUNDLE more that 300KB Size
+- Always Import Specific Mehtods instead of ".*" Import
+- Always Analyze bundle size and determine the size
+- Only load the code EAGERLY which is essential for initial Load
+- Lazy Loading Component with "React-loadable" - Component Centric Code Splitting
+- A HIGH ORDER Component for Loading Component with using "dynamic" IMPORT
+- Enable DYNAMIC Import in BABEL
+- Sometimes to avoid CallTime, you can import a Component in "componentDidMount"
+
+
+
+THE END
+

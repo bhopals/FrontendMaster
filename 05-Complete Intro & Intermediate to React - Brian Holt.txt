@@ -1,0 +1,313 @@
+
+
+
+*****************************************************************
+  Complete Intro To React - Brian Holt - 6 HOURS (09/Jul/2021)
+*****************************************************************
+
+React 
+- React is a front-end Javascript Library Developed by Facebook in 2011
+- It Follows the component based approach which helps in building reusable UI Component
+- It is used for Developing Complex and Interactive Web and Mobile UI
+- Props - Should remain IMMUTABLE and Maintain UNIDIRECTIONAL Flow ( Parent ===> Child)
+- State - Mutable data - Source of data for Component
+
+Feature
+- It uses Virtual DOM instead of Actual Dom
+- It uses Sever-Side Rendering
+- It Follows UNI-DIRECTIONAL Data Flow or Data Binding
+
+
+*****************************************************************
+  Edureka Interview Questions - (09/Jul/2021)
+*****************************************************************
+
+JSX
+- Javascript XML
+- JSX Provides syntactic Sugar for React.CreateElement() functions
+
+
+Advantages
+- Use of Virtual DOM to improve efficiency
+- Gentle Learning Curve
+- SEO Friendly
+- Reusable Component
+- Huge Ecosystem of Libraries to choose from
+
+
+Limitations
+- React is Just a Library not a Full Blown Framework
+- The Library is very large and takes time to Understand
+- Coding gets Complex as it uses inline templating and JSX
+
+
+Virtual Dom 
+- Virtual Representation of the real DOM
+- It is kept in the MEMORY and is SYNCED with the REAL DOM by a library REACT DOM 
+- Virtual DOM Can use any 3rd party lib., and thats the Reason REACT DOM is splitted from React, to give that fleixbility
+- A Virtual Dom is a light weight Javascript Object which is Originally is just the copy of Actual Dom
+- It is a NODE Tree that lists the Elements, their attribute and content as Objects and their properties
+- React's RENDER Function creates a node TREE out of the React Components.
+- It then updates this TREE in response to the Mutations in the DATA model which is caused by various actions done by 
+- React uses two Virtual DOMS to store PrevState and Current State
+- To get the DIFF it compares both and know what are the objects that are changed
+
+
+
+Synthetic Events
+- Synthetic Events are the Objects which act as a cross-browser wrapper around the browsers native event
+- They Combine the behaviour of different browsers into one API
+- This is done to make sure that the events show CONSISTENT Properties across different Browsers
+
+
+Error Boundaries
+- To Create a Custom Error Class / Error Boundary, we need to have two METHODS in the Component
+  - static componentDidCatch(error, info){} -  logs the error information to an error tracking service.
+  - static getDrivedStateFromError(){ return { hasError: true } } - renders the fallback UI interface when the render method has an error.
+
+
+Creat Modal in React
+- import "createPortal" from 'react-dom'
+- return createPortal(<div>{children}</div>, elemRef.current)
+
+High Order Components(HOC)
+- An Advanced way of Reuisng the Component Logic
+- Derived from Reacts Compositional Nature
+- HOC are Custom components which Wraps Another component within it
+- HOC are Pure Components
+- They can accept any dynamically provided Child components, but they won't modify any behaviour
+
+Use of HOC
+- Code ReUSE, logic and bootstrap abstraction
+- Render High Jacking
+- State Abstraction and Manipulation
+- Props Manipulation
+
+Pure Component
+- Simplest and Fastest Components
+- They can replace any Component which only has a RENDER() method
+- These components enhance the simplicity of the code and performance of the application
+
+
+Keys in React
+- Keys are used for Identifying UNIQUE Virtual DOM Elements with their corresponding data driving the UI
+- Helps React to Optimize the rendering by recycling all the exisiting elements in the DOM
+- These Keys MUST be a unique number, or String, which React uses to ReORDERs the elements instead of rerendering it.
+- This LEADS to increase in applications performance
+
+
+Major Problems with Traditional MVC
+- DOM Manipulation was very expensive
+- Applications were slow and inefficient 
+- There was huge MEMORY Wastage
+
+
+Functional Component
+- Declaration - Can be declared using an ARROW Function or the FUNCTION Keyword
+- Handling Props - Props can be passed and referenced directly as usual params (without "this")
+- Handling State - useState HOOK
+
+
+Class Component
+- Declaration - Declared using ES6 Class Syntax
+- Handling Props - Props are used with this.props SYNTAX
+- Handling State - this.state - initialized in Constuctore and then being used 
+
+React Strict Mode
+- To enable Strict Mode, <React.StrictMode> tags need to be added inside the application
+- Strict Mode Benefits 
+  - Identifying components with unsafe lifecycle methods (componentWillMount)
+  - Warning about the usage of legacy string API
+  - Warning about the usage of legacy contect API
+  - Warning about the usage of findDOMNode
+
+React HOOK
+- Hooks are Functions that let us "Hook Into" React state and lifecycle features from a Functional Component
+- React Hooks cannot be used in Class Components
+- React Hooks were introduced in 16.8
+
+Styling React Component
+- Inline Styling
+- Using Javascript Objects
+- CSS Styles (External File)
+- CSS Modules
+
+
+Optimize React APP Performance
+- Using useMemo() - React Hook that is used for caching CPU-Expensive Functions
+- Using React.PureComponent - Extend the Component by React.PureComponent
+- Maintain State Colocation - Closer to the Component where it requires
+- Lazy Loading
+
+
+
+Flux
+- Flux is an Architectural Pattern which enforces the UNI-Directional Data Flow. It Controls derived data
+- It enables communication between Multiple Components using a central STORE which has Authority of all data.
+- Any UPDATE in data throughtout the application must occur here (Central Store) only
+- Single Source of Truth
+
+
+Redux 
+- Redux is one of the most trending libraries for front-end development in today market place - Opne Source JS Library
+- It is a "Predictable state container" of Javascript Applications and is Used for the entire state management
+- Application developed with Redux are easy to TEST and provides consistent Behavoiur
+- It Does support MIDDLEWARE to be passed, in case we require extra processing on the data (logging, stats, audit etc.)
+
+3 Principles that Redux Follows
+- Single Source of Truth
+- State is Read-Only 
+- Changes are made with PURE Functions
+
+
+Components of REDUX
+- Action - Object that describes what happened
+- Reducer - Place to DETERMINE how the state will CHANGE
+- Store - State/Object tree of the entire application is saved in the STORE
+- View - Display data provided by store
+
+
+Reducers
+- Pure Function which Specify how application's state changes in response to an ACTION
+- Reducers work by taking in the PREVIOUS STATE + ACTION, and then RETURNS a NEW STATE
+
+
+Flux v/s Redux
+- Multi Store | Single Store
+- State is Mutable | State is Immutable
+- Action => Dispatcher => Stores => Views | Action => Reducers => Stores => Views (No Dispatcher)
+
+Advantages of Redux
+- Predictablility of Outcome
+- Maintainability
+- Server-Side Rendering
+- Developer Tools
+- Ease of Testing
+- Organization
+
+
+
+
+*****************************************************************
+  Intermediate React V2 - Brian Holt - 6 HOURS (09/Jul/2021)
+*****************************************************************
+
+
+## React HOOKS (10 Hooks)
+
+The whole Idea behind HOOKS is to create an ABSTRACTION
+
+useState Hook 
+- It allows us to make our component STATEFUL
+- const [counter, setCounter] = useState(0)
+- In other words, It makes a Functional Component(Stateless) StateFull, OR makes a Functional Component to Use STATE
+
+
+useEffect Hook
+- useEffect is how you recreate 'componentDidMount', 'componentDidUpdate', and 'componentWillUnount' 
+  behaviour on Functional Component
+- Inside 'useEffect' you can do any sort of Side Effect type action, that you would have done through React Lifecycle Method
+- NOT Passing "[]" will ensure 'useEffect' to call on every change/rerender - componentDidUpdate
+- Passing "[PARAM]" as a second param will ensure the useEffect will be called everytime the PARAM value changes - componentDidUpdate
+- Passing "[]" as a second param will ensure the useEffect will only run once - componentDidMount
+- Returned funciton from the 'useEffect' will be called to perform any cleanup at Unmounting stage - componentWillUnmount
+- useEffect(() => { fetch().then((res) result = res). return api.clearAll()}, [result])
+
+
+usecontext Hook
+- Let you use React Context API in functional Component
+- const [user, setUser] = useContext(ctx)
+- To resolve PROP DRILLING or DATA TUNNELING Problem
+- Helps you to pass props to Multilevel Component using Context Provider and Consumer
+
+
+useRef Hook
+- Refs are useful for: 1. How to Emulate Instance var. from ROOT, 2. Referring DOM Nodes Directly
+- "useRef" returns a mutable REF object whose ".current" property is Initialized to the PASSED Arg value
+- The Returned Object will Persist for the Full Life Time of the Component (Irrespective of ANY React Life Cycle)
+- Persist Data between Renders
+
+useReducer Hook
+- Allows you to do Redux Style Reducers but Inside a HOOK. One Reducer Function to handle all the updates based on ACTION Types
+- const [state, dispatch] = useReducer(customReducer, defaultStore)
+- dispatch({type: 'INC'})
+- The use Reducer returns a Dispatch Function, which we can Use in our Application to Dispatch any Action and get the Updated STATE
+
+
+useMemo Hook
+- 'useMemo' and 'useCallback' are for Performance Optimization
+- 'useMemo' memoize expensive Function Calls so they only are re-evaluated when NEEDED
+- Think of useMemo as Remembering something
+- useMemo will Remember the Returned Value from the FUNCTION - The Computed VALUE
+- Only use them when you have performance Optimization Problems 
+- Avoid Over USAGE as it adds unnecessary Complexity
+- const fibonacci = useMemo(()=> fibonacci(...))
+- useMemo is same as React.PureComponent.
+- useMemo - FOR FUNCTION COMPONENT - memoize the expensive Function Calls 
+- React.PureComponent - FOR CLASS COMPONENT - Controls the Rerendering of the component - shouldComponentUpdate
+
+
+useCallback Hook
+- useCallback will remember your actual FUNCTION
+- It is quite similar and indeed it has implemented with the same mechanism as 'useMemo'
+
+
+useLayoutEffect Hook
+- const useLayoutEffect(() => setWidht(el.current.clientWidth))
+- Use this to Measure DOM nodes for things like Animations
+- Will be called at 'componentDidUpdate' or 'componentDidMount' time
+- Usually been used to capture the correct Measurements
+- It is same as 'useEffect' except that it is Synchronous to RENDER as opposed to scheduled like 'useEffect'
+
+
+useImperativeHandle Hook
+- Form Validation
+- use case - Invalid Form then focus on INPUT
+- Usually being used by the libraries
+- This allows you to customize methods on Objects that is made available to the Parenst via 'useRef'
+
+
+useDebugValue Hook
+- Same as useImperative Handle, but it is more for DEV support. To Faclitate Debugging
+- This allows the Developer whoever is consuming your HOOK/API to have whatever Debugging Info 
+  you choose to be surfaced to them
+
+
+
+
+Tailwind CSS
+- CSS Rendering Engine
+
+
+Server Side Rendering 
+- Pre-render on the Server and sending it over to the Browser
+
+React.Hydrate
+- Same as render(), but is used to hydrate a container whose HTML content were Rendered by ReactDOMServer
+- ReactDOM - RENDER - Client Side Redering ( BrowserRouter is used - 'react-router-dom')
+- ReactDOMServer - hydrate - Server Side Rendering ( StaticRouter is used - 'react-router-dom')
+
+
+Redux
+- A well known library that does STATE MANAGEMENT for you
+- Flux + React = REDUX
+- Data Store that lived on the side of the React
+- A Pattern to isolate the DATA PORTION of the application from the VIEW PORTION
+- One State TREE - Single Store - A Single Source of Truth
+- const store = createStore(reducer)
+- Redux Code is Extremely Testable unlike Context API
+
+Redux - Reducer
+- A Reducer is Just a function that takes STATE and ACTION, and returns a NEW STATE
+- Every ACTION must have a TYPE
+- Reducers are Synchronous Always
+- However, Redux has the ability to have Asynchronous Middleware such as THUNK, SAGA's, GENARATORS, PROMISES
+- Reducers have to be PURE with NO SIDE EFFECTS
+- combineReducers - Composing multiple Reducers into ONE Reducers
+- High Level Steps:
+ - 1. Create Reducers
+ - 2. Create Action Creators
+ - 3. Create Providers
+ - 4. Create Redux Store
+ - 5. Dispatch Actions 
+

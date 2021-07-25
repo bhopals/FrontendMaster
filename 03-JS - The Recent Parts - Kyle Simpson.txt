@@ -1,0 +1,105 @@
+
+
+
+*****************************************************************
+  JS - The Recent Parts - Kyle Simpson - 4 HOURS (08/Jul/2021)
+*****************************************************************
+
+
+Javascript 
+- Javascript is in more of a Trend to become `Declarative Javascript` (example  ... spread operator)
+
+Browser Supports and Transpiler
+- Babble, the most popular transpiler, takes your code that is written in whatever 
+  Javascript standard it is of that moment
+- And You can target it to create the equivalent of that code in the older forms
+
+Strings
+- Template Strings - (Interpolates Literals ``), can be used for multiline string as well
+- Tagged Template - (Tag Function) Allows you to pass Template Strings in a Function. The first arg. of Tag function is a String Function a string array
+- Apply Taggged Templates - function logger(strings, ...values){}; logger `Test ${param1} and ${param2}` - Example: JSX in React is a Tagged Template/Function
+- String Padding/Trimming - padStart, padEnd, trim, trimEnd, trimStart
+
+
+Array Destructring
+- Decomposing a Structure into its Individual Parts
+- Desctucturing is also an example of Declarative Javascript
+- While Destructuring, always set DEFAULT for GRACEFUL Fallback
+
+Object Destructuring
+- If you have 3 or more arguments to pass, always use Named Arguments
+
+Array Methods
+- Find: Returns the first matching element
+- Filter: Returns an array of all Matching Element
+- FindIndex: To get the Index of the element - Replaced indexOf() method
+- Includes: Instead of aboce, we could also use "includes" method for the lookup - returns boolean TRUE/FALSE
+- Flat and FlatMap - To Flattenning the Arrays. The default level is 1, but you could pass second param to what level it should go for
+
+
+Regular Expression
+- Positive Lookahead - (l.)(?=0)
+- Negative Lookahead - (l.)(?!0)
+- Match Preceded by - (?<=e)
+- Named Capture Group
+- Dot All mode - (.*?)
+
+
+Async/Await (ES6)
+- Promises - A way of representing a future values in a time-independent way, 
+  so you specify chain of Asynchronous STEPS - .then().then()
+- forEach, map, filter, reduce - These all are Synchronous Iterators, but we need an Async Iterator
+- So what if we need an Eager Asynchronous Iterator that can pause whenver it seems.
+- Something which would wait for one PROMISE to finish and then move to NEXT
+- Async/Await comes to our Rescue here. 
+- Async function inside a Synchronous Loop(forEach, for...in), it is not going to work.
+- The Loop themselves remain Synchronous and always complete before their inner Asynchronours Operations
+- HENCE, ES2018 Introduces Async Iterator = FOR...OF
+- Within Try/Catch of Async/Await Block, you can Catch Both SYN and ASYNC Errors
+
+Design Issues with Async/Await
+- 1. Await only Promises - Only Limited to Thenable/Promises. It won't work with Custom Promises
+- 2. Scheduling Starvation-Promises implemented a Micro Task Queue/Job Queue which has priority over Callback Queue 
+     They Starved out other codes So the other events that are in Callback Queue does not get enough time.
+- 3. External Cancellation - Async Functions are essentially black boxes that once they starts, 
+     it is impossible to externally cancel them.
+     So you cannot stop a Async function once it is STARTED-No Mechanism in place for Cancellation/timeout Cancellation
+
+
+Iterators and Generators (ES7)
+- Both holds lots of power and certainly is going to change how we write code
+- Generators are going to give us a declarative way of creating iterators
+- Iterator Pattern
+  - Iterators are built-in Iterators
+  - Whenever you have some Datasource, if you want to consume the value of a Datasource ONE at a time, one of the most common way of doing is called ITERATOR PATTERN
+  - It will be done by constructing an Object, and calling them using .next() over and over again.
+  - ".next()" will return { value: 'value', done: false} for all the values and for the last item { value: 'value', done: true} denotes the end of the iteration
+
+
+Declarative Iterators
+- That is distict from the "for-in" loop and the regular "for-of" loop.
+- The "for-of" loop takes iterable, meaning the things that can be iterated over
+- In Javascript, most of the built-in data structures that you are familiar with Strings, Arrays, Sets, Maps, Typed Arrays are ITERABLE
+- Spread Operator "..." and "for-of" both support the iterator Protocol
+- Objects are not Iterables, so CANNOT use "for-of" in Objects
+- But you can create a custom iterator - var obj={a:1, b:2, [Symbol.Iterator]: function(){return {next(){....}, done: false/true}}}  
+- However, that is more of an Imperative Approach to adopting the Iterator Protocol for another Object.
+- But would be nice if we can have some DECLARATIVE way of creating an Iterator producing functions, and that lead us to GENERATORS
+- Symbols are generally used to Add an Unique property to the Object
+
+
+Generators
+- When you invoke a generator, they DON'T RUN, they Produce an Iterator, and to call it you need to call .next() method of the iterator
+
+
+
+Async* Yield/Await
+- Under discussion of having a new Function to resolve the above concerns
+- Async Generator - A new Function type which is both an *Async Function and a Generator in one thing
+- You can use both Await and Yield in the same method - Await for PULLING, and Yield for PUSHING.
+
+
+
+
+
+

@@ -1,0 +1,215 @@
+
+
+**********************************************************
+ React Advance Concepts - React Resources - (18/Jul/2021)
+**********************************************************
+
+Github
+- https://reactresources.com/topics/advance-concepts
+
+- REACT HOOKS 16.8v
+
+#1 A DEEP Dive into REACT FIBER
+------------------------------------------------------------------------------------------------
+Ever Wondered what happens when you call REACTDOM.render(<App/>, dom.getElementById('root'))?
+We know that ReactDOM builds up the DOM Tree under the HOOD and 
+renders the application on the SCREEN, BUT how does REACT Do THAT?
+React 15.0 has some Pitfalls and a new MODEL(Fiber) in REACT 16.0 has solved these PROBLEMS
+
+Stack Reconsiler
+- React Module pass <App /> along to the Reconsiler
+- <App /> ==> An Element, a Plain object describing a Component instance or DOM Node. 
+- In REACT, there are two kinds of ELEMENT
+  1. DOM Element - <div>Test</div>
+  2. Component Element - <Button>Test</Button> OR <TestComponent>TEST</TestComponent>
+- When React ENCOUNTERS a Component Element(Class or Function), It will ask that Element 
+  that WHAT IT RENDERS based on PROPS and then the Child of that Component Class. It keeps doing it until it reaches 
+  the underlying ELEMENT in DOMElement
+- THE EXACT Process of Recursively Traversing a TREE to Know the Underlying DOM TAG Element of React App's Component
+  tree is Known as RECONCILIATION. By the END of the RECONCILIATION, REACT Knows the Result of the DOM Tree and a 
+  RENDERER like REACT-DOM or REACT-NATIVE applies the Minimal SET of changes necessary to Update the DOM NODES
+
+
+React RECONSILIATION PROCESS PITFALLS(REACT 15)
+- This idle Frames per Second be 30 FRAMES PER SECOND
+- Most Devices These DAYS Refresh Their Screen - 60 FMS = 16 Miliseconds/Per Frame
+- Which Means a new Frame is Displayed every 16MS
+- This NUMBER is very IMPORTANT because if React RE-RENDER takes more than 16MS to 
+  render something on the SCREEN, the BROWSER will DROP that Frame.
+- In REALITY, HOWEVER, the Browser has housekeeping work to do along with re-render so all of your 
+  work needs to be Completed Inside 10MS. When you FAIL to do that FRAME RATE DROPS, and Content
+  JUDDAR pm the SCreen. This is Often REFFERED as JANK and NEGATIVELY impact the User's Experience.
+  Although such delay is OKAY for normal and static content, but for Displaying animation that is CRITICAL.
+  So if the REACT Reconsillation Algorithm TRAVERSE the entire APP tree each time there is an UPDATE and
+  re-render it, and If the Traversal Takes more than 16MS, It will cause DROPPED FRAMES, and DROPPED FRAMES ARE BAAADDDDD!
+- This is a BIG Reason Why it would be NICE to have UPDATES CATEGORIZED by Priority and not Blindly apply every
+  update passed down to the RECONCILLER.
+  Also, ANOTHER Nice feature to have is the Ability to pause and resume work in the NEXT FRAME.
+  This way, REACT will have better Control over Working with the 16MS BUDGET it has for RENDERING
+  This led the REACT Team to REWRITE the Reconcillator(rekan,siliation) Algorithm and the NEW ALGORITHM is called "FIBER"
+
+HOW FIBER WORKS?
+- Fiber is about Reimplmenting STACK Reconcilliation - WITH INTELLIGENT CAPABILITIES(Pausing, Reusing, Aborting)
+- Fiber is REIMPLEMENTATION of the STACK Specialized for React Component
+- You can THINK of a SINGLE FIBER as a VIRTUAL STACK FRAME
+- BENEFITS
+  - Assign PRIORITY to Different Types of WORK
+  - PAUSE Work and Come Back to it LATER
+  - ABORT Work if it is no LONGER NEEDED
+  - REUSE Previously Completed WORK
+- A FIBER Node Represent a STACK FRAME
+- In Simple Terms, A FIBER Represents a Unit of Work with it's own VIRTUAL STACK
+- In the Previous Implementation of RECONCILIATION Algorithm, React Created a Tree of Objects (React ELEMENTS)
+  that are IMMUTABLE and Traversed the TREE Recurcively
+- HOWEVER, in the CURRENT IMPLEMENTATION (FIBER), React Creates a Tree of Fiber NODES that can be Mutated. The 
+  Fiber node Effectively Holds the Component State, Props and the Underlying DOM Elements it RENDERS
+   - Internally it uses - pendingProps and memoizedProps ==> render() ==> createFiberFromStateAndProps
+- FIBER Improves Perceived Performance and Responsiveness for Complex React Application
+- Virtual DOM makes Coding USER INTERFACE so Easier 
+  Instead of HAVING to Tell the Browser how to go from to the PREVIOUS VERSION OF YOUR APP to the NEXT VERSION,
+  You could just tell REACT what the NEXT Version Should look like and VIRTUAL DOM will handle everything in Between
+
+- RECONCILLER (DIFFING) ===> RE-RENDERER (RENDERS)
+  Fiber Introduces PHASES
+   - PHASE1 ==> React Render/Reconciliation (INTERRUPTABLE)
+     - componentWillMount
+     - componentWillReceiveProps
+     - componentWillUpdate
+     - shouldComponentUpdate
+   - PHASE2 ==> React Commit (NON-INTERRUPTABLE)
+     - comonentDidMount
+     - componentDidUpdate
+     - componentWillUnmount
+- It Introduces DOUBLE BUFFERING (Reuse old key...props)
+- WorkLoop
+  - Next unit of Work
+  - Each Workloop consists of PHASE1 + PHASE2
+- HOST ROOT
+  - ALL Workloops creates a HOST ROOT (The Whole Tree consists of Multiple WorkLoops)
+- Priorities (Segregate all the works in any of the below categories to decide Priorities)
+  - Synchronous
+  - Task
+  - Animation
+  - High
+  - low 
+  - OffScreen
+
+
+#2 Understanding Reacts UI Rendering Process
+------------------------------------------------------------------------------------------------
+- HTML & The DOM - Components & Elements - Reconciliation  - Rendering - Fiber
+
+A. HTML & the DOM
+- React Allows you to write maintainable and Performant Code by using the concept of Components
+- Components allow you to FOCUS on Describing the UI you want, rather than Focusing on the Details
+  of How the UI actually gets Inserted in the PAGE
+- Javascript is SINGLE THREADED
+- WRITING TO THE DOM IS THE MOST EXPENSIVE OPERATION
+
+B. Component & Elements
+- Components are Function and Classes
+- It describe the UI you want
+- JSX (Javascript XML) is the PRIMARY(Preferred) way we WRITE COMPONENTS
+- const MyComponent = () => { return (<div>Test</div>)}
+- React converts these JSX components into ELEMENTS { type:'', props:'', ...}  
+
+
+C. Shadow DOM
+- Shadow Dom is a BROWSER Technology, designed for scoping variables and css and web components
+- IT IS NOT REALLY A VIRTUAL DOM
+- It is used for SCOPED STYLE, BUNDLE CSS, AUTHOR MARKUP to get the BENEFITS of ISOLATED DOM and SCOPED CSS
+- Ability of the Browser to Include a SUBTREE of DOM Elements into the rendering of the documents,
+  BUT not in the MAIN DOCUMENT
+- With Shadow DOM, You create SCOPED DOM TREE, and that ELEMENT is CALLED a SHADOW TREE
+- To create a SHADOW DOM, use 'attachShadow' FUNCTION on the Element
+  const elem = document.createElement('header')
+  const shadowRoot1 = elem.attachShadow({ mode: 'open' }) // Item is ACCESSIBLE Outside the SCOPE
+  const shadowRoot2 = elem.attachShadow({ mode: 'closed' }) // Item is NO ACCESSIBLE Outside the SCOPE
+  shadowRoot1.innerHTML(<div>Test</div>)
+  shadowRoot2.innerHTML(<div>Test</div>)
+
+
+D. Reconciliation
+- Creating a VIRTUAL DOM is a part of the Process Known as RECONCIALATION is Responsible for Maintaining
+  the tree of ELEMENTS when a Component Prompts or STATE Change
+- React Creates a TREE of ELEMENTS every time RENDER() is called
+- RECONCIALITION Housing the DIFFING algorithm that determines what part of that tree need to be REPLACED
+- Adding KEY to the Element Really make the Diffing process PERFORMANT as it HELPS it Identify
+  NODES of the ELEMENT that is ACTUALLY CHANGED
+
+E. RENDERING
+- The Render Function of React DOM is Responsible for Kicking OFF the Reconciallation Process
+- Generate The VIRTUAL DOM 
+- Generate the Tree Element and Insert that into the DOM
+- REACT is COMPATIBLE with any DOM Insertion tool you want to use (Here we use ReactDOM)
+
+
+F. FIBER
+- FIBER Gives you non-blocking RENDER. It allows us to Pause Work and RESTART WORK
+- REACT - A Javascript Library for Building User Interface
+- React Program Output a Tree that may Change over time called HOST TREE
+- The HOST TREE consist of HOST INSTANCES
+- RENDERER - REACTDOM
+
+
+
+#3 HOC Pattern React
+------------------------------------------------------------------------------------------------
+- A HIGHER-ORDER COMPONENT(HOC) is a Function that can take another Component, WRAP that with Additional Functionality 
+  and RETURNS A NEW COMPONENT - REUSING COMPONENT LOGIC
+- TYPES OF HOC = 1. PROPS PROXY  2. INHERITANCE INVERSION
+ - 1. PROPS PROXY
+   It is Nothing more than a Function receives a COMPONENT as an Argument and Returns a new Componet
+   with WRAPPED COMPONENT within. Remember when we RETURN the WrappedComponent. we also pass through
+   the PROPS that HOC Receives. This Explain why it is called PROP PROXY
+   BENEFITS:
+    - Manipulation PROPS
+    - Abstracting STATE
+    - Wrapping/Composing Component with Other ELEMENTS
+  - 2. INHERITANCE INVERSION
+    In this the RETURNED COMPONENT Extends the WRAPPED COMPONENT. It is called INHERITANCE INVERSION, because
+    instead of the WRAPPED Component extending some ENHANCER CLASS, it Passively Extends so the RELATION between 
+    them seems INVERSE. You can use STATE, PROPS, COMPONENT LIFE CYCLE METHODS, RENDER METHODS (using "super")
+    BENEFITS:
+     - Render HiJacking
+     - Manipulation State
+
+
+#4 REACT LifeCycle Methods
+-------------------------------------------------------------------------------------------------------
+- Life Time of a Component LifeCycle Methods - SERIES of Events Happened
+- render() should be PURE and NO SIDE-EFFECTS
+
+-A. LifeCycle Methods in PHASES ( 3 PHASES)
+ - RENDER PHASE 
+   - Pure and has NO SIDE EFFECTS. May be PAUSED, ABORTED, OR RESTARTED by REACT
+   - constructor()
+   - getDerivedStateFromProps()
+   - shouldComponentUpdate()
+   - render()
+
+ - PRE-COMMIT PHASE 
+   - CAN READ THE DOM
+   - getShapshotBeforeUpdate (React UPDATE DOM and REFS)
+
+ - COMMIT PHASE 
+   - CAN WORK WITH DOM'S, RUN SIDE EFFECTS, SCHEDULE UPDATES
+   - componentDidMount()
+   - componentDidUpdate()
+   - componentWillUnmount()
+
+-B. LifeCycle Methods in Components STATE
+ - MOUNTING 
+   - constructor()
+   - getDerivedStateFromProps()
+   - render()
+   - componentDidMount
+ - UPDATING
+   - getDerivedStateFromProps
+   - shouldComponentUpdate
+   - render
+   - getShapshotBeforeUpdate
+   - componentDidUpdate
+ - UNMOUNTING
+   - componentWillMount
+

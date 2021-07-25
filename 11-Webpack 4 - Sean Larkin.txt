@@ -1,0 +1,435 @@
+
+
+
+**************************************************************
+ Webpack 4 Fundamentals - Sean Larkin - 4 HOURS (15/Jul/2021)
+**************************************************************
+
+
+*Low fidelity web application and bundle them together with Webpack
+
+
+Why Webpack?
+- For that we need to DIVE into the Evaluation and History of various Technics to add Scripts into Code
+
+
+#1. Add script tag at the end of the <body> tag
+- Problem With SCRIPT Loading
+  - You always have to ensure the SCRIPT order is correct - to avoid calling a Library before even importing it
+  - DOES NOT SCALE - Too Many scripts 
+  - BROWSER LIMITATION - Each Browser actually has bottlenecks. There is only certain amount of concurrent requests that can 
+  fetch data at a single Time(HTTP1 - 4 to 10 requests, HTTP2 - more than 10+). So breaking your Javascript in 100+ different 
+  files and loading them in the Browser is a HUGE PERFORMANCE PROBLEM. Big Project may have around 30k to 50k module so using 
+  this approach is not really scalable and has a HUGE PERFORMANCE BOTTLENECK
+  - LACK OF CODE REUSABILITY
+  - LACK OF DEPENDENCY RESOLUTION
+  - UNMANAGABLE SCRIPTS
+  - SCOPE ISSUES - as 1000 lines run on Global Context - SCOPE CLUTTER
+  - SIZE
+  - READIBILITY
+  - FRAGIBILITY
+  - MONOLITH FILES
+
+#2 Here Comes IIFE(Immediately Invoked Function Expression) to RESOLVE Global SCOPE CLUTTER
+- IIFE treated as expression and executed INSTANTLY
+- And it also allow us to Provide Data from an OUTSIDE Scope and then return SCOPE Information
+- Also can be used for REVEALING MODULE PATTERN
+- NO INNER SCOPE LEAK (with IIFE)
+- So Browser Treat Each File as IIFE(Revealing Module) which certainly helped to a Certain Extent
+- WITH that, We can Safely Concatenate - We can "SAFELY" combine Files without Concern of Scope Resolution.
+- With that, we can take and write a Hundred files and we can squish them together without concern that we are 
+  going to knock out a bunch of variables and scopes
+- So concatination of all the files into one strategy led to the EXPLOSION of these Toolings
+  - grunt, gulp, make, stealjs, brocoli = minmizing, concatination
+- Although all these Tools are make to SOLVE the Problems. However, there were still some PROBLEMS
+  - If you change in ONE FILE, YOU HAVE TO FULL REBUILD Everything. Concatenation these files again, for every change 
+  - thats INSANE for a CODE base of 1000MB or more
+  - Also Concatenation DOES NOT HELP the USAGE across life - DEAD CODE
+  - Ex. Importing the whole 'lodash' even you are just using 2-3 methods
+- A NEGATIVE SIDE of IIFE also ENCOURAGES JS engine to do MORE EAGER PARSING(EAGER LOADING) which leads to SLOWER LOADING
+
+
+
+#3 So How Do you LAZY LOAD with a TASK RUNNER?
+- You do not, there is no way
+- Whatever you are building, you are SHIPPING all that code down the PIPELINE even though you are using only uses 10% 
+  of it to load and get your  inital EXPERIENCE
+- Which Leads to the BIRTH of JAVASCRIPT Module System (Thanks to NODEJS)
+*Fun fact  - If you are using Webpack - you are using NodeJS indirectly
+           - If you want to build a Canonical Web Application, be prepared to Install NODEJS
+
+
+
+
+#4 Why Node JS Introduces Module System
+
+For Node, you have a PROBLEM here like Node is a Javascript that runs on the Server. To Make a NODE, They took the V8 Engine and Shove
+it in a like a Binary and give it a RUNTIME for the SERVER SIDE, but how do you load JS if there is no DOM? How do you add a 
+script tag if there is no HTML in NODE?
+
+COMMONJS - Solution: 
+ - COMMONJS (module.io) - BIRTH OF COMMON JS - using "export" and "require"
+ - export function add(){...}; 
+ - In some other file const add = require('./add.js')
+ - In Files, to be able to actually include other files they created a CommonJS module format. 
+ - They uses a SYNTAX called 'require' which allows you to inject other pieces of a module into the current module
+ - In CommonJS, you can have default export or named export
+ - Also, this Moduling Technic GAVE US LITTLE STATIC ANALYSIS - We can look to the require and tell what is actually being used
+ - THIS IS THE TIME ERA when EXPLOSION of JAVASCRIPT STARTS - (NPM + NODE + MODULES)
+ - NPM - A Package registry to be able to share COMMONJS node modules across an entire ecosystem and registry
+
+COMMONJS - Problems:
+ HOWEVER, STILL there are some problems
+ - NO BROWSER SUPPORT FOR COMMONJS
+ - NO LIVE BINDING - Problems with Circular References
+ - Common JS has SYNC Module Resolution(LOADER) BUT that is REALLY REALLY SLOW (Because of the SYNC Nature)
+ - People started shipping out these libraries outside of Node and NPM and REALIZE that CommonJS DOES NOT WORK :(
+ - That is the TIME when Bundlers and Linkers Started Getting Popularity
+** In this era, people do started using CDN and an alternate solution as well 
+  (But still except little bit of Performance gain, ALL OTHER PROBLEMS Still PERSISTED)
+
+Browserify, RequireJS, SystemJS - Solution:
+  To SOLVE that - Bundlers and Linkers comes to OUR RESCUE. Examples: Browserify, RequireJS, SystemJS
+  These Bundles started to be created and their main premise is to allow you to write CommonJS Modules and then 
+  it get BUNDLED and STRIPPED those statements and the executed in the same orders so that it works in the web
+  exactly as it might work or you would expected to work in the code
+
+Browserify, RequireJS, SystemJS - PROBLEMS: 
+ - No Static Async
+ - No Lazy Loading (All bundles up front served to the Browser :( )
+
+Asynchronous Module Definition (AMD) + CommonJS - SOLUTION
+ - Asynchronous Module Definition (AMD) + CommonJS
+
+Asynchronous Module Definition (AMD) + CommonJS - PROBLEMS
+ - Too Dynamic of Lazy Loading 
+ - AWKward non-standard Syntax - define('test', ['a', 'b'], (a, b) => {})
+
+
+ESM (Ecmascript Module) - SOLUTION: 
+ - ESM (Ecmascript Module)
+ - import / export
+
+
+ESM (Ecmascript Module) PROBLEM:
+ - NO ESM for NODEJS 
+ 
+
+ESM (Ecmascript Module) - SOLUTION:
+ .MJS (For Node js)
+
+ESM (Ecmascript Module) - Problem
+ - ESM for Browser is very Slow
+ - Every Library you use in your project may use Different Module System (Browsify, CommonJs, AMD, ESM)
+
+ESM (Ecmascript Module) - Solution
+- It would be nice to have something which supports every Module Format - WEBPACK
+- FEATURES:
+ - It is a Module Bundler and let you write any Module Format (MIXED)
+ - Compiles all type of the modules to Run in Browser
+ - Support Static SYNC BUNDLINE / CODE SPLITTING
+ - Can Create separate Lazy Lots of Bundles at Build Time - That way, you can leverage all the extra OPTIMIZATION
+ - A Rich, VAST Ecosystem, Incredible Flexible
+ - The Most Performant Way to Ship JS today
+
+
+
+#6 Story Behind the BORN of Webpack
+- The IDEA of Webpack comes from - Google Web Toolkit - Which has a FEATURE of Code Splitting
+#STORY - A Gentleman from Germany "Tobias Koppers" had to do a Thesis for his Masters, and create a WebApp.
+He need a Module Bundler, so he Used "modules-webmake" and found it does not have code-splitting (Which he 
+knows from Google Web Toolkit) and he ADVISED the AUTHOR to implement that and also shared some code ideas, but it 
+has gone UNHEARD so HE FORKEN "modules-webmake" and made the changes and named the module to "module-webpack" in 2012.
+In 2015, Instagram conference and Facebook conference few developer demoed this and then it EXPLODED. The WHOLE
+REACT ECOSYSTEM ADOPTED IT.
+
+#7 There are 3 Ways you can use WEBPACK
+- 1. webpack.config.js - (Yes it is MODULE too) - Webpack config is just a CommonJS MODULE
+- 2. webpack cli - Use webpack cli commands
+- 3. Node API - create a custom webpack wrapper 
+
+A093861
+Shaila Kunwar
+
+A093860
+Dholki Devi
+
+#8 HISTORY OF MODULES
+A. Inline Scripting / Adding Scripts at the End of the BODY Tag
+ - All the varibles and functions are in GLOBAL SCOPE
+ - PROBLEMS: 
+   - Lack of Code Reusability (Between Different Pages)
+   - Lack of Dependency Resolution - The Order you add <scrtips>
+   - Pollution of Global Namespace - All Function and Variables in one Global Space - Global Space Cluttering
+
+B. Module Objects and IIFE(Immediately Invoked Function Expression)
+ - Resolves Global Pollution 
+ - Expose only what required to the GLOBAL SCOPE
+ - Each Module/JS file is wrapped in IIFE
+ - PROBLEMS:
+   - Lack of Dependency Resolution - Still ORDER MATTERS - The way we add <script> tag in BODY
+   - Still there is GLOBAL Namespace issue - Although it is reduced but still there is some
+
+C. CommonJS
+ - Formerly known as SERVERJS
+ - Use module.export and requre('./..') SYNTAX
+ - Node JS Style
+ - PROBLEMS:
+   - It is SYNCHRONOUS - So the System will HALT Until the Module is Ready
+     Means this line of Code will FREEZE the Browser while all the Modules are being Loaded
+     So This MAY not be the BEST way to Define MODULE for BROWSER APPLICATION
+
+D. AMD(Asynchronous Module Definition)
+ - To Transfer MODULE Syntax from Server usage to browser usage, COMMONJS Proposed Several Module formats
+ - "module/Transfer" one of the proposals, "module/Transfer/C" later become Asynchronous Module Definition(AMD)
+ - AMD Has the following Format - define(['add','reduce'], function(add, reduce){...})
+ - The DEFINE Function/Keyword takes a list of Dependencies and a callback Function will be in the same ORDER of Dependencies in the ARRAY
+ - This is equivalent to importing modules and the CALLBACK Function return the value which is the VALUE you expect
+ - COMMONJS and AMD Solves TWO Problems using Module Pattern
+   - Dependency Resolution
+   - Pollution of Global Scope
+ - PROBLEMS:
+   - AMD can help us from the HELL of SCRIPT Tags and Global Pollution in our Browser Application BUT the Problem is 
+     HOW CAN I USE IT? - RequireJS is the Solution
+
+E. RequireJS 
+ - RequireJS is a Javascript Module Loader
+ - It helps Loading Module Asynchronously as needed
+ - Despite its name "RequireJS", It's GOAL is not to Support CommonJS "require" Syntax
+ - With RequireJS, you can write AMD styles Modules
+ - So for AMD, you needs to have "require.js" in your Project
+ - <script data-main="main" src="main.js" />
+ - The "data=main" tells RequireJS to where is the starting point of your application - "main.js"
+ - RequireJS and AMD solves all the Problems we had Before 
+ - However, it Creates other slightly less serious Problems
+ - PROBLEMS:
+   - AMD Syntax is too verbose. Since everything is wrapped in "define" function there are extra indendation in your code
+   - List of the dependencies in ARRAY MUST MATCH the list of arguments in the Function, AND if there are Many dependencies,
+     It can be hard to maintain the ORDER of the Dependencies
+   - With Current Browser(HTTP1) there is a limitation of number of files you can load, which degrades the PERFORMANCE
+   - Although with HTTP2 it is going to be slight faster but still sort of a Bottleneck if we have 100+ files/modules 
+
+F. Browserify
+ - Because of this AMD Problem, People Moved back to JUST CommonJS Syntax instead. But CommonJS Syntax is for SERVER and SYNCHRONOUS right?
+ - Browserify is the RESCUER. With Browserify, you can use CommonJs Module in the Browser application
+ - Browserify is a MODULE BUNDLER
+ - Browserify Traverse the Dependency tree of your codes and Bundle them up in single File
+ - Unline RequireJS, Browserify is s Command Line Tool - npm install browserify; browserify bundle ...
+ - <script src="bundle.js" />
+
+G. UMD (Universal Module Definition)
+ - Now we have learned about Global Object, CommonJS, and AMD Style Modules.
+ - And there are libraries that can help us USE commonJS or AMD.
+ - BUT WHAT IF you are writing a MODULE and deploy to the wild INTERNET, WHICH Module style would you write?
+ - You could write your MODULE in three Different Types and then Maintain THREE Different FILES
+ - And then THE USER will have to Identify the TYPE of the Module they are DOWNLOADING
+ - UMD is to SOLVE this Particular Problem
+ - Under the hood, UMD is a series of IF/ELSE statments to Identify the Module System that current Environment or MODULE Supports
+
+H. ES6 
+ - So we have GLOBAL Module Object, CommonJS, AMD and UMD
+ - There are too many OPTIONS and WHICH ONE TO USE?
+ - Javascript Did not have Module System BUILT into the Language. That is the REASON we have so many Different Ways
+   of Importing and Exporting Modules
+ - But that has RECENTLY chased with the Introduction of ES6 MODULE, So now Module is part of Javascript
+ - uses 'import' and 'export' keywords
+ - UNFORTUNATELY, we Still HAVE ONE PROBLEM
+ - At the moment only CHROME and other Browsers latest versions only Supports it, But not all the Browser (especially old versions)
+ - FORTUNATELY, there are some TOOLS available.
+ - The Tools Allow US to have ES6 Module Syntax 
+   - Webpack = code split, loader, plugin-based
+   - SystemJS
+
+ - AND WEBPACK is the POPULAR CHOICE
+
+
+
+
+#9 WEBPACK
+- npm run webpack
+- npm run webpack -- --inspect-brk
+- npm run webpack -- --mode development --watch  (Watch Mode)
+- node --inspect --inspect-brk ./node_modules/webpack/bin/webpack.js
+
+Tree Shaking
+- A term commonly used in the Javascript context for DEAD-CODE ELIMINATION 
+- When we bundle production code, webpack perform TREESHAKING
+- Statically identifying the Syntax to see if it is being used or not
+- Example - If you are just using one Function of Lodash Library - Your code should only include that part not the ENTIRE LIBRARY
+
+
+Webpack Bootstraping
+- module.exports = { mode: 'development' }
+- webpack-generated code walkthrough => Internally Webpack Modify Every Code file into Multiple IIFE's
+- So we get An ARRAY of IIFE's thats get PASSED into they Code Right There 
+- THIS IS CALLED WEBPACK BOOTSTRAP. Someone CALL It  RUNTIME / MANIFEST
+
+
+#10 Webpack Core Concepts  - 4 CORE Concept
+- 1. ENTRY
+  - Tells Webpack What Files to Load for the Browser = { entry: "main.js" }
+  - Tells Webpack WHAT FILES to Load for the Browser Compliments the OUTPUT Property
+  - Webpack Compiler takes the ENTRY FILE and RESOLVE it and TRIES to CREATE A GRAPH
+  - Tells the Webpack, What FILES to Include in BROWSER or WHERE are you going to BUNDLE all your CODE
+
+- 2. OUTPUT
+  - Now Webpack has this GRAPH Internally in Memory
+  - It needs to Create a BUNDLE, so OUTPUT tells Where to Create and WHAT NAME OF THE BUNDLE SHOULD BE
+  - { output: { path:'./dist', filename: './bundle.js' } }
+  - So CREATE a BUNDLE and GENERATE in "bundle.js"
+  - It Tells WEBPACK WHERE AND HOW to Distribute Bundles with Working with ENTRIES   
+  
+- 3. LOADERS and RULES
+  - Loader Intruct WEBPACK on How to Modify FILES before it is added to the DEPENDENCY GRAPH
+  - LOADERS - Tells Webpack how to INTERPRET and TRANSLATE Files
+  - It has multiple RULE SET
+  - module: { rules: [{test:'/\.ts$',use:'ts-loader'},{test:'/\.js',use:'babel-loader'},{test: '/\.css$',use:'css-loader'}]}
+  - These specifics RULES do have INCLUDE/EXCLUDE option
+  - It basically tells Webpack How to Modify Files before its added to Dependency Graph
+  - Loaders are also Javascript Module (Functions) that takes the SOURCE files and Return's a [Modified] STATE
+  - Loaders Executes from RIGHT to LEFT
+  - CHAINING LOADERS
+  - rules: [{test: /\.less$/, use:['style', 'css', 'less']}]
+  - Written in Code => Style.less ===> LESS LOADER =+=> CSS LOADER ===> STYLE LOADER ==> Style to be executed in the BROWSER
+  - INPUT(less) ====> OUTPUT (Style to be executed in the Browser)
+  - CHAINING LOADERS are Transformation Applied in a PIPELINE to the Resource
+  - Each Loader passes VALUES onto the Next Loader, where webpack expects JAVASCRIPT to be returned
+  - WEBPACK has 100's of LOADER/TRANSFORMER
+  - LOADERS - Tells Webpack how to INTERPRET and TRANSLATE Files
+  - Transformation Happened on a PER-FILE Basis before adding to the Dependency Graph
+
+
+- 4. PLUGINS
+  - Plugins are the Objects (with an 'apply' PROPERTY)
+  - Allow you to HOOK into the ENTIRE Compilation Life Cycle
+  - Webpack has a VARIETY of Built-in Plugins
+  - Plugin uses WEBPACK API for the Plugin System
+  - The Compiler uses EVENTS (EMIT THE EVENTS)
+  - How to use PLUGINS
+    - require() plugin from node-modules into config
+    - add NEW INSTANCE of plugin to plugin key in CONFIG
+    - example: In webpack.config => var plugin=require('<plugin-name>'); module.export = {...., plugin: [new <PluginName>()]}
+  - 80% of WEBPACK Source code is Made of Plugins
+  - WEBPACK itself is a COMPLETELY EVENT DRIVEN ARCHITECTURE (EMITTING the EVENTS)
+  - So all the Source Code is Literrally the Plugins
+  - To Summarize, PLUGINS add Functionality to Compilation (Optimized Bundled Modules)
+  - More Powerful with More Access to COMPILER API (Adds Additional Functionality)
+  - Popular Plugins: miniCSSExtracterPlugin (for CSS), fileLoader and URLLoader (for Public Assets)
+
+
+Passing VAR to webpack config 
+- npm run webpack -- --env.mode development
+- Now in webpack.config you will have a ACCESS to "env" Object
+- module.export = env => {}
+
+Webpack Devserver
+- Helps you setup a LOCAL DEVELOPMENT Server Based on EXPRESS Webserver that serves the Content of a Distributed Folder
+- npm install webpack-dev-server --dev
+- script: {'dev': 'webpack-dev-server'}
+
+Splitting Webpack Config File 
+- webpack.development.js
+- webpack.production.js
+- var moduleConfig = require(`webpack.${env}.js`)
+
+
+Hot Module Replacement
+- Wepack can PATCH CHANGES INCREMENTALLY and APPLY them to a WEB DOCUMENT WITHOUT EVER HAVING TO RELOAD THE BROWSER
+- Loaders are REALLY Useful for Helping Support a UNIQUE Webpack Feature called HOT MODULE REPLACEMENT
+- To ENABLE that - 'npm run webpack -- --env.mode development --hot'
+
+
+Implementing Preset
+- Create a PRESETS For one or a few Special Coding Scenarios such as Testing a Feature and Analyzing a Build when not
+  wanting to Endanger the PRODUCTION webpack Configuration. 
+- Presets Also called ADD-ONS
+- Presets are Collection of Plugins
+
+
+Webpack Analyzer
+- npm install webpack-bundle-analyzer
+- Gives you a Tree MAP VISUALIZATION of WHAT is in your BUNDLE. In a Interactive ZOOMABLE TREEMAP
+
+
+Source Map
+- SourceMaps from WEBPACK Allow Client-Side Code READABLE and DEBUGGABLE
+
+Webpacks More Features
+- Caching, Lazy Loading, Code Splitting, and Web Performance
+- Dynamic import, control the Bundle size, Ship Less for Initial Load
+
+
+
+**************************************************************
+ Webperformance With Webpack - Sean Larkin - 1.40 HOURS (17/Jul/2021)
+**************************************************************
+
+Any Websites Top 3 Page Load Times Cause are:
+- Amount of JS for Initial Download
+- Amount of CSS for Inital Download
+- Amount of Network Request on initial Download
+  
+
+High Performance APP Benchmark
+- <=200KB JS   (Initial JS)
+- <=100KB CSS  (Initial CSS)
+- HTTP1 <=6  Initial Network Calls LIMIT
+- HTTP2 <=20 Initial Network Calls LIMIT
+- From the Total SHIPPED Code, 90% CODE Coverage should be Used and UNUSED should not be more than 10%
+- To Check that - Browser Dev Tools ==> CMD+SHIFT+P ==> Coverage => Reload the PAGE (Check the Coverage here)
+- If 300KB Code Shipped, better be <=270KB is USED (90%)
+
+
+Code Splitting
+- The Process of Splitting Code into Asynchronous CHUNKS at BUILD TIME
+- The MOST Compelling Feature of Webpack, 
+- which allows you to SPLIT your code into various BUNDLES which then can be loaded ON DEMAND or IN PARALLEL
+- Features / Strategies
+  - Unused Code - Check coverage - Browser Dev Tools ==> CMD+SHIFT+P 
+  - Dynamic Imports
+  - Route Level Code Splitting
+  - Dynamic Import ROUTES
+  - Dynmic Code Splitting
+    - Loading of ASYNC bundle based on Runtime
+    - Webpack will create DIFFERENT Checksum/Chunk of all the Dynamic Code instead of adding that in the MAIN BUNDLE/FILE
+  - Naming Bundles
+  - MAGIC Comments - import(/* webpackMode: "lazy" */ './Components/Home')
+  - Preloading and Prefetching (using webpack Magic Comments)
+    - import(/* webpackPrefetch: true */ './Home') => Lower Priority over Preload - Loaded in Browsers IDLE TIME
+    - import(/* webPackPreload: true */ './Blog')  => Higher Priority in Parallel Load
+  - React Loadable
+    - Provides components with the STATIC Method Preload
+    - Gives you the Manual Control when you want to FETCH the Components Bundle
+  - Analyze BUNDLE - webpack-bundle-analyzer
+  - Code Splitting only Happens to DEFAULT export/import
+  - To use Code Splitting on NAMED export/import, you need to Import Function as Module; const getA=()=>import('loadash/unique')
+- When it comes to performance improvements, I strongly believe that code splitting is the technique that will bring you the most benefits.
+
+
+Magic Comments
+- A Process of Naming the chunks for Corresponding to the Module 
+	- import(/*webpackChunkName: "footer"*/. './footer.js') OR
+	- set in webpack config file - output:{fileName:'bundle.js', chunkFileName:"[test].lazy.chunk.js"}
+- Also for Code Splitting, giving Webpack Hint of the way we want to Bundel our Application (Prefetch or Preload, eager or Lazy)
+
+
+Webpack Mode
+- It determines how the CODE SPLITTING MAY OCCUR
+- MODES:
+  - Lazy
+  - Lazy Once
+  - Eager
+
+Webpack Prefetch and Preload
+- It allows non-critical assests to be loaded in the Background during the BROWSER IDLE TIME
+- So they are ready when USER Request Them
+- import(/* webpackPrefetch: true */ './Home') => Lower Priority over Preload - Loaded in Browsers IDLE TIME
+- import(/* webPackPreload: true */ './Blog')  => Higher Priority in Parallel Load
+
+
+ 
+
+
+
+
+

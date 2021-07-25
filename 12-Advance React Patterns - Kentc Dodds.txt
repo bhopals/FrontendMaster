@@ -1,0 +1,450 @@
+
+
+
+*******************************************************************
+ Advance React Patterns - Kent C. Dodds - 3.30 HOURS (17/Jul/2021)
+*******************************************************************
+
+github: 
+- http://github.com/kentcdodds/advance-react-pattern-v2
+- http://github.com/facebook/react/tree/0.14-stable/docs/docs
+
+Pattern to enhance the Flexibility and Simplicity of BOTH your Component API's and Implementation
+A Primitive Component which Allows you to BUILD HIGHLY ACCESSIBLE and very FLEXIBLE COMPONENT
+
+React setState()
+- Kicks off RECONCILIATION PROCESS (The way React UPDATES the DOM)
+- setState({test: 4}) //Object way // Multiple Object Updates - Last Win
+- setState((prevState) => ({test: prevState.test+1}))//Function way - React Queues up Function Call
+- Update to a Component State Should be done using setState()
+- Pass a Function when you want to update state Multiple Times
+- Do not Depend on this.state IMMEDIATELY after calling setState() and make use of the updater callback fun instead
+- setState({}, (() => {...//calback to be executed once the STATE is updated}))
+
+Compound Component
+- The idea is that you have two or more Components that work together to ACCOMPLISH a useful task
+- Typically one Component is the Parent and the Other is the CHILD
+- The Objective is to Provide more Expressive and Flexivle API
+- The way to pass PROPERTIES to Children Component - <select><option>Test</option></select>
+- Create a Compound Component as STATIC Properties on the PARENT COMPONENT
+- React.Children.map - Map over an ARRAY of Child Components - Passing Down PROPS to them using React.cloneElement
+
+
+Flexible Compound Component
+- Using the CONTEXT API, we can make Compound Component more FLEXIBLE with a Shared Implicit state 
+- by using flexible Compound Component (When you have several Components shares the SATE/VALUES)
+
+
+Render Props
+- A Render PROP is a Function PROP that a Component USES to know what to Render
+- Render PROPS serve as Components that can CONTROL their state logic but allow total FLEXIBILITY of the UI
+- The Render Prop Component Pattern SEPARATE the STATE COMPONENT from the DISPLAY COMPONENT
+- Most of the CASES - USE of Render PROPS is ENCOURAGED INSTEAD of HIGHER ORDER COMPONENTS(HOC)
+- Render Props is a Simple Technique for Sharing Code between React Components using a PROP whose VALUE IS FUNCTION
+- So INSTEAD of passing a STRING or OBJECT, you pass a Function as a PROP - <Name renderProp={() => "Passing a Function"}
+- Render PROPS Provides us a METHOD of Passing Props from a Parent Component to a Child via a Function PROPS
+- MOST CASES RENDER PROPS will Replace HOC(Higher Order Component)
+- Because HOC have some issues such as: 
+  - Poor Readibility - ex. withA(withB(withC()))
+  - Static Composition instead of Dynamic Composition
+  - DRY and Extensible
+  - Naming Collisions
+  - Put too much abstraction on TOP which cause them very hard to Debug and use
+  - Poor Customization and Code Reusability 
+- A Render PROP is a FUNCTION Prop that a Component uses to KNOW WHAT TO RENDER
+**Fun Fact - HOC can be Implemented using RENDER PROPS; HOWEVER REVERSE is not TRUE
+- Parent Component - <Toggle onToggle={onToggle}>{({on, toggle}) => {(<div>...</div>)}}
+- Child Component - render() {return this.props.children({on, toggle} => ....)}
+
+
+Props Collection
+- Prop Collection are a convenience for Frequent use cases of RENDER Prop Function
+- A Useful Feature to provide a Collection of PROPS that you would Normally Use
+
+Props Getter
+- Help Fix Overwriting Properties that are INTENDED to be overwritten by comparing the PROPERTIES that should be applied
+- Props Getters to Wrap the Properties and Avoid Overwriting Properties in the Component
+
+
+Controlling State
+- 1. State Initializer Pattern (Using static defaultProps)
+ - It allows you to INITIALIZE the STATE and give the Component the Ability to RESET the STATE
+ - class Toggle extends React.Component {static defaultProps={initialOn: false}; console.log(this.props.initialOn)}
+- 2. State Reduce Component
+ - Allows People to Control how the State is Managed
+ - State Reducer HOOKS into every setState call to Modify how the state is updated in the Component
+ - Ex. useReducer - To Limit number of Clicks
+- 3. Control Props Primer
+ - Two Way Binding
+ - Control Props Allow you to PASS a Property that the Component Should Use for It's State
+ - Keep two Components Properties in SYNC
+
+Provide Pattern
+- To Resolve PROP Drilling Problem
+- and How the Provider Pattern is used to Mitigate it
+
+Higher-Order Components(HOC)
+- Do not Modify or Mutate Components
+- A HOC is Used to Compose Components for code reuse
+- A HOC is a Pure function. It has no SIDE EFFECTS, Returning only a NEW Function
+
+HOC and Render Props
+- Higher-order Components(HOC) and render props are two ways to build cross cutting code in React JS
+- But How do you decide one over the other?
+- The Reason we have these two approaches is that React Decided to use ES6 'class' for Building React Components to manage state
+- Before that, to share 'cross-cutting' concerns for Components 'Rect.createClass' mixins was the way to Handle that
+- However, 'class' does not support mixins and a NEW WAY HAD TO BE DEVELOPED
+ - 1. HOC 2. Render Props
+
+HOC
+- So SOON HOC evolved into the Picture to Support Code Reuse
+- Essentially HOC's are SIMILAR to DECORATOR PATTERN, a Function that takes a Component as the First PARAM
+- and Returns a NEW COMPONENT. This is where you will apply your crosscutting functionality
+- Example - function withExample(Component) { return function(props){return <Component {...props} />}
+- HOC Promotes REUSE of Logic across React Components
+- What DOES HOC Solve?
+  - Importantly they provided a way to REUSE code when using ES6 Classes
+  - No longer have method name clashing if two HOC implement the same one
+  - Easier to make SMALL and REUSABLE Units of Code, Thereby Supporting the Single Responsibility Principle
+  - Apply Multiple HOCs to One Component by Composing Them.
+  - The Readibility can be Improved using 'compose' Function
+- DOWNSIDE Of HOC and Mixins
+  - There is still an indirection issue, however, not about which HOC is changing the STATE 
+  - but which one is providing a Certain PROP
+  - It is Possible two HOC could be using the same prop Meaning one would overwrite the other silently
+- HOC iteself introduces few PROBLEMS
+  - If composing several HOC's together, it is difficult to debug the huge and deeply nested tree
+  - Hoist Static Methods from the Wrapped Component
+  - Had to Ensure all the Relevant Properties are passed through to the Component
+  - Boilporate Code 
+
+Render Props
+- A Render Prop is where a Component Prop is assigned a function and this is called in the render method of the Component.
+- Calling the Function can return a React Element or Component to Render
+- Example - render(){FetchData render={(data) => {return <p>{data}</p>}}}
+- The 'prop' is called 'render' and is assigned a Function howver this does not need to be called render.
+- Any Prop on the Component could be assigned a function including this.props.children
+- What DOES RENDER PROPS Solve?
+  - Reuse Code across components when using ES6 classes
+  - The Lowest level of Indirection - it is clear which component is called and the state is ISOLATED
+  - No Naming Collision issues for props, state, and class methods
+  - No Need to deal with boiler code and hoisting static methods
+- However, still some MINOR PROBLES
+  - Simple Annoyance is the render props callback is not so neat in JSX as it needs to be wrapped in expression
+    However, rendering the result of HOC does look cleaner
+  - There could be minor MEMORY issues when defining a closure for every render
+  - Caution using 'shouldComponentUpdate' as the render prop might close over data it is unawre of
+    Might resulting in calling 'shouldComponentUpdate' over and over again as the closed over value changes
+
+
+WHEN to USE HOC
+- If you want to look like a genius and make your colleagues hate you (SARCASM :D)
+- If you want to Enhance existing or third-party Component with some simple features
+- example - 'withTheme' from Styled Component OR 'connect' in case of REDUX 
+
+WHEN to USE Render PROPS
+- Have Rendering under full control
+- Separate Login and Rendering Easily
+- Write Readable and Clean Code
+- and use class-based Components for some reason
+- If you Provide Custom Renders in your Visual Components, they become Perfectly Customisable
+
+
+************************************************************
+ Redux Fundamentals - Steve Kinney - 5 HOURS (17-18/Jul/2021)
+************************************************************
+
+Github 
+- https://steve.kinney.github.io/redux-fundamentals
+- https://steve.kinney.github.io/redux-fundamentals/repositories
+
+Slides
+- https://speakerdeck.com/stevekinney/redux-workshop-2021-05-05
+
+Redux 
+- STATE MANAGEMENT TOOL
+- A PREDICTABLE STATE CONTAINER FOR JAVASCRIPT APP
+- Consist of 5 Methods (1 MAIN + 4 UTILITIES)
+- 1 MAIN METHOD - createStore
+- 4 UTILITIES Method - applyMiddleware, compose, combineReducers, bindActionCreators
+- React Does have 'useReducer' Hook that offers the functionality, but that is just a part of Redux
+- However, unlike REDUX, React does not have thing like 
+  - Built in Middleware  
+  - Binding for High Order Components
+
+
+Redux v/s Context API
+- CONTEXT API Prompts a Re-render on each update of the STATE, and re-render all components regardless
+- REDUX However, only re-renders the updated components
+- CONTEXT API is Ideal for Small APP, where state change is Minimal (use case - to store locale, theme, auth, few global var)
+- REDUX is PERFECT for larger APP where there are HIGH Frequency STATE UPDATES
+
+
+#Redux Without REACT
+
+Redux API & Compose
+- It will allow you to take a functions and create one function that will pass a value through each of them
+- Compose combine function and chain output of one function into another
+- It takes multiple function and compose a new function out of all these pieces (functions)
+- import { createStore, compose, applyMiddleware, bindActionCreators } from 'redux' 
+
+
+Redux Stores and Reducers
+- Stores
+ - const store = createStore(<reducer>)
+ - createStore takes some parameters, but one required one is REDUCER
+- Reducers
+ - A Pure Function. Two Things go in, and once COMES OUT
+ - TWO Things  - State of the WORLD(Javascript Object) + Thing that happened(Javascript Object)
+ - Both Going in together and one thing COMES out - A NEW STATE OF THE WORLD
+ - Reducer Function takes 2 Arguments - STATE and ACTION, and it will return a NEW STATE
+ - const initialState={value:0};const reducer=(state,action)=>{return state}; const store=createStore(reducer);
+
+Store 
+- Returned Store Object has 4 METHODS 
+ - dispatch - To Dispatch any Action
+ - subscribe - To Subscribe to any change in the STATE
+ - getState - To get the Current STATE
+ - replaceReducer - You can SWAP existing reducer with the one you pass IN - Helpful in Code Splitting
+- IT IS AN ANTIPATTERN TO HAVE MULTIPLE STORES
+- Having everything in ONE STORE is both Practical for DEBUGGING and Manageable
+
+
+Action Creators
+- Action Creator will set a Constant VALUE to an ACTION Objet that can be used instead of Repeatedly writing the FULL ACTION
+- A Level of Abstraction
+- const increment = (amount) => {type:'INCREMENT', payload: amout}
+- Using these ACTION CREATORS (Helper Method/Functions) can help Reduce code repition by avoiding 
+  Repeatedly typing out the ENTIRE OBJECT every time you call an ACTION
+
+
+Setting Initial STATE
+- At Store Creation TIME = const initialState={value:0}; const store = createStore(reducer, initialState) OR
+- In Reducer = const initialState={value:0}; const reducer = (state=initialState, action){...}
+
+Some Rules For REDUCERS
+- No Mutating Objects
+- If you touch it, you replace it
+- You have to Return Something and ideally it should be the UNCHANGED STATE or a new STATE
+- It is just a Javascript PURE Function
+- Reducers Prefer FLAT OBJECT
+- return {...state, author: {...state.author, city: 'Whitby'}}
+
+Subscribe
+- use 'store.subscribe' to store changes to the state and bind action creators to the dispatch to automatically call dispatch
+- Subscribe is like - A Store handing over a Function and to Register a Subscriber which will be notified everytime
+  state in the STATE is CHANGED
+- Example
+  - const store = createStore(reducers)
+  - const subscriber = () => console.log('SUBSCRIBER CALLED')
+  - store.subscribe(subscriber)
+  - store.dispatch(increment()) //"SUBSCRIBER CALLED"
+  - store.dispatch(decrement()) //"SUBSCRIBER CALLED"
+
+
+
+Action Creator
+- Function that create ACTIONS
+- const increment = (amount) => {type:'INCREMENT', payload: amout}
+- store.dispatch(increment(10))
+
+bindActionCreator
+- Just gives us a WAY yo do some shorthand, what if we want to make functions that are bound the dispatch that we could just call
+- bindACtionCreator({<methods>}, <boundTarget>)
+- const actions = bindActionCreator({increment, add}, store.dispatch)
+- console.log(actions) //{increment: fn(), add: fn()}
+- actions.add(10)
+- actions.increment() //DISPATCH IS AUTO BOUND. We do not have to call store.dispatch(increment())
+
+
+combineReducers
+- Refactoring the application into multiple smaller reducers and using combineReducers to combine the smaller reducers
+  to use in createStore
+- Reducers can be nested in combineReducers to help COMPARTMENTALIZE PROGRAMS ACTION
+- createStore accepts ONLY ONE REDUCER, so we use combineReducers to make our reducer out of bunch of small reducers
+- IN combineReducers, we NEED to pass TWO details in <KEY>:<VALUE> pair for each REDUCERS COMBINED
+  - name of the reducer
+  - handles the past of the Tree
+- const reducer = combineReducers({users: userReducer, tasks: taskReducers}) // state : { user:[], tasks:[]}
+
+
+Enhancers
+- Adding an ENHANCER to createStore which will allow the creation of reusable REDUX PLUGINS that can be passed into the store
+- This is going to be the THIRD Param of createStore Function
+- createStore(<reducer>,{initialState}, <enhancerFn>)
+- const logEnhancer=(createStore)=>(reducer,initialState,enhancer){const logReducer=(state,action)=>{return state} return createSTore(logReducer, initialState, enhancer)}
+- It Provides an ABSTRACTION on the Reducer if you want to add logging or any other cross cutting concerns
+
+
+Middleware - (applyMiddleware)
+- applyMiddleware creates an Enhancer out of a SERIES of a CHAIN of MIDDLEWARE
+- An Abstraction over ENHANCER
+- const logMiddleware=(store)=>(next)=>(action)=>{console.log('oldSTATE', store.getState()); next(action);console.log('newSTATE', store.getState())}
+- const store = createStore(reducer, applyMiddleware(logMiddleware))
+- store.dispatch({type: 'HELLO'}) // 'oldSTATE undefined'; 'newSTATE HELLO'
+- USE CASE:
+ - logging - Redux Thunk - TO make AJAX Request
+ - or FETCH HTTP Request - It works like you get the ACTION, your FIRE the PROMISE and ONCE you RECEIVE the 
+   RESPONSE, you return the NEW STATE
+
+
+#Hooking Up with REACT
+
+Connecting Redux into React
+- Creating a REDUCER, ACTIONS, createStore, and the connecting the react-redux Provider
+- 1. CREATE AN ACTION (action.js)
+  export const INCREMENT='INCREMENT';export const DECREMENT='DECREMENT'
+- 2. CREATE AN ACTION CREATOR
+  export const increment=(value)=>({type: INCREMENT, payload:value})
+- 3. CREATE A REDUCER
+  export const reducer=(state=initialState,action){......}
+- 4. CREATE A STORE
+  export const store=createStrore(reducer)
+- 5. BIND IT TO OUR REACT APP (Connecting the REACT-REDUX PROVIDER)
+  import {Provider} from 'react-redux'; RectDOM.render(<Provider store={store}><Application/></Provider>, document.getElementById('root'))
+  - WRAP the Application with REACT REDUX PROVIDER
+- Once REDUX is BOUND to the React Application, the state can be used and MANIPULATED
+
+
+Redux DEV TOOLS
+- Redux DEV TOOLS Adds extra functionality to allow Developer to see what is going on in REDUX STORE
+- The EXTENSION add some GLOBAL Properties on the global window OBJECT
+- We can use pass this when we create store
+- window.__REDUX_DEVTOOLS_EXTENSION__()
+
+
+Connecting STATE HOOKS to the STORE
+- use "useSelector" HOOK from 'react-redux'
+- import {useSelector, useDispatch} from 'react-redux'
+- const const = useSelector((state)=> state.count)//Give Access to the STATE; const dispatch = useDispatch() 
+- dispatch(increment())
+- In REACT REDUX we used to use CONNECT METHOD to wrap a Presentational Component
+- useSelector === mapStateToProps
+- useDispatch === mapDispatchToProps
+- FunctionalComponent ==== ClassComponent
+- React Redux Connect API 
+
+Redux Only Meant to PUT only BUSINESS Login in REDUX STATE, Not Everything from the APP (Flags, options, intermediate state etc.)
+Better to keep These unwanted things in COMPONENT STATE
+
+
+#Connecting Redux to React
+
+Connect API v/s HOOK API
+- Connect exist earlier than HOOK
+- Both has it's OWN Tradeoff Of Using it
+- HOOKS (Preferred Way)
+  - useSelector and useDispatch
+  - Hooks Are very Simple API that is very very easy to USE 
+  - However, there are some Drawbacks as well of USING it
+  - One of the Criticism of HOOKS - Separation of Concern
+  - Because Component is HOOKING into a REDUX Store so if you want to test it is difficult
+  - Also, it is Difficult to create Story Books of The Component using HOOKs to connect to Redux
+  - ADVANTAGES: STATIC TYPING, SIMPLE TO USE
+  - DISADVANTAGES: UNIT TESTING, Difficult to create STORY BOOK
+- CONNECT API
+  - mapStateToProps and mapDispatchToProps
+  - With Connect API, the Connect API wraps Regular Presentational Component
+  - (Component with NO SENSE of State management) - could be Class or Functional Component
+  - Since they are UNAWARE of STATE, ACTIONS, they are easily testable.
+  - You can Pass in MOCK state and test it. Also, easier to create STORY BOOKs
+  - However, the DRAWBACK of Using Connect API is the ACT of wrapping Components into a Hierarchy Component
+  - will Add extra noise to your DEV Tools. Static Typing of Hierarichal Component can be tricky
+  - ADVANTAGES: UNIT TESTING, EASIER TO CREATE STORY BOOK
+  - DISADVANTAGES: STATIC TYPING, NOT EASY TO USE, ADD Lots of Noise in the Code and not READABLE
+
+mapStateToProps
+- It CONNECTS REDUX STATE TO PROPS OF REACT COMPONENT
+- It is a Function that you would use to Provide the Store Data to your Component
+- If mapStateToProps argument is specified, the NEW COMPONENT will SUBSCRIBE to Redux store Updates.
+- This Means ANYTIME the store is Updated, 'mapStateToProps' is called
+- The Result of 'mapStateToProps' must be a Plain Object, which will be Merge into Components PROPS
+
+
+mapDispatchToProps
+- It CONNECTS REDUX ACTIONS TO REACT PROPS
+- It is Used to bind action in your Component
+- It is a Function that you would use to Provide the Actions Creators as props to Your Component
+- With 'mapDispatchToProps' every action creator wrapped into Dispatch call so they may be invoked directly,
+- will be merged into the Component's Props
+- function mapStateToProps(state) {return { todos: state.todos }}
+- function mapDispatchToProps(dispatch) {return {addTodo: bindActionCreators(addTodo, dispatch)}}(Passing a fun.) OR
+- function mapDispatchToProps{return {addTodo} (Passing an Object)
+- export default connect(mapStateToProps,mapDispatchToProps)(Todos); OR
+- export default connect(mapStateToProps)(mapDispatchToProps)(Todos)
+
+- Another Example:
+ //ownProps is Optional argument. It is the Things that are passed to the COMPONET - Component OwnProps
+  const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+      // dispatching plain actions
+      increment: () => dispatch({ type: 'INCREMENT' }),
+      decrement: () => dispatch({ type: 'DECREMENT' }),
+      reset: () => dispatch({ type: 'RESET' }),
+    }
+  }
+
+
+Deriving Data
+- Computing and Deriving DATA Should not be stored in STORE. We can use that using 'mapStateToProps'
+- The 'mapStateToProps' function can take it prop as argument and return a newly computed value
+  while avoiding the need to storing extra data in the STATE
+
+
+Selectors and Reselect
+- Use SELECTOR to Pull Specific Data from a large STORE TREE and allow for more code Flexibility in the 
+- shape of the TREE Changes.
+- It takes two ARGUMENTS - AN Array of FUNCTIONS, and a Function to Pass the Array Through
+- import {createSelector} from 'reselect'
+  export const selectItems = (state) => state.items
+  export const selectTipPercentage = (state) => state.tipPercentage
+  export const selectTotal = createSelector([selectItems], (items) => items.reduce((sum,total)=>sum+total))
+  export const selectTipAmount = createSelector([selectTotal, selectTipPercentage], (subT,tipP)=>subT+tipP)
+ 
+  //Usgae in COMPONENTS
+  const items = selectItem(state); const total = selectTotal(state)
+
+- Why CREATESELECTOR? What are the BENEFITS?
+ - 1. MAKE THE APPLICATION SUPERPERFORMANT
+   Whenever we call it, it will look at the method and if the return value of the Functions (select<FnName>)
+   is UNCHANGED, it will give you the value - So it won't do the COMPUTATION AGAIN for EACH CALL
+   Sort of the way 'useMemo' and 'useCallback' works - Make the APPLICATION SUPERPERFORMANT
+ - 2. MANAGEABLE CODE / GOOD ABSTRACTION / RESILIENT APPLICATION
+   If there is a change in Object format, the select<Fn> would be the only place where
+   you need to make that change, which would not be the same case of 'items' referenced at several place 
+   It really helps in REFACTORING - Good Abstraction - Resilient APPLICATION
+
+
+IMMER
+- Redux uses this Under the HOOD
+- Immer Treat Immutable Object as MUTABLE Objects
+- Immer Provides a DRAFT VERSION of the Specified Immutable Objects for developers
+  to change and figure out how to change the Object without MUTATION STATE
+
+
+Redux Toolkit
+- Redux Toolkit sits on the top of REDUX 
+- An aBSTRACTION on top of REDUX
+- createSlice - Makes the action on our behalf, storing the ACTION TYPES. Kinda hidding most of INNER Working
+  aways from us - import {createSlice} from '@reduxjs/toolkit'
+- configureStore - Used with createSlice
+- extraReducer - ExtraReducer allows createSlice to respone to other action Types besides the TYPES automatically generated
+
+
+Asynchronous Actions
+- MAKE an API Request with vanilla JS using createAsyncThunk and the FETCH API
+- The createAsyncThunk ACCEPTS a REDUX action TYPE STRING and a CALLBACK Function and returns a PROMISE
+- SIMPLE API - REDUX THUNK
+- LITTLE COMPLICATED API - REDUX SAGE or REDUX OBSERVABLE
+- Thunk Middleware
+  - Redux Thunk allows you to Dispatch Functions that will eventually dispatch actions. So you are 
+  like, I do not have the data from API yet, Let me Dispatch this FUNCTION that will GET THE DATA FROM THE API
+  and Tehn I will go DISPATCH the ACTION once I get everything back
+  - Example: 
+  export const middleware = (store) => (next) => (action) => {
+     if(typeof action === function) {
+       const fn = action; return fn(store.dispatch)
+     } else {
+       return next(action)
+     }
+   }

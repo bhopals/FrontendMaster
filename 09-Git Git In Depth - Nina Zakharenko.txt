@@ -1,0 +1,337 @@
+****************************************************************
+  Git In Depth - Nina Zakharenko - 3.30 HOURS (13-14/Jul/2021)
+****************************************************************
+
+
+Version Controls - Git, SVN, CVS
+
+GIT - Track Collaborative Work Through a Beautiful Distributed Graph Theory Tree Model
+
+Git Packfiles and Deltas ( Deltafied and Undeltafied)
+
+GIT Foundation 
+- A Distributed Version Controlled System
+
+
+How Does GIT Store Information
+- At its CORE, GIT is like a KEY-VALUE Store
+- VALUE - DATA (BLOB)
+- KEY 
+  - HASH of DATA
+  - SHA1 
+    - A Cryptographic HASH Function
+    - Given a Peice of Data, it Produces a 40 DIGIT Hexadecimal Number
+    - The HASH Value content should always the SAME if INPUT is the SAME
+- This Type of System of also called "Content Addressable Storage System" because you can use the Content to GENERATE the KEY
+
+Git Blobs and Trees
+- The way GIT Store things as in GIT objects and Their Basic one is called a BLOB
+- VALUE - BLOB - Git Stores the Compressed Data in a BLOB along with Metadata in HEADER
+  - Metadata includes - The Identifier BLOB, The Size of the Content, '\0'(Terminator in C Language) delimiter, Content
+- If you run the HASH Method on the same Content Multiple Times, you will always get the Same Result
+
+
+Tree
+- Git Stores Blob Information in a TREE
+- A tree Contains Pointer(Using SHA1) and Metadata
+  - To Blobs
+  - To Other Trees
+- In GIT you cannot store EMPTY Directories, only Files that is because we have problem in STAGING AREA
+- Currently the Design of GIT Staging area only Permits Files to be Listed
+- Identical Content in GIT Stored ONCE
+- Tree is a Snapshot of the Repositories Point at Files and Directories
+
+
+GIT Optimization - PACKFILES, DELTAS
+- GIT Objects are Compressed
+- AS Files Changes, their content remain mostly similar
+- GIT optimizes this by Compressing these files together into PACKFILES
+- The Packfiles store the OBJECTS(The File content), and DELTAS(Difference b/w one version of the File and the NEXT version)
+- Git Packfiles store Objects in two main ways
+ - Undeltified: Take the raw object and Deflate-compress it
+ - Deltified: Diff b/w Raw Object and subsequent version
+
+
+Git Commit
+- An Object that Stores the current Content of the Project in a New Commmit with a log message for the User Describing Changes
+
+Commit Object
+- A Commit Points to a TREE
+- And Contains Metadata - Author and Committer, Date, Message, Parent Commit
+- The SHA1 of the Commit has all these information
+- The Commit Points to Parent Commit and Trees
+- A Commit is a Code Shapshot
+- HEAD - A Pointer to the Current Commit
+- HEAD - It is Usually a pointer to the current Branch
+
+
+Why Can't we change Commit SHA1
+- Even though the data is same, DATE and Time is going to be different hence different SHA1
+
+
+
+GIT Areas and Stashing
+- THREE AREAS
+  - Working AREA (Untracked Files)
+  - Staging AREA (Index, Cache) - To commit
+  - Repository (Repo) - Commited
+
+Staging Area
+- This Area is how GIT knows what change b/w the Current Commit and Next Commit
+- Tip: A "Clean" Staging Area is not Empty
+- Consider the Baseline Staging Area is Being an Exact copy of Latest Commit
+- It contains Baseline of the latest commit and SHA1 of that Commit
+- And the moment you add something on the STAGING Area - The SHA1 HASH Changes and that is HOW GIT realizes there are some changes made
+
+
+
+References, Commits, Branches
+- 3 Types of REFERENCES
+ - Tags and Annonated Tags
+ - HEAD
+ - Branches
+
+
+
+Tags and annotated Tags
+- Tags - Light Weight Tags are Simple Just a pointer to a Commit - git tag v1
+- Annotate Tags - Same as Tags, but store some additional informations (Message) - git tag -a v1 "TEST"
+- The Commit that a TAG point, does not change. It is a SNAPSHOT 
+
+HEAD
+- HEAD is how Git knows what Branch you are currently on, and what the next Parent Will be
+- It is a POINTER
+  - It USUALLY Points at the "name" of the Current Branch
+  - It can point at a commit TOO (DETACHED HEAD) 
+- It MOVES when
+  - You make a commit in the Currently active Branch
+  - When you checkout a new Branch
+
+Branches
+- A Branch is just a Pointer to the Particular Commit
+- A Pointer of the Current Branch Changes as new Commits are made
+- The current Branch Pointer Moves with Every Commit to the Repository
+
+
+Detached HEAD and Dangling Commits
+- Sometimes you need to checkout a specific commit or TAG instead of a Branch
+- Git Moves the HEAD Pointer to that Commit 
+- As Soon as you checkout a different branch or commit, the value of HEAD will point to new SHA
+- There is no reference pointing to that commit you made in a detached state
+
+
+Dangling Commits
+- Commits that are not referenced anywhere, eventually be garbage collected
+
+
+Merging & Fast Forward
+- Under the HOOD Merge commits are just commits, but they happen to be commits that have more than one parent
+- A Merge commits is Just a MARKER that have more than one Parent
+- It is happened when a FEATURE is merged into a Branch
+
+Fast Forward
+- Fast Forward Occurs when there are no commits on the base branch that happened after the BRANCH was created
+- In ORDER to avoid FAST-FORWARD, 'git merge --no-ff' (No Fast Forward) - Add a Marker commit 
+- This will FORCE a MERGE Commit even when it is not necessary
+- Generally you want to Prevent the FAST FORWARD when you want to maintain a specific Branch Topology
+- Adding a MARKER Commit ensure the merge shows in the git commit HISTORY
+- With FF (git merge) : 1 ==> 2 => 2a => 2b
+- Without FF (git merge --no-ff) : 1 ==> 2 ==> 2-2a2bMergeCommit => 2a => 2b 
+
+
+Merge Conflicts 
+- When our Files have DIVERGED
+- Attempting to MERGE but Files have DIVERGED
+- Git stops until the conflicts are resolved 
+
+
+GIT RERERE(REuse REcorded REsolution)
+- Git SAVES how you resolved a conflicts(Mine Version or Theirs Version)
+- So at the time of Next Conflicts in the same file, GIT would use the same resolution
+- Useful For - 1. Long lived Branches 2. Refactor/Rebasing
+- To Enable GIT RERERE
+  - 'git config rerere.enabled true'
+  - use --global flag to enable for all projects - 'git config rerere.enabled true --global'
+
+
+Git Commit Message
+- Good Commits are Important
+- Broken Window Theory (Visible Signs of a CRIME in a Neighbourhood) - a Metaphor for disorder with Neighbourhoods
+- Commands:
+ - git reset --hard
+ - git reset --hard HEAD^
+- Good Commit Helps With
+ - Debugging and Troubleshooting
+ - Code Review
+ - Rolling Bakc
+ - Creating Release Notes
+ - Associate the code with and issue or Ticket
+- Commit Message should be in FUTURE TENSE - "fix" instead of "fixed"
+
+Git Log
+ > git --no-pager log --oneline
+ > git --no-pager log --graph
+ > git log --since="yesterday"
+ > git log --since="2 weeks ago"
+ > git log --grep=mail --author=bsing --since="2 weeks"
+ > git log --diff-filter 
+
+
+Git Log Reference Commit
+^(HAT) - nth Parent Commit
+~(TILDE) - no. of commmits back - Following only FIRST Parent(Default parent if not specified)
+- ^ default 1 - A^ === A^1
+- ~ default 1 - A~ === A~1
+- ^ and ~ can be combined
+- Parent Commits are Ordered LEFT ==> RIGHT
+- Examples
+ - A~3 (3rd Commit of A's First Parent)
+ - A^2~3 (3rd Commit of A's Second Parent)
+
+Stash Commands
+ > git stash list 
+ > git stash show stash@{0}
+ > git stash save "Name"
+ > git stash drop
+ > git stash drop stash@{2}
+ > git stash clear
+
+
+GIT Commands
+ > tree .git - List GIT Tree
+ > echo 'Hello' | git hash-object - Will Generate Hash Object of the Content using SHA1 function
+ > git log --oneline
+ > cat .git/HEAD
+ > tree .git/objects
+
+
+
+Git Show and Diffs
+- DIFF shows changes between commits - Between Staging Area and Working
+- DIFF Commands
+ > git diff (unstaged changes)
+ > git diff --staged
+ > git diff <brancha> <branchb>
+ > git diff <brancha>..<branchb>
+- To see what all branches MERGED with Master
+ > git branch --merged master
+- To see branches are not MERGED with Master
+ > git branch --no-merged master 
+
+
+What Happens Behind the SCENE when you GIT CHECKOUT a Branch
+ - 1. Change HEAD to point to New Branch
+ - 2. Copy the Commit Snapshot to the Staging Area
+ - 3. Update the Working Area with the Branch Content
+
+
+Git Clean & Reset
+- Git clean will clear your working area by deleting untracked files
+- Use the DRY RUN Flag to see what could be deleted - git clean --dry-run
+
+
+Git Reset
+- UNDO last commit
+ > git reset --hard/--soft/--mixed (default)
+ > git reset --soft HEAD~ (Move the HEAD to PREVIOUS COMMIT)
+ > git reset HEAD~ (Move the HEAD to PREVIOUS COMMIT)
+ > git reset --mixed HEAD~
+   1. Move the HEAD to Previous COMMIT
+   2. Copies the File from the COMMIT HEAD to Staging Area
+ > git reset --hard HEAD~ 
+   1. Move the HEAD to Previous COMMIT
+   2. Copies the Files from the COMMIT HEAD to Staging Area
+   3. Copies the Files to Working Area
+- To UNDO a GIT RESET
+ > git reset ORIG-HEAD
+
+
+Git Revert
+- Git Rever creates a NEW COMMIT that introduces the Opposite Changes from the Specified Commit
+- The Original Commit Stays in the HISTORY
+
+
+Git Amend
+- Amend a COMMIT is a Quicl and Easy shortcut that lets you male changes to the previous commit 
+ > git commit --amend
+- Commits cannot be EDITED as it is REFERENCED by SHA and it will be differ even for the same content (data time differ)
+- So when you --amend the commit and push the changes with -f, you are rewriting the GIT HISTORY
+- In that case the Original Commits become DANGLING COMMIT
+- The Previous Commit Now not being referenced with anything so it will eventually be GARBAGE COLLECTED
+
+
+Git Rebase
+- Pulls in Latest changes from master and applies your commits on top of those changes by changing the Parent Commit of your Commits
+ > git checkout develop && git rebase master
+  - 1. First Rewinding HEAD to Replay your Work on Top of Master
+  - 2. Applying COMMIT
+
+
+Merge v/s Rebase
+- Merge: Creates a Brand New Commit
+- Rebase: Power of Rebasing - Replay Commits - Interactive Rebase (-i) - Rewrite History, Split Commits
+  - Incredibly Powerful
+  - Slice and Dice your GIT History
+  - It is easy to fix Previous Mistakes in Code
+  - You can keep you GIT History NEAT and CLEAN
+
+Git Best Practice
+- COMMIT OFTEN, PREFECT LATER, PUBLISH/PUSH ONCE
+- NEVER REWRITE Public Branch History
+
+
+Github v/s Git
+- Git
+ - Open Source Version Control Software
+ - Distributed Version Control System
+- Github
+ - Repository Hosting - Browser Coding
+ - Issues - Pull Request - Forks
+ - A way of COLLOBORATION
+
+
+Remote
+- A Remote is a GIT repository stored elsewhere on the WEB, in GITHUB etc
+- ORIGIN is the default name git gives to the server cloned from REMOTE
+- Cloning a REMOTE Repository from a URL will FETCH the whole Repository, and make a local copy in your .git Folder
+
+
+Fork 
+- A copy of Repository that is STORED in your Github Account
+- You can CLONE your Fork to your local Computer
+- Merging changes (Pull Request) to Original Project from a Fork 
+- While you work on your FORK, other changes are getting merged into the source REPO (the branch is 250 commits behind master)
+- In Order to stay up-to date, SETUP AN UPSTREAM (git remote add upstream http://....)
+
+Upstream
+- The Upstream Repository is the BASE Repository you created a FORK From
+- This is not default setup, you need to setup UPSTREAM manually
+- By Adding an UPSTREAM Remote you can pull down changes that have been added to the Original Repo you Forked in
+- 'git remote add upstream http://github.com/abs/repowdd.git'
+
+Track
+- Track a Branch to tie to an Upstream Branch
+ > git checkout -t origin/feature
+
+Fetch
+- It pulls down all the changes that happened on your server
+- But it does not change your local REPO
+ > git pull = git fetch && git merge
+
+
+Pull
+ > git pull = git fetch && git merge
+ > git pull --rabase (Will Fetch + UPDATE your local branch to copy the upstream branch, then replay any commit you made using rebase) 
+
+Push
+- Pushing sends your changes to the REMOTE Repository
+
+
+
+ORIG_HEAD
+- Undo a Merge Using ORIG_HEAD
+
+Git Reflogs
+- By Default GIT keeps commits (dangling commits) around for about 2 weeks
+- If you want to go back anytime, and find a commit that is no longer referenced, you can look in REFLOG - git reflog
+
