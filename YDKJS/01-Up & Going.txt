@@ -204,7 +204,20 @@ TRUTHY & FALSY
 - MODULES
   - The most common usage of Closure in JAVASCRIPT is the module pattern. 
   - Modules let you define private implementation details that are hidden from the outside world,
-    as well as Public API that is accessible from the outside. 
+    as well as Public API that is accessible from the outside.
+
+- PROTOTYPES
+  - When you reference a Property on an Object, if that Property doesn't exist, JavaScript will
+    automatically use that object's internal PROTOTYPE Reference to find another object to look
+    for the Property is missing.
+
+- POLYFILL
+  - Take the existing definition and produce a new code with some improvements and safe guarding
+    is called POLYFILL
+
+
+- TRANSPILING
+  - Convert the new code into older equivalent code so Older JS Engines can execute it.
 
 - KEYWORDS
   - a = null; typeof a; // "object" --weird BUG!!

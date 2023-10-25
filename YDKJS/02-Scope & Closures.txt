@@ -1,0 +1,14 @@
+
+
+## CHAPTER 01 - SCOPE
+
+- COMPILER
+  - 3 STEPS
+    - 01. TOKENIZING & LEXING - Breakup string in a Meaningful chunks caller TOKENS
+    - 02. PARSING -  (Generating AST - Abstract Tree Syntax)
+    - 03. CODE-GENERATION - Taking AST and turning it into an Executable code.
+
+
+JavaScript is an Interpreted, JIT Compiled. As we observed, Compilation ensures that the compiled 
+code is optimized for faster execution & the Interpreter ensures that code execution can immediately 
+ensure faster startup
