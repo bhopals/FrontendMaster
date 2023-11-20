@@ -211,7 +211,15 @@ Composition Over Inheritance
   using classing Inheritance Becomes ANTI-PATTERN
 - For that, we should use Compisition over Inheritance (Delegation Pattern)
 - This is linke Composing Two Objects during the Function call, and share "this" Context - More Testable Code
+- Composition over inheritance is the principle that classes should achieve polymorphic behavior 
+   and code reuse by their composition rather than inheritance from a base.
+- INHERITANCE means `is-a` Relation ship (Child Class `is-a` Parent Class) - Example `Dog` is-a `Animal`
+- COMPOSITION means `has-a` Relation ship (Dog Class `has-a` Bark Method) - Can be achived using factory functions.
 
+- As rule of thumb I would use inheritance only when I’m sure my objects won’t change and 
+  I can design them in a manner to have 1 or 2 levels of inheritance tops.
+  Composition unchain you from fragile and tightly coupled inheritance structures and helps up 
+  avoid what we are worse at: predicting the future.
 
 Bonus Tip:
 - The Only way to have confidence over the Runtime Behaviour is to limit/eliminate Dynamic Typing.
