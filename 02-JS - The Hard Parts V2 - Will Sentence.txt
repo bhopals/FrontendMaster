@@ -22,8 +22,8 @@ Closures
 - Functions with Memories
 - Starts with Returning a Function from Another Function
 - The scope is BAG PACKED with the Function attached Closure with hidden "[[scope]]" variable
-- Bag Packed are also called "Closed Over Environment Variaiable" - COVE
-- It is also called "Persistent Lexical Scope Reference Data" - PLSRD
+- Bag Packed are also called "Closed Over Environment Variable" - COEV
+- It is also called "Persistent / Scope Reference Data" - PLSRD
 - But the well known and widespread name is "Closure"
 
 Closure Practical Usage
@@ -65,7 +65,7 @@ Callback Queue and Event Loop
 - Other Types (Objects and Arrays) are allocated Dynamically from the shared pool of Memory called HEAP
 
 
-Es6 Job Queue/Task Queue/Micro Task Queue
+Es6 Job Queue/Task Queue/Micro Task Queue (All 3 are same)
 - This Queue is used by Promise
 - Job Queue Reserved for Promises only. All thenable and callbacks methods of Promises get added here
 - Job Queue is a way of executing the result of an Async Function
