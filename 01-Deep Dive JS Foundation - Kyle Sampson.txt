@@ -145,7 +145,7 @@ Arrow Function and Lexical "this"
 - DISADVANTAGE 
    - Arrow functions are annonymous - Hard to debug/trace
    - No self reference - so cannot be used in RECURSION
-   - Invoking Constructors or Object Methods, so cannot be used
+   - Invoking Constructors or Object Methods (requires NEW), so cannot be used
 - ADVANTAGE 
    - When you want "Lexical This" behaviour
 - TAKEAWAY
