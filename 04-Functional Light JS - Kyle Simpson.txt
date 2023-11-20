@@ -52,12 +52,14 @@ Pure Function
   Still a Function would be PURE if it uses that along with DIRECT INPUTS.
 - To Achieve Strong Immutability and Function Purity - 
   DON'T Ever Mutate any Object in the Function, Always use a copy of that object
+- Should enable Referential Transparency - which means that a function call can be replaced 
+      with its computed value without affecting the program’s behavior.
 
 Reducing Surface Area
 - Increasing the Readibility, Increasing the Confidence
 - Extract the IMPURITY of a Function to make it Pure Function and to avoid any Side Effect / Pollution
 - Reduce the Surface Area of the IMPURITY, if its unavoidable - Minimize the Side Effect / Pollution
-- That way we are Reducing the Surface Area, and Increading the Readability and Confidence
+- That way we are Reducing the Surface Area, and Increasing the Readability and Confidence
 
 
 Function Arguements
@@ -77,7 +79,7 @@ Function Arguments Shape Adapter
 
 Point Free
 - Point-free Style is a way of Defining functions with a very Simple Constrainst: 
-  Funciton Defination does not incluse arguments 
+  Funciton Defination does not include arguments 
   Tacit programming (point-free programming) is a programming paradigm in which a function definition does not include information regarding its arguments, using combinators and function composition [...] instead of variables.
 - Point free style means that the code doesn't explicitly mention it's arguments, even though they exist and are being used.
 - Example  const upper = (string) => string.toUpperCase(); ['Apple', 'Banana'].map(upper);
@@ -91,7 +93,37 @@ Point Free
 Composition
 - Output of Fn1 is passed directly to Fn2. The concept of having one Function call Output Immediately becomes the Input of another function is called Composition
 - var isOdd = compose(eq(1), mod(2))
+- Can be achived using 2 ways:
+  - compose - Returns a composed function from the inputs which executes right to left (as displayed in the example above).
+    const compose = (...fns) => arg =>
+    [...fns].reverse().reduce((result, fn) => fn(result), arg);
 
+    const add1 = num => num + 1;
+    const mul2 = num => num * 2;
+
+    const addAndMultiply = compose(
+      mul2,
+      add1,
+    ); // right to left order
+
+    console.log(addAndMultiply(2)); // 6 - first add1 then mul2
+
+
+  - pipe - Pipe is similar to compose but follows a more natural order of left to right invocation of composed functions.
+    const pipe = (...fns) => arg =>
+	  [...fns].reduce((result, fn) => fn(result), arg);
+
+    const add1 = num => num + 1;
+    const mul2 = num => num * 2;
+
+    const multiplyAndAdd = pipe(
+      mul2,
+      add1,
+    ); // left to right order
+
+    console.log(multiplyAndAdd(2)); // 5 - first mul2 then add1
+
+  Refer - https://divyanshu013.dev/blog/point-free-programming-and-composition/#:~:text=Point%20free%20programming%20(a.k.a.%20Tacit,to%20manipulate%20the%20arguments%20themselves.
 
 Closure 
 - Closure is when a Function Remember the Variables around it even when that Function is Executed Else Where
@@ -127,7 +159,7 @@ Referential Transparency
 
 Example:
 function renderCustomers(customers){...}
-function ajax(url, data, cb){ ajax(CUSOMER_API, {id:42}, renderCustomers }
+function ajax(url, data, cb){ ajax(CUSOMER_API, {id:42}, renderCustomers)}
 
 
 Generalized to Specialized
@@ -174,7 +206,7 @@ Currying
 
 
 Curry Example: 
-function log(data, importance, message) { console.log(...)}
+function log(date, importance, message) { console.log(...)}
 const log = _.curry(log)
 //ALL SAME
 log(new Date(), 'DEBUG', 'Hi There')
@@ -188,7 +220,8 @@ Partial APP v/s Currying
 - Partial App PRESETS some arg. now and receive the rest on the next call
 - Currying Does not preset any argument, it receive each argument one at a time
 - Both of them are specialization technic, but they specialze in a different way
-
+- REFER - https://divyanshu013.dev/blog/functional-programming-partial-application
+- REFER - https://bjouhier.wordpress.com/2011/04/04/currying-the-callback-or-the-essence-of-futures/
 
 Composition
 - When one Function call is Producing an Output that is then later routed to Another function call
@@ -215,7 +248,7 @@ Assignment Immutability (By Value - PRIMITIVES)
 - CONST cannot be Re-assigned or MUTATED
 - CONST word seems to be confusing hence it is Depricated in JAVA, and they created a FINAL to avoid confusion
 - When People see CONST the first thought comes is the value does not change, which is NOT TRUE
-- CONST just cannot be RE-ASSIGNED OR MUTATED (Only if Primitive)
+- CONST just cannot be RE-ASSIGNED OR MUTATED (Only if Primitive, We can change an Object Value)
 - CONST/LET are usually BLOCK SCOPED (10-15 lines of block code), hence people should not be worried about the Reassingment of CONST type
 
 Value Immutability (By Reference - Objects)
