@@ -87,7 +87,7 @@ CSP Function
 Thunks
 - A Thunk is a Function that ENCAPSULATES SYN and ASYNC Code inside
 - THUNK Accepts only one callback function as an arguments, which is a CSP(Continuation-Passing Style) Function
-- THUNK passes the result back to CAllback after being executed
+- THUNK passes the result back to Callback after being executed
 - A pattern on top of Callback
 - SYNCHRONOUS THUNK - A THUNK is a function that has everything already that it needs to do to give you some value back
 - They ALREADY have everything they need to return a value. You do not need to pass any argument
@@ -144,7 +144,7 @@ Promise API
 - Also, we can LISTEN to the EVENT and Unsubscribe to the event the First time it Happen for
 - Which SHOWS we are in Complete Control of the Paradigm
 - PROMISE HAS UNINVERTE the "INVERSION OF CONTROL" PROBLEM
-- A PROMISE is like an Event Listener, But rather thanbeing a COMPLETION event, We CALL the event "then()" EVENT
+- A PROMISE is like an Event Listener, But rather than being a COMPLETION event, We CALL the event "then()" EVENT
 
 
 
@@ -202,7 +202,7 @@ GENERATORS
 - A STATE MACHINE is having a Patterned Series of FLOW from one STATE to ANOTHER STATE to ANOTHER STATE
 - "YIELD" - Keyword in Generator is kind of Like PAUSE BUTTON, which makes Generator a PAUSABLE FUNCTION
 - So Generator is a kind of a Function that can PAUSE and RESUME and PAUSE and RESUME...
-- Generators are like BLOCING Localized Functions
+- Generators are like BLOCKING Localized Functions
 - function *gen(){ console.log('init'); yield; console.log('first'); yield; console.log('last')}
 - var it = gen()//Returns an ITERATOR Function; it.next()//init; it.next()//first; it.next()//last;
 - Generator Returns an Iterator Function, which has .next() method, which returns { value: <value>, done: true/false }
@@ -283,15 +283,15 @@ Observables ( Event Oriented World)
 - A Stream of EVENTS, however make promises more difficult to use because a Promise can only be resolved once
 - CONCURRENCY === Events + PROMISES??
 - With the Use of PROMISES and GENERATORS, we have give ourselves Several Layers of HIGH ORDER ABSTRACTION
-- BUT How to respond to events that Repeatedly happening and all of SUDDEN PROMISES SEEMS TO FALL APARY :(
+- BUT How to respond to events that Repeatedly happening and all of SUDDEN PROMISES SEEMS TO FALL APART :(
 - As they can only be RESOLVED and REJECTED Once
 - So Promises, at least by themselves are not going to model well in a EVENT ORIENTED WORLD, we are going to need something BETTER
 - WE NEED Something to Separate the Concern of Having a Producer and Consumer at the Different Spot
 - Which DO NOT have to be Tightly Coupled
-- Which INTODUCES "OBSERVABLES"
+- Which INTRODUCES "OBSERVABLES"
 - While Observable Do not Currently Exist in the Javascript Specification, Third Party libraries have began IMPLEMENTING OBSERVABLES
 - Example - RxJS - Reactive Extension Javascript
-- An OBSERVABLE is an Adapter Hooked onto an EVENT SOURCE and that Produces a PROMISE EVERYTIME a NEW eVENT COMES THROUGH
+- An OBSERVABLE is an Adapter Hooked onto an EVENT SOURCE and that Produces a PROMISE EVERYTIME a NEW EVENT COMES THROUGH
 - But it does in a Separate Way, Where I can SETUP my EVENT SOURCE, and In an Entirely Different Part of My Application,
 - I can Declaratively say whats my DATA FLOW
 - Means I have an OBSERVABLE which Represent My DATA SOURCE, and I can SUBSCRIBE to that Observable in one or more
@@ -301,12 +301,12 @@ Observables ( Event Oriented World)
 
 
 Reactive Sequences
-- An Implementation of Observable added by Kyle in his library called "Aynquence"
+- An Implementation of Observable added by Kyle in his library called "Asynquence"
 
 
 Synthetic Events
 - A Synthetic Event is a Cross Browser Wrapper around the Different Browsers and Platforms
-- A Syntthetic Event is a Cross Browser Wrapper around the Browser's NATIVE Events (React Onclick() ===> Browser onClick() )
+- A Synthetic Event is a Cross Browser Wrapper around the Browser's NATIVE Events (React Onclick() ===> Browser onClick() )
 - Synthetic Event Stream based on the Composition of Multiple events
 - var rsq = ASQ.react.all(click, mouseMove){...} //Function/Event will be called once BOTH Events are called or fired
 

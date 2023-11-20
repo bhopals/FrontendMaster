@@ -308,7 +308,7 @@ Managing Layers/Creating Layers
 - Layers are an Optimization that the Browser does for you under the hood
 - Browser Engine has a "Composite Reasons" list that helps them decide layering(Create own Layer)
 - Although Layering is on Totally Control of the Browser
-- However, you can give the brower HINTS using teh "will-change" Property
+- However, you can give the brower HINTS using the "will-change" Property
 - Hey Browser, WILL you consider making it's own layer as this piece "will-change" more OFTEN
 - "will-change" attributes/properties on HTML ELEMENT/CSS kind of a Recommendation to the BROWSER for making it's own layer
 - You can also SET/ACCESS "will-change" property using Javascript - element.style.willChange
@@ -380,7 +380,7 @@ Tools - Build Tools
 
 KEY TAKEAWAY
 - DO NOT LOAD A BUNDLE more that 300KB Size
-- Always Import Specific Mehtods instead of ".*" Import
+- Always Import Specific Methods instead of ".*" Import
 - Always Analyze bundle size and determine the size
 - Only load the code EAGERLY which is essential for initial Load
 - Lazy Loading Component with "React-loadable" - Component Centric Code Splitting
