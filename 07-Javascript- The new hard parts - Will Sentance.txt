@@ -107,12 +107,12 @@ Curry Rules
 
 Currying v/s Partial Application
 - Currying
- - Transaforming a Function with many params to a Function with Single Param
- - A function Returning from another function that might return another function,
- - But every returned function must take only one parameter at a time
+   - Transaforming a Function with many params to a Function with Single Param
+   - A function Returning from another function that might return another function,
+   - But every returned function must take only one parameter at a time
 - Partial App
- - A function returning another function that might return another function,
- - But every returned function can take several arguments
+   - A function returning another function that might return another function,
+   - But every returned function can take several arguments
 - Currying takes only one parameter, unlike partial app which can take more than one params
 
 WHY do we need Currying and Partial Application?

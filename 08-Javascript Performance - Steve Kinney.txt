@@ -49,7 +49,7 @@ How to Optimize your Javascript - Tips:
 - Declare Object properties in constructor
 - Keep Object property ordering constant
 - Fix function argument types
-- Declare classes in script scode
+- Declare classes in script code
 - use for...in(4-6X faster than functional iteration)
 - use Type Checking (Static type Checking - Type Script)
 
@@ -74,7 +74,7 @@ V8
 
 
 Javascript Execution in V8 is divided into three stages:
-- Source to Syntax Tree - The Parse Generates an Abstract Syntax Tree(AST)
+- Source to Syntax Tree - The Parser Generates an Abstract Syntax Tree(AST)
 - Syntax Tree to Bytecode - V8's Interpreter "Ignition" Generates Bytecode from the Syntax Tree
 - Bytecode to Machine code - V8's Compiler "TurboFan" Generates a Graph from bytecode, 
 - replacing sections of bytecode with highly optimized Machine Code
@@ -127,7 +127,7 @@ How Does the Browser Figure out what type something is?
 
 Hidden Classes
 - Most Javascript Interpreter uses Dictionary Like Structures(Hash Function Based)
-- to store the location of Object property valyes in the Memory
+- to store the location of Object property values in the Memory
 - Class Objects are treated same if they have the same HIDDEN Classes
 - Any change in the Property of the Object would change HIDDEN CLASSES Structure
 
@@ -142,7 +142,7 @@ Function Inlining / Inline Caching
 - The code we write is not always the code that executed
 - Hot Function can be re-written by the compiler to be more Performant and there is not anything we need to do
 - If the Function is getting called multiple times, Optimizer instead of calling the func again and again
-- It COPIED the function body and PUT IT INLINE at the CALLSITE
+- It COPIED the function body and PUT IT INLINE at the CALL SITE
 
 
 KEY TAKEAWAY
@@ -165,7 +165,7 @@ Browser Parsing HTML(HTML DOM) and CSS(CSSOM) and Generating RENDER TREE
 - Once Received, Browser parse the received HTML into DOM(Document Object Model)
 - DOM - A Big representation of Tree like STRUCTURE that is a Representation of the Web Pages that we have
 - Same with CSS, The Browser parse and convert that into CSSOM(CSS Object Model) - A SET of Rules for CSS
-- Browser takse the STATE OF THE WORLD (HTML DOM) and RULES OF THE WORLS (CSSOM) and put the together into Called RENDER TREE
+- Browser takse the STATE OF THE WORLD (HTML DOM) and RULES OF THE WORLD (CSSOM) and put the together into Called RENDER TREE
 - Using "Style Element/Selector Matching", browsers apply the Styles on an ELEMENT
 - Once Browser done with sorting and selecting all the RULES(Styles), It's time to Render the Layout
 
@@ -223,7 +223,7 @@ Reflows
 What Causes a REFLOW
 - Resizing the WINDOW
 - Changing the FONT
-- Contet Changes
+- Content Changes
 - Adding/Removing Classes
 - Adding/Removing a Stylesheet/Elements
 - Changing the Orientation
