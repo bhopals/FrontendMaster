@@ -6,7 +6,7 @@
 *******************************************************************
 
 github: 
-- http://github.com/kentcdodds/advance-react-pattern-v2
+- https://github.com/kentcdodds/advanced-react-patterns-v2
 - http://github.com/facebook/react/tree/0.14-stable/docs/docs
 
 Pattern to enhance the Flexibility and Simplicity of BOTH your Component API's and Implementation
@@ -60,6 +60,7 @@ Render Props
 Props Collection
 - Prop Collection are a convenience for Frequent use cases of RENDER Prop Function
 - A Useful Feature to provide a Collection of PROPS that you would Normally Use
+- REFER - https://nullisnotanobject.co.uk/posts/react-patterns-prop-collections-and-getters
 
 Props Getter
 - Help Fix Overwriting Properties that are INTENDED to be overwritten by comparing the PROPERTIES that should be applied
@@ -211,7 +212,7 @@ Store
 
 
 Action Creators
-- Action Creator will set a Constant VALUE to an ACTION Objet that can be used instead of Repeatedly writing the FULL ACTION
+- Action Creator will set a Constant VALUE to an ACTION Object that can be used instead of Repeatedly writing the FULL ACTION
 - A Level of Abstraction
 - const increment = (amount) => {type:'INCREMENT', payload: amout}
 - Using these ACTION CREATORS (Helper Method/Functions) can help Reduce code repition by avoiding 
@@ -225,7 +226,7 @@ Setting Initial STATE
 Some Rules For REDUCERS
 - No Mutating Objects
 - If you touch it, you replace it
-- You have to Return Something and ideally it should be the UNCHANGED STATE or a new STATE
+- You have to Return Something - ideally it should be the UNCHANGED STATE or a new STATE
 - It is just a Javascript PURE Function
 - Reducers Prefer FLAT OBJECT
 - return {...state, author: {...state.author, city: 'Whitby'}}
@@ -249,7 +250,7 @@ Action Creator
 - store.dispatch(increment(10))
 
 bindActionCreator
-- Just gives us a WAY yo do some shorthand, what if we want to make functions that are bound the dispatch that we could just call
+- Just gives us a WAY to do some shorthand, what if we want to make functions that are bound the dispatch that we could just call
 - bindACtionCreator({<methods>}, <boundTarget>)
 - const actions = bindActionCreator({increment, add}, store.dispatch)
 - console.log(actions) //{increment: fn(), add: fn()}

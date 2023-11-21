@@ -58,7 +58,7 @@ React.memo / useMemo
 
 useMemo v/s useCallback
 - Both are same with a slight difference
-- useMemo will call the Function as dependencies have not changes - It will not call that again
+- useMemo will call the Function as dependencies have not changed - It will not call that again
 - useCallback will give you a new Function that you can call so it gives a Function rather than result
 - useMomo memorize the RESULT, however useCallback memorize the FUNCTION
 
