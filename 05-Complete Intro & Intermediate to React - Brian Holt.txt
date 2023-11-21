@@ -50,7 +50,7 @@ Virtual Dom
 - React's RENDER Function creates a node TREE out of the React Components.
 - It then updates this TREE in response to the Mutations in the DATA model which is caused by various actions done by 
 - React uses two Virtual DOMS to store PrevState and Current State
-- To get the DIFF it compares both and know what are the objects that are changed
+- To get the DIFF, it compares both and know what are the objects that are changed
 
 
 
@@ -66,12 +66,12 @@ Error Boundaries
   - static getDrivedStateFromError(){ return { hasError: true } } - renders the fallback UI interface when the render method has an error.
 
 
-Creat Modal in React
+Create Modal in React
 - import "createPortal" from 'react-dom'
 - return createPortal(<div>{children}</div>, elemRef.current)
 
 High Order Components(HOC)
-- An Advanced way of Reuisng the Component Logic
+- An Advance way of Reusing the Component Logic
 - Derived from Reacts Compositional Nature
 - HOC are Custom components which Wraps Another component within it
 - HOC are Pure Components
@@ -85,8 +85,11 @@ Use of HOC
 
 Pure Component
 - Simplest and Fastest Components
+- Class should extend `React.PureComponent`
+- `recompose` lib has `pure` method to create HOC (Existing Class Components to Pure Components)
 - They can replace any Component which only has a RENDER() method
 - These components enhance the simplicity of the code and performance of the application
+- REFER - https://blog.logrocket.com/what-are-react-pure-functional-components/#:~:text=in%20your%20browser.-,What%20is%20a%20pure%20component%20in%20React%3F,for%20the%20same%20input%20values
 
 
 Keys in React
@@ -144,7 +147,7 @@ Optimize React APP Performance
 Flux
 - Flux is an Architectural Pattern which enforces the UNI-Directional Data Flow. It Controls derived data
 - It enables communication between Multiple Components using a central STORE which has Authority of all data.
-- Any UPDATE in data throughtout the application must occur here (Central Store) only
+- Any UPDATE in data throughout the application must occur here (Central Store) only
 - Single Source of Truth
 
 
@@ -204,13 +207,13 @@ useState Hook
 
 
 useEffect Hook
-- useEffect is how you recreate 'componentDidMount', 'componentDidUpdate', and 'componentWillUnount' 
+- useEffect is how you recreate 'componentDidMount', 'componentDidUpdate', and 'componentWillUnmount' 
   behaviour on Functional Component
 - Inside 'useEffect' you can do any sort of Side Effect type action, that you would have done through React Lifecycle Method
 - NOT Passing "[]" will ensure 'useEffect' to call on every change/rerender - componentDidUpdate
 - Passing "[PARAM]" as a second param will ensure the useEffect will be called everytime the PARAM value changes - componentDidUpdate
 - Passing "[]" as a second param will ensure the useEffect will only run once - componentDidMount
-- Returned funciton from the 'useEffect' will be called to perform any cleanup at Unmounting stage - componentWillUnmount
+- Returned function from the 'useEffect' will be called to perform any cleanup at Unmounting stage - componentWillUnmount
 - useEffect(() => { fetch().then((res) result = res). return api.clearAll()}, [result])
 
 
@@ -222,7 +225,7 @@ usecontext Hook
 
 
 useRef Hook
-- Refs are useful for: 1. How to Emulate Instance var. from ROOT, 2. Referring DOM Nodes Directly
+- Refs are useful for: 1. How to Emulate Instance variable from ROOT, 2. Referring DOM Nodes Directly
 - "useRef" returns a mutable REF object whose ".current" property is Initialized to the PASSED Arg value
 - The Returned Object will Persist for the Full Life Time of the Component (Irrespective of ANY React Life Cycle)
 - Persist Data between Renders
