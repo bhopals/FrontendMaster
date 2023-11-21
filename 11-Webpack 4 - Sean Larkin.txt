@@ -37,10 +37,10 @@ Why Webpack?
 - NO INNER SCOPE LEAK (with IIFE)
 - So Browser Treat Each File as IIFE(Revealing Module) which certainly helped to a Certain Extent
 - WITH that, We can Safely Concatenate - We can "SAFELY" combine Files without Concern of Scope Resolution.
-- With that, we can take and write a Hundred files and we can squish them together without concern that we are 
+- With that, we can take and write a Hundred files and we can squash them together without concern that we are 
   going to knock out a bunch of variables and scopes
 - So concatination of all the files into one strategy led to the EXPLOSION of these Toolings
-  - grunt, gulp, make, stealjs, brocoli = minmizing, concatination
+  - grunt, gulp, make, stealjs, brocoli => minifying, concatination
 - Although all these Tools are make to SOLVE the Problems. However, there were still some PROBLEMS
   - If you change in ONE FILE, YOU HAVE TO FULL REBUILD Everything. Concatenation these files again, for every change 
   - thats INSANE for a CODE base of 1000MB or more
@@ -91,12 +91,12 @@ COMMONJS - Problems:
 Browserify, RequireJS, SystemJS - Solution:
   To SOLVE that - Bundlers and Linkers comes to OUR RESCUE. Examples: Browserify, RequireJS, SystemJS
   These Bundles started to be created and their main premise is to allow you to write CommonJS Modules and then 
-  it get BUNDLED and STRIPPED those statements and the executed in the same orders so that it works in the web
+  get BUNDLED and STRIPPED those statements and then executed in the same orders so that it works in the web
   exactly as it might work or you would expected to work in the code
 
 Browserify, RequireJS, SystemJS - PROBLEMS: 
  - No Static Async
- - No Lazy Loading (All bundles up front served to the Browser :( )
+ - No Lazy Loading (All bundles up front served to the Browser :( ))
 
 Asynchronous Module Definition (AMD) + CommonJS - SOLUTION
  - Asynchronous Module Definition (AMD) + CommonJS
@@ -127,7 +127,7 @@ ESM (Ecmascript Module) - Solution
 - FEATURES:
  - It is a Module Bundler and let you write any Module Format (MIXED)
  - Compiles all type of the modules to Run in Browser
- - Support Static SYNC BUNDLINE / CODE SPLITTING
+ - Support Static SYNC BUNDLING / CODE SPLITTING
  - Can Create separate Lazy Lots of Bundles at Build Time - That way, you can leverage all the extra OPTIMIZATION
  - A Rich, VAST Ecosystem, Incredible Flexible
  - The Most Performant Way to Ship JS today
@@ -147,12 +147,6 @@ REACT ECOSYSTEM ADOPTED IT.
 - 1. webpack.config.js - (Yes it is MODULE too) - Webpack config is just a CommonJS MODULE
 - 2. webpack cli - Use webpack cli commands
 - 3. Node API - create a custom webpack wrapper 
-
-A093861
-Shaila Kunwar
-
-A093860
-Dholki Devi
 
 #8 HISTORY OF MODULES
 A. Inline Scripting / Adding Scripts at the End of the BODY Tag
@@ -322,7 +316,7 @@ Passing VAR to webpack config
 - Now in webpack.config you will have a ACCESS to "env" Object
 - module.export = env => {}
 
-Webpack Devserver
+Webpack Dev-server
 - Helps you setup a LOCAL DEVELOPMENT Server Based on EXPRESS Webserver that serves the Content of a Distributed Folder
 - npm install webpack-dev-server --dev
 - script: {'dev': 'webpack-dev-server'}
@@ -389,7 +383,7 @@ Code Splitting
   - Dynamic Imports
   - Route Level Code Splitting
   - Dynamic Import ROUTES
-  - Dynmic Code Splitting
+  - Dynamic Code Splitting
     - Loading of ASYNC bundle based on Runtime
     - Webpack will create DIFFERENT Checksum/Chunk of all the Dynamic Code instead of adding that in the MAIN BUNDLE/FILE
   - Naming Bundles
