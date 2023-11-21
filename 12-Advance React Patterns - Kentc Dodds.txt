@@ -300,7 +300,7 @@ Connecting Redux into React
 - 3. CREATE A REDUCER
   export const reducer=(state=initialState,action){......}
 - 4. CREATE A STORE
-  export const store=createStrore(reducer)
+  export const store=createStore(reducer)
 - 5. BIND IT TO OUR REACT APP (Connecting the REACT-REDUX PROVIDER)
   import {Provider} from 'react-redux'; RectDOM.render(<Provider store={store}><Application/></Provider>, document.getElementById('root'))
   - WRAP the Application with REACT REDUX PROVIDER
@@ -317,7 +317,7 @@ Redux DEV TOOLS
 Connecting STATE HOOKS to the STORE
 - use "useSelector" HOOK from 'react-redux'
 - import {useSelector, useDispatch} from 'react-redux'
-- const const = useSelector((state)=> state.count)//Give Access to the STATE; const dispatch = useDispatch() 
+- const count = useSelector((state)=> state.count)//Give Access to the STATE; const dispatch = useDispatch() 
 - dispatch(increment())
 - In REACT REDUX we used to use CONNECT METHOD to wrap a Presentational Component
 - useSelector === mapStateToProps
@@ -325,7 +325,7 @@ Connecting STATE HOOKS to the STORE
 - FunctionalComponent ==== ClassComponent
 - React Redux Connect API 
 
-Redux Only Meant to PUT only BUSINESS Login in REDUX STATE, Not Everything from the APP (Flags, options, intermediate state etc.)
+Redux Meant to PUT only BUSINESS Logic in REDUX STATE, Not Everything from the APP (Flags, options, intermediate state etc.)
 Better to keep These unwanted things in COMPONENT STATE
 
 
