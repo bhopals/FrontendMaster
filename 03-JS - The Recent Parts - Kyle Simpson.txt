@@ -17,7 +17,7 @@ Browser Supports and Transpiler
 Strings
 - Template Strings - (Interpolates Literals ``), can be used for multiline string as well
 - Tagged Template - (Tag Function) Allows you to pass Template Strings in a Function. The first arg. of Tag function is a String Function a string array
-- Apply Taggged Templates - function logger(strings, ...values){}; logger `Test ${param1} and ${param2}` - Example: JSX in React is a Tagged Template/Function
+- Apply Tagged Templates - function logger(strings, ...values){}; logger `Test ${param1} and ${param2}` - Example: JSX in React is a Tagged Template/Function
 - String Padding/Trimming - padStart, padEnd, trim, trimEnd, trimStart
 
 

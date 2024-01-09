@@ -327,11 +327,9 @@ Push
 - Pushing sends your changes to the REMOTE Repository
 
 
-
 ORIG_HEAD
 - Undo a Merge Using ORIG_HEAD
 
 Git Reflogs
 - By Default GIT keeps commits (dangling commits) around for about 2 weeks
 - If you want to go back anytime, and find a commit that is no longer referenced, you can look in REFLOG - git reflog
-

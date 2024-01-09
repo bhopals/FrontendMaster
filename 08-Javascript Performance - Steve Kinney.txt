@@ -182,7 +182,7 @@ Styling Element (Selector Matching)
 - The process of figuring out which styles apply to an element
 - The more complicated you make selector, the longest it takes ( use of "nth" of childs)
 - Always STICK to simple class names whenever possible
-- Consider using BEW (Block, Element, Modifier) - A methodology for Naming CSS Classes
+- Consider using BEM (Block, Element, Modifier) - A methodology for Naming CSS Classes
 - Browsers read SELECTORS from LEFT <=== RIGHT (Right-to-Left)
 - Reduce the AMOUNT of CSS that you are shipping
 - Reduce the NUMBER of STYLE that effect a given ELEMENT
@@ -387,7 +387,6 @@ KEY TAKEAWAY
 - A HIGH ORDER Component for Loading Component with using "dynamic" IMPORT
 - Enable DYNAMIC Import in BABEL
 - Sometimes to avoid CallTime, you can import a Component in "componentDidMount"
-
 
 
 THE END

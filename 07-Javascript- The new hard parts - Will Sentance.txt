@@ -49,8 +49,8 @@ Iterators
 - When a Inner function is returned, it does attache the outerscope variables along with it (Closure)
 - [[scope]] is the flag/lable which is linked to that INNER Scope (Closed Over Scope)
 - A backpack of Persistent Live Data
-- Also called C.O.V.E (Closed Over Environment Variable)
-- Also called P.L.S.R.D (Persistent Lexical Scope Reference Data)
+- Also called C.O.E.V. (Closed Over Environment Variable)
+- Also called P.L.S.R.D. (Persistent Lexical Scope Reference Data)
 - Lexically Scoped Languages - Javascript
 - Dynamically Scoped Languages - Bash, Lisp
 
@@ -71,8 +71,6 @@ Generators
 Async/Await 
 - It simplifies all this and finally fixes the INVERSION of Control Problem + non-sequential Reasoning of callbacks
 - Async/Await is actually the Implementation of Generator Functions + Promises(example - yield fetch(<url>))
-
-
 
 
 *******************************************************************************************

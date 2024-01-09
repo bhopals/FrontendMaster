@@ -152,7 +152,7 @@ Flux
 
 
 Redux 
-- Redux is one of the most trending libraries for front-end development in today market place - Opne Source JS Library
+- Redux is one of the most trending libraries for front-end development in today market place - Open Source JS Library
 - It is a "Predictable state container" of Javascript Applications and is Used for the entire state management
 - Application developed with Redux are easy to TEST and provides consistent Behavoiur
 - It Does support MIDDLEWARE to be passed, in case we require extra processing on the data (logging, stats, audit etc.)

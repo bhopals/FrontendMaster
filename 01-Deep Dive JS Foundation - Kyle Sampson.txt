@@ -203,7 +203,7 @@ Prototypal Inheritance
 OLOO Pattern
 - OLOO (Object Linked to Other Object)
 - Object.create METHOD is so powerful as it can Make and Link our Objects
-- Internally it creates a Function(), Link it to the Object passed (F.prototype), and return new F())
+- Internally it creates a Function(), Link it to the Object passed (F.prototype), and return new F()
 
 
 Composition Over Inheritance

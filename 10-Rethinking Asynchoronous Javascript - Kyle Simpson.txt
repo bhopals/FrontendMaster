@@ -143,7 +143,7 @@ Promise API
 - With Promises, I have retained control. I Simply said, you just give me an EVENT LISTENER, I will FIGURE out what to DO
 - Also, we can LISTEN to the EVENT and Unsubscribe to the event the First time it Happen for
 - Which SHOWS we are in Complete Control of the Paradigm
-- PROMISE HAS UNINVERTE the "INVERSION OF CONTROL" PROBLEM
+- PROMISE HAS UNINVERTED the "INVERSION OF CONTROL" PROBLEM
 - A PROMISE is like an Event Listener, But rather than being a COMPLETION event, We CALL the event "then()" EVENT
 
 

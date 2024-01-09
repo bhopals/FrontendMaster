@@ -101,7 +101,7 @@ HOC
 - So SOON HOC evolved into the Picture to Support Code Reuse
 - Essentially HOC's are SIMILAR to DECORATOR PATTERN, a Function that takes a Component as the First PARAM
 - and Returns a NEW COMPONENT. This is where you will apply your crosscutting functionality
-- Example - function withExample(Component) { return function(props){return <Component {...props} />}
+- Example - function withExample(Component) { return function(props){return <Component {...props} />}}
 - HOC Promotes REUSE of Logic across React Components
 - What DOES HOC Solve?
   - Importantly they provided a way to REUSE code when using ES6 Classes

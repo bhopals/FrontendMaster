@@ -46,7 +46,7 @@ Asynchronous Javascript
   - 5. Task Queue
   - 6. Micro Queue
 - Javascript has a label for each Browser Feature and Javascript uses that label to call Browsers Respective Functions (setTimeout --> Timer, fetch --> XHR)
-- There is a FACADE Latyer between JS and Browser API (setTimeout --> Timer, fetch --> XHR)
+- There is a FACADE Layer between JS and Browser API (setTimeout --> Timer, fetch --> XHR)
 
 
 Callback Queue and Event Loop
