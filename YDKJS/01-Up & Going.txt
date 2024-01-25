@@ -1,5 +1,5 @@
 
-## Chapter 1 - Into Programming
+## Chapter 1 - Intro Programming
 
 - STATEMENT 
   - In a computer programming, a group of words, numbers, and operators that
@@ -113,7 +113,7 @@ KEYWORDS
 - Coresion in `==` v/s "==="
   - `==`
     - if same type just MATCH
-    - if different type perform COERSION and  then MATCH
+    - if different type perform COERSION and then MATCH
   - `===`
     - Just match - No COERSION at all
 

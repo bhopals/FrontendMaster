@@ -23,7 +23,7 @@ Closures
 - Starts with Returning a Function from Another Function
 - The scope is BAG PACKED with the Function attached Closure with hidden "[[scope]]" variable
 - Bag Packed are also called "Closed Over Environment Variable" - COEV
-- It is also called "Persistent / Scope Reference Data" - PLSRD
+- It is also called "Persistent Lexically Scope Reference Data" - PLSRD
 - But the well known and widespread name is "Closure"
 
 Closure Practical Usage
@@ -93,7 +93,15 @@ V8 Engine
   - Avoid adding Dynamic Properties - Adding Dynamic Properties trigger HIDDEN CLASS CHANGE
   - Avoid Pre-Allocating Large Arrays
 
+Javascript execution in V8 is divided into three stages:
 
+ - Source to syntax tree: the parser generates an abstract syntax tree (AST) from source
+ - Syntax tree to bytecode: V8’s interpreter Ignition generates bytecode from the syntax tree. 
+   Note that this bytecode step was not present before 2017. The pre-2017 V8 is described here.
+ - Bytecode to machine code: V8’s compiler TurboFan generates a graph from bytecode, replacing sections of 
+   bytecode with highly-optimized machine code
+- More - https://blog.logrocket.com/how-javascript-works-optimizing-the-v8-compiler-for-efficiency/
+ 
 Promises
 - Uses `two-fronged` facade function
   - Initiate background web browser work
@@ -103,6 +111,7 @@ Promises
   when we make a call to a web browser
 - Promises are a placeholder for a data we expect to get back
 - Asynchronous Javascript is the backbone of the modern web, letting us build fast `non-blocking` Applications
+- The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value
 
 
 Classes = Function + Object.create Combo

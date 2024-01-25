@@ -40,7 +40,7 @@ Promises
 - Promise Objects will automatically trigger that functionality to run
 - Microtask Queue (or Job Queue) is where tasks initiated by Promise Objects get Processed befor Callback Queue 
 - Promises, WEB API, the Callback, Microtask Queue, and Event Loop allow us to defer our actions until the Work is completed
-
+- The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value
 
 Iterators
 - Iterators is a way to automate the Accessing each Element and be able to focus on what to do for each element

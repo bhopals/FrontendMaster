@@ -131,7 +131,7 @@ Promises
 - Mark Miller, creator of E Programming Language and Committe Member of TC39
 - In E, they have things called FUTURE, so they brought the same IDEA to JS and Called Promies
 - Promises Allow People to reason about Value it ignorance of the timing
-
+- The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value
 
 
 Promise API

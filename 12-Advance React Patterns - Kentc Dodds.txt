@@ -370,7 +370,7 @@ mapDispatchToProps
 - will be merged into the Component's Props
 - function mapStateToProps(state) {return { todos: state.todos }}
 - function mapDispatchToProps(dispatch) {return {addTodo: bindActionCreators(addTodo, dispatch)}}(Passing a fun.) OR
-- function mapDispatchToProps{return {addTodo} (Passing an Object)
+- function mapDispatchToProps{return {addTodo} (Passing an Object)}
 - export default connect(mapStateToProps,mapDispatchToProps)(Todos); OR
 - export default connect(mapStateToProps)(mapDispatchToProps)(Todos)
 

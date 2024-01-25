@@ -48,6 +48,7 @@ Regular Expression
 Async/Await (ES6)
 - Promises - A way of representing a future values in a time-independent way, 
   so you specify chain of Asynchronous STEPS - .then().then()
+- The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value
 - forEach, map, filter, reduce - These all are Synchronous Iterators, but we need an Async Iterator
 - So what if we need an Eager Asynchronous Iterator that can pause whenver it seems.
 - Something which would wait for one PROMISE to finish and then move to NEXT

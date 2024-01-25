@@ -115,3 +115,195 @@ Refer - https://divyanshu013.dev/blog/point-free-programming-and-composition/#:~
 
 #### Function arity and partial application
 Refer - https://divyanshu013.dev/blog/functional-programming-partial-application
+
+
+Java Script Design Patterns - https://www.dofactory.com/javascript/design-patterns/adapter
+More on REACT PATTERNS - https://www.patterns.dev/react/compound-pattern
+
+
+
+Next Js v/ Nest Js v/s Express Js
+- https://www.upsqode.com/blog/nextjs-vs-nestjs/
+
+- Pre-Rendering
+- Zero Config Route Configuration
+- Modular Structure
+- Extensive Flexibility
+- Enterprise-level web applications 
+- Automatic server rendering and code splitting
+- Open-source web frameworks
+- Hot Module Replacement
+
+- Next Js
+  - Next.js is a javascript framework for building websites and web applications. It's built on top of 
+    React and helps you build server-side rendering and static web applications using React. 
+    ZEIT developed the Next.js framework in 2016.
+  - Next is a minimalistic framework for server-rendered React applications.
+  - Next.js is based on Hot Module Replacement
+  - PROS
+    - Pre-Rendering 
+    - Seo Friendly
+    - Splitting Code Automatically
+    - Own Route Configuration
+    - Different Modules Supports
+    - Interactive User Experience
+    - Faster Development
+    - Automatic Code Splitting
+    - Fully Compatible
+ - CONS
+   - Development and Management
+   - A low number of Plugins
+   - Cost for Frontend (It doesn’t provide as many as in-built frontend pages)
+
+
+- Nest JS
+  - Nest.js is an open-source framework for building web applications. The framework uses TypeScript and is 
+    written in TypeScript, with a component-based architecture similar to Angular.
+    It combines the following aspects of programming:
+      - Object-Oriented Programming (OOP)
+      - Functional Programming (FP)
+      - Functional Reactive Programming (FRP)
+  - Nest.js is a framework for building efficient server-side applications. 
+
+  - PROS
+    - Efficient server-side applications
+    - Numerous Database Supports
+    - Zero setups (It uses File System as an API)
+    - Typescripts
+    - Angular Syntax Style
+  - CONS
+    - Debugging issues
+    - Documentation Issues
+
+- Fastify
+
+- What kind of Applications can Next js build?
+  - Web Portals
+  - Dynamic Web Applications
+  - Complex Web Apps
+  - Single Web Applications
+  - Static Websites
+  - Rich and Interactive User Interfaces
+  - Single web pages.
+  - JAMstack websites
+  - SaaS apps
+  - Dashboards
+  - Interactive UI
+  - Web portals
+  - E-commerce websites
+
+- What kind of Applications can Nest js build?
+  - Server Side Applications
+  - Static Web Applications
+  - Dynamic Web Applications
+  - Streamline Apps
+  - E-commerce apps
+  - Real-Time Chat Applications
+
+
+   
+
+- Opinionated vs unopinionated framework
+  - The non-opinionated design promotes different ways to accomplish the same task. 
+    The opinionated design, in turn, typically presents a “right way” to accomplish a task. 
+    In this scenario, flexibility may be an advantage or disadvantage.
+  - Express JS is unopinionated framework
+
+
+
+- MySQL v/s PostgreSQL
+  - Difference - https://aws.amazon.com/compare/the-difference-between-mysql-vs-postgresql/
+
+  - ACID compliance
+    Atomicity, consistency, isolation, and durability (ACID) are database properties that ensure a database 
+    remains in a valid state even after unexpected errors. For example, if you update a large number of rows but 
+    the system fails midway, no row should be modified. MySQL offers ACID compliance only when you use it with 
+    InnoDB and NDB Cluster storage engines or software modules. PostgreSQL is fully ACID compliant in all 
+    configurations.
+
+
+  - Concurrency control
+     Multiversion concurrency control (MVCC) is an advanced database feature that creates duplicate copies 
+     of records to safely read and update the same data in parallel. When you use MVCC, multiple users can read 
+     and modify the same data simultaneously without compromising data integrity.
+     MySQL databases do not offer MVCC, but PostgreSQL supports this feature.
+
+  - Indexes
+     MySQL supports B-tree and R-tree indexing that stores hierarchically indexed data. PostgreSQL index 
+     types include trees, expression indexes, partial indexes, and hash indexes. There are more options to 
+     fine-tune your database performance requirements as you scale.
+
+  - Data types
+    MySQL is a purely relational database. PostgreSQL, on the other hand, is an object-relational database. This means 
+    that in PostgreSQL, you can store data as objects with properties. Objects are a common data type in many 
+    programming languages like Java and .NET. Objects support paradigms like parent-child relationships and 
+    inheritance. Working with PostgreSQL is more intuitive for database developers. PostgreSQL also supports other 
+    additional data types like arrays and XML.
+
+  - Views
+    A view is a data subset that the database system creates by pulling relevant data from multiple tables.
+    While MySQL supports views, PostgreSQL offers advanced view options. For example, you can precompute some 
+    values in advance (like the total value of all orders over a given period) to create materialized views. 
+    Materialized views improve database performance for complicated queries.
+
+  - Stored procedures
+    Stored procedures are structured query language (SQL) queries or code statements you can write and save in 
+    advance. You can reuse the same code repeatedly, which makes database management tasks more efficient.
+    While both MySQL and PostgreSQL support stored procedures, PostgreSQL allows you to call stored procedures
+    written in languages other than SQL.
+
+  - Triggers
+    A trigger is a stored procedure that runs automatically when a related event occurs in the database management system.
+    In a MySQL database, you can only use AFTER and BEFORE triggers for SQL INSERT, UPDATE, and DELETE statements. 
+    That means the procedure will run automatically before or after the user modifies the data. 
+    In contrast, PostgreSQL supports the INSTEAD OF trigger, so you can run complex SQL statements using functions.
+
+
+
+- Summary of differences: PostgreSQL vs MySQL
+ - Database technology
+   - MySQL is a purely relational database management system.
+   - PostgreSQL is an object-relational database management system.
+
+  - Features
+    - MySQL has limited support of database features like views, triggers, and procedures.
+    - PostgreSQL supports most advanced database features like materialized views, INSTEAD OF triggers, 
+      and stored procedures in multiple languages.
+
+  - Data types
+    - MySQL supports numeric, character, date and time, spatial, and JSON data types.
+    - PostgreSQL supports all MySQL data types along with geometric, enumerated, network address, arrays, ranges, XML, hstore, and composite.
+
+  - ACID Compliance
+    - MySQL is ACID compliant only with InnoDB and NDB Cluster storage engines.
+    - PostgreSQL is always ACID compliant. 
+
+  - Indexes
+    - MySQL has B-tree and R-tree index support.
+    - PostgreSQL supports multiple index types like expression indexes, partial indexes, and hash indexes along with trees.
+
+  - Performance
+   - MySQL has improved performance for high-frequency read operations
+   - PostgreSQL has improved performance for high-frequency write operations.
+
+  - Beginner support
+    - MySQL is easier to get started with. It has a wider tool set for non-technical users.
+    - PostgreSQL is more complex to get started with. It has a limited tool set for non-technical users. 
+
+- PostgreSQL - `pg-promise`
+- Sequelize ORM 
+  - https://blog.logrocket.com/using-sequelize-with-typescript/
+  - https://sequelize.org/docs/v6/other-topics/resources/
+
+- CSS Preprocessor
+  - Less
+  - SASS
+  - SCSS
+  - More - https://www.ionos.ca/digitalguide/websites/web-development/sass/
+
+  #### Typescript
+  - More - https://rmolinamir.github.io/typescript-cheatsheet/
+
+
+  - Design Patterns - https://testbook.com/interview/javascript-design-pattern-interview-questions
+  

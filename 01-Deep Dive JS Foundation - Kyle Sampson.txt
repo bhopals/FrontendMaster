@@ -107,7 +107,7 @@ Objects
 THIS Binding (4 Types)
 - (1)Implicit Binding
     - Object "."(DOT) method 
-	- Namespace pattern - Call Site determine the Context.
+	  - Namespace pattern - Call Site determine the Context.
     - Share Behaviour among different Context - Dynamic Binding - Runtime Binding
 - (2) Explicit Binding 
     - use ".call" or ".apply" - Hard Binding

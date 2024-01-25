@@ -5,12 +5,15 @@
 **********************************************************
 
 Github
-- https://reactresources.com/topics/advance-concepts
+- https://reactresources.com/topics/advanced-concepts
 
+- https://engineering.fb.com/2017/09/26/web/react-16-a-look-inside-an-api-compatible-rewrite-of-our-frontend-ui-library/
 - REACT HOOKS 16.8v
 
 #1 A DEEP Dive into REACT FIBER
 ------------------------------------------------------------------------------------------------
+More details - https://blog.logrocket.com/deep-dive-react-fiber/
+
 Ever Wondered what happens when you call REACTDOM.render(<App/>, dom.getElementById('root'))?
 We know that ReactDOM builds up the DOM Tree under the HOOD and 
 renders the application on the SCREEN, BUT how does REACT Do THAT?
@@ -145,7 +148,7 @@ E. RENDERING
 
 
 F. FIBER
-- FIBER Gives you non-blocking RENDER. It allows us to Pause Work and RESTART WORK
+- FIBER Gives you non-blocking (async) RENDER. It allows us to Pause Work and RESTART WORK
 - REACT - A Javascript Library for Building User Interface
 - React Program Output a Tree that may Change over time called HOST TREE
 - The HOST TREE consist of HOST INSTANCES

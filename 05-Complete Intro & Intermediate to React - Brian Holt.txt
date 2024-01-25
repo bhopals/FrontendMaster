@@ -205,6 +205,9 @@ useState Hook
 - const [counter, setCounter] = useState(0)
 - In other words, It makes a Functional Component(Stateless) StateFull, OR makes a Functional Component to Use STATE
 
+- React Hooks for using REDUX in Functional Component (To mimic mapStateToProps and mapDispatchToProps)
+    - useSelector 
+    - useDispatch 
 
 useEffect Hook
 - useEffect is how you recreate 'componentDidMount', 'componentDidUpdate', and 'componentWillUnmount' 
